@@ -132,8 +132,8 @@ p{margin:0 0 1em;}
   text-decoration:none;
   color:var(--ink);
 }
-.brand svg{width:26px;height:26px;color:var(--accent);}
-.brand .rupee-tick{color:var(--accent); font-weight:500;}
+.brand svg{width:34px;height:26px;}
+.brand .brand-accent{color:var(--accent); font-weight:500;}
 
 .nav-links{display:flex; align-items:center; gap:32px; list-style:none; margin:0; padding:0;}
 .nav-links a{
@@ -191,7 +191,7 @@ p{margin:0 0 1em;}
   position:relative;
   overflow:hidden;
 }
-.hero-visual svg{width:46%;height:46%;}
+.hero-visual img{width:52%;height:auto;position:relative;z-index:1;}
 .hero-visual .rules{
   position:absolute; inset:0;
   background-image:repeating-linear-gradient(
