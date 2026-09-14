@@ -186,7 +186,7 @@ p{margin:0 0 1em;}
 .hero-visual{
   aspect-ratio:1/1;
   display:flex; align-items:center; justify-content:center;
-  background:var(--ink);
+  background:#16213A;
   border-radius:6px;
   position:relative;
   overflow:hidden;
@@ -211,13 +211,17 @@ p{margin:0 0 1em;}
 .trust-item{display:flex; align-items:center; gap:10px; font-size:.85rem; color:var(--ink-soft);}
 .trust-item svg{width:18px;height:18px; color:var(--green); flex:0 0 auto;}
 
-/* ---- Privacy block (major focus) ---- */
+/* ---- Privacy block (major focus) ----
+   Deliberately always a dark navy band, regardless of light/dark system
+   theme -- colors are pinned to fixed hex values here, NOT the swappable
+   --ink/--paper/--brass variables, because those invert in dark mode and
+   would turn this into a light band with barely-visible pale text. */
 .privacy{
-  background:var(--ink);
-  color:var(--paper);
+  background:#16213A;
+  color:#ECEEE4;
 }
-.privacy .eyebrow{color:var(--brass);}
-.privacy h2, .privacy p{color:var(--paper);}
+.privacy .eyebrow{color:#CFA34E;}
+.privacy h2, .privacy p{color:#ECEEE4;}
 .privacy .lede{color:#C7CCB4; font-size:1.1rem;}
 .privacy-grid{
   display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px,4vw,56px);
@@ -228,8 +232,8 @@ p{margin:0 0 1em;}
   display:flex; gap:16px;
   padding-top:22px; border-top:1px solid rgba(236,233,216,0.18);
 }
-.privacy-point svg{width:26px;height:26px;flex:0 0 auto;color:var(--brass); margin-top:2px;}
-.privacy-point h3{color:var(--paper); font-size:1.05rem; margin-bottom:6px;}
+.privacy-point svg{width:26px;height:26px;flex:0 0 auto;color:#CFA34E; margin-top:2px;}
+.privacy-point h3{color:#ECEEE4; font-size:1.05rem; margin-bottom:6px;}
 .privacy-point p{color:#B7BFD4; font-size:.92rem; margin-bottom:0;}
 
 /* ---- Feature grid ---- */
