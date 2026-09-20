@@ -1,13 +1,13 @@
-/* Screenshot slider: autoplay (paused on hover/focus/off-screen, off for reduced-motion),
-   arrows, dots, keyboard arrows and touch swipe. No dependencies. */
+/* Screenshot slider: always auto-advances (crossfade only, no movement) unless the visitor presses
+   Pause; it also waits while the tab is hidden or the slider is off-screen. Arrows, dots,
+   keyboard arrows and touch swipe. No dependencies. */
 (function () {
   function init(root) {
     var slides = [].slice.call(root.querySelectorAll('.slide'));
     var caps = [].slice.call(root.querySelectorAll('.cap'));
     var dotWrap = root.querySelector('.slider-dots');
     if (!slides.length) return;
-    var i = 0, timer = null, visible = true, hovering = false;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var i = 0, timer = null, visible = true, paused = false;
     var dots = slides.map(function (_, n) {
       var b = document.createElement('button');
       b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-label', 'Show screen ' + (n + 1) + ' of ' + slides.length);
@@ -22,13 +22,22 @@
       var nxt = slides[(i + 1) % slides.length].querySelector('img'); if (nxt && nxt.loading === 'lazy') nxt.loading = 'eager';
       if (user) restart();
     }
-    function tick() { if (visible && !hovering && !document.hidden) go(i + 1); }
-    function restart() { stop(); if (!reduce) timer = setInterval(tick, 5500); }
+    function tick() { if (!paused && visible && !document.hidden) go(i + 1); }
+    function restart() { stop(); timer = setInterval(tick, 5000); }
     function stop() { if (timer) { clearInterval(timer); timer = null; } }
     root.querySelector('.prev').addEventListener('click', function () { go(i - 1, true); });
     root.querySelector('.next').addEventListener('click', function () { go(i + 1, true); });
-    root.addEventListener('mouseenter', function () { hovering = true; });
-    root.addEventListener('mouseleave', function () { hovering = false; });
+    var pauseBtn = document.createElement('button');
+    pauseBtn.type = 'button'; pauseBtn.className = 'slider-pause';
+    var ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+    var ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    function paintPause() {
+      pauseBtn.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
+      var label = paused ? 'Play slideshow' : 'Pause slideshow';
+      pauseBtn.setAttribute('aria-label', label); pauseBtn.title = label;
+    }
+    pauseBtn.addEventListener('click', function () { paused = !paused; paintPause(); if (!paused) restart(); });
+    paintPause(); dotWrap.appendChild(pauseBtn);
     root.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') { go(i - 1, true); } else if (e.key === 'ArrowRight') { go(i + 1, true); }
     });

@@ -514,6 +514,9 @@ p{margin:0 0 1em;}
 .tour{border-top:1px solid var(--rule);}
 .tour-video{max-width:960px;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:var(--shadow), 0 0 0 1px var(--rule);background:#10162A;}
 .tour-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#10162A;}
-@media (prefers-reduced-motion:reduce){ .slide,.cap{transition:none;} }
+.slider-pause{width:34px;height:22px;margin-left:8px;background:none;border:1px solid var(--rule-strong);border-radius:11px;padding:0;cursor:pointer;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;}
+.slider-pause svg{width:12px;height:12px;}
+.slider-pause:hover{color:var(--ink);border-color:var(--ink);}
+.slider-dots{align-items:center;}
 .showcase,.tour{scroll-margin-top:70px;}
 @media (max-width:480px){ .slider-dots{gap:5px;} .slider-dots button{width:26px;} .slider-btn{width:34px;height:34px;} }
