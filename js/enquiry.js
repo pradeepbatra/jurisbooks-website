@@ -3,9 +3,9 @@
 
    HOW IT WORKS
    The form sends each enquiry to the Web3Forms service, which emails it to the
-   address that was registered when the access key below was created
-   (jurisbooks1977@gmail.com). That email address is NOT written anywhere on
-   this website - only the access key is, and the key is designed to be public.
+   address that was registered when the access key below was created (the
+   owner's private Gmail). That address is NOT written anywhere on this
+   website - only the access key is, and the key is designed to be public.
 
    UNTIL A KEY IS PASTED BELOW the form still works: it opens the visitor's own
    email program with the enquiry already written, addressed to FALLBACK_EMAIL.
