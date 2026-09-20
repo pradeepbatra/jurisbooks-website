@@ -7,12 +7,13 @@
    owner's private Gmail). That address is NOT written anywhere on this
    website - only the access key is, and the key is designed to be public.
 
-   UNTIL A KEY IS PASTED BELOW the form still works: it opens the visitor's own
-   email program with the enquiry already written, addressed to FALLBACK_EMAIL.
+   The visitor never needs an email account or email program: the form posts the
+   enquiry straight from the page. Until a key is pasted below the Send button is
+   switched off and the page shows the phone / WhatsApp number instead.
    ========================================================================== */
 window.JURISBOOKS_FORM = {
   accessKey: '',                         // <- paste the Web3Forms access key between the quotes
-  fallbackEmail: 'info@jurisbooks.com'   // used only while accessKey is empty
+  fallbackEmail: 'info@jurisbooks.com'   // only shown in the "could not be sent" message
 };
 
 (function () {
@@ -59,6 +60,12 @@ window.JURISBOOKS_FORM = {
     }
     function digits(s) { return (s || '').replace(/\D/g, ''); }
 
+    var cfg0 = window.JURISBOOKS_FORM || {};
+    if (!cfg0.accessKey) {
+      btn.disabled = true;
+      say('Online enquiries are being switched on. For now, please call or WhatsApp us on +91 92204 99490 and we will help you straight away.', 'ok');
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var f = form.elements;
@@ -87,14 +94,7 @@ window.JURISBOOKS_FORM = {
         var ok = document.getElementById('enquiryThanks'); ok.hidden = false; ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
-      // ---- no key yet: open the visitor's email program with everything filled in ----
-      if (!cfg.accessKey) {
-        var body = 'Name: ' + data.name + '\nPhone / WhatsApp: ' + data.phone + '\nEmail: ' + (data.email || '-') +
-          '\nBusiness: ' + (data.business || '-') + '\nInterested in: ' + data.interest + '\n\n' + (data.message || '');
-        location.href = 'mailto:' + cfg.fallbackEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        say('Your email program should now open with your enquiry written out - just press Send. If it does not, call or WhatsApp us on +91 92204 99490.', 'ok');
-        return;
-      }
+      if (!cfg.accessKey) { return; }   // form is switched off until a key is set
 
       // ---- normal path: send through Web3Forms ----
       btn.disabled = true; var label = btn.textContent; btn.textContent = 'Sending...'; say('', '');
