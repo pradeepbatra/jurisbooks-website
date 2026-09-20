@@ -60,10 +60,22 @@ window.JURISBOOKS_FORM = {
     }
     function digits(s) { return (s || '').replace(/\D/g, ''); }
 
+    // "Chat on WhatsApp": opens WhatsApp with what the visitor has typed so far already written out.
+    var wa = document.getElementById('enquiryWhatsApp');
+    var TOPIC_TEXT = { demo: 'a demo of Jurisbooks', offline: 'Jurisbooks Offline', online: 'Jurisbooks Online', pricing: 'pricing', other: 'Jurisbooks' };
+    function buildWhatsApp() {
+      if (!wa) return;
+      var f = form.elements, name = f['name'].value.trim(), biz = f['business'].value.trim(), msg = f['message'].value.trim();
+      var t = 'Hello Jurisbooks! ' + (name ? 'I am ' + name + (biz ? ' from ' + biz : '') + '. ' : '') +
+              'I would like to know about ' + (TOPIC_TEXT[interest.value] || 'Jurisbooks') + '.' + (msg ? ' ' + msg.slice(0, 600) : '');
+      wa.href = 'https://wa.me/919220499490?text=' + encodeURIComponent(t);
+    }
+    if (wa) { wa.addEventListener('click', buildWhatsApp); wa.addEventListener('focus', buildWhatsApp); wa.addEventListener('mouseenter', buildWhatsApp); wa.addEventListener('touchstart', buildWhatsApp, { passive: true }); }
+
     var cfg0 = window.JURISBOOKS_FORM || {};
     if (!cfg0.accessKey) {
       btn.disabled = true;
-      say('Online enquiries are being switched on. For now, please call or WhatsApp us on +91 92204 99490 and we will help you straight away.', 'ok');
+      say('Online enquiries are being switched on. For now, please tap Chat on WhatsApp below, or call us on +91 92204 99490, and we will help you straight away.', 'ok');
     }
 
     form.addEventListener('submit', function (e) {

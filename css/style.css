@@ -555,3 +555,10 @@ p{margin:0 0 1em;}
 .enq-thanks{text-align:center;padding:26px 8px;}
 .enq-thanks h3{font-size:1.5rem;}
 @media (max-width:640px){ .enq-grid{grid-template-columns:1fr;} }
+.enq-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.btn-whatsapp{background:#25D366;color:#0B2E1A;border-color:#25D366;}
+.btn-whatsapp svg{width:20px;height:20px;flex:none;}
+.btn-whatsapp:hover{background:#20BD5A;border-color:#20BD5A;box-shadow:var(--shadow);}
+@media (max-width:480px){ .enq-actions .btn{width:100%;justify-content:center;} }
+
+.enq-actions .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
