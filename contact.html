@@ -78,7 +78,7 @@
           <span class="label" style="margin-bottom:6px;">Pricing</span>
           <h3 style="margin-bottom:10px;">Contact us for pricing</h3>
           <p style="color:var(--ink-soft); font-size:.92rem; margin-bottom:16px;">Jurisbooks Offline comes in a few tiers depending on how many companies you run and whether you need the full accounting/GST-reports suite. Jurisbooks Online starts with a free 7-day trial, then a plan based on how many companies you run and how many people are signed in at once &mdash; its pricing will be announced when Online opens. Tell us a bit about your business and we'll recommend the right fit.</p>
-          <a href="mailto:info@jurisbooks.com?subject=Jurisbooks%20Pricing%20Enquiry" class="btn btn-primary" style="align-self:flex-start;">Ask About Pricing</a>
+          <a href="#enquiry" data-interest="pricing" class="btn btn-primary" style="align-self:flex-start;">Ask About Pricing</a>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@
             <li>Runs on your computer &mdash; no internet and no sign-up needed</li>
             <li>We demo it on your own invoices; you then get the installer and a recovery code to try on your machine</li>
           </ul>
-          <a href="mailto:info@jurisbooks.com?subject=Jurisbooks%20Offline%20-%20Demo%20Request" class="btn btn-primary">Ask about Offline</a>
+          <a href="#enquiry" data-interest="offline" class="btn btn-primary">Ask about Offline</a>
         </div>
         <div class="version-card">
           <div class="eyebrow">Jurisbooks Online</div>
@@ -108,7 +108,45 @@
             <li>The same books on every computer, staff logins with permissions, and it keeps working if the internet drops</li>
             <li>Starts with a free 7-day trial. The download opens when Online launches &mdash; contact us for early access</li>
           </ul>
-          <a href="mailto:info@jurisbooks.com?subject=Jurisbooks%20Online%20-%20Demo%20or%20Early%20Access" class="btn btn-primary">Ask about Online</a>
+          <a href="#enquiry" data-interest="online" class="btn btn-primary">Ask about Online</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-border-top" id="enquiry" style="scroll-margin-top:70px;">
+    <div class="container">
+      <div class="section-head" style="margin-left:auto;margin-right:auto;text-align:center;">
+        <div class="eyebrow">Send an Enquiry</div>
+        <h2>Tell us a little about your business.</h2>
+        <p>We reply directly &mdash; usually by phone or WhatsApp. No ticket queue, no bot.</p>
+      </div>
+      <div class="enquiry-card">
+        <form id="enquiryForm" novalidate>
+          <div class="enq-grid">
+            <div class="enq-field"><label for="enq-name">Your name *</label><input id="enq-name" name="name" type="text" autocomplete="name" maxlength="80" required></div>
+            <div class="enq-field"><label for="enq-phone">Phone / WhatsApp *</label><input id="enq-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+91 ..." required></div>
+            <div class="enq-field"><label for="enq-email">Email <span class="opt">(optional)</span></label><input id="enq-email" name="email" type="email" autocomplete="email" maxlength="120"></div>
+            <div class="enq-field"><label for="enq-business">Business name <span class="opt">(optional)</span></label><input id="enq-business" name="business" type="text" autocomplete="organization" maxlength="120"></div>
+            <div class="enq-field enq-wide"><label for="enq-interest">What can we help with?</label>
+              <select id="enq-interest" name="interest">
+                <option value="demo">Request a demo</option>
+                <option value="offline">Ask about Jurisbooks Offline</option>
+                <option value="online">Ask about Jurisbooks Online</option>
+                <option value="pricing">Pricing</option>
+                <option value="other">Something else</option>
+              </select></div>
+            <div class="enq-field enq-wide"><label for="enq-message">Message <span class="opt">(optional)</span></label><textarea id="enq-message" name="message" rows="4" maxlength="1500" placeholder="For example: how many computers you use, what you bill for, whether you are GST registered..."></textarea></div>
+          </div>
+          <div class="enq-trap" aria-hidden="true"><label>Leave this empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>
+          <label class="enq-consent"><input type="checkbox" name="consent"><span>I agree that Jurisbooks may contact me about this enquiry using the details above. They are used only to reply to me.</span></label>
+          <div id="enquiryStatus" class="enquiry-status" role="status" aria-live="polite" hidden></div>
+          <button type="submit" class="btn btn-primary">Send Enquiry</button>
+          <p class="enq-fine">Prefer to talk? Call or WhatsApp <a href="tel:+919220499490">+91 92204 99490</a>. Enquiries are delivered to us through the Web3Forms service.</p>
+        </form>
+        <div id="enquiryThanks" class="enq-thanks" hidden tabindex="-1">
+          <h3>Thank you.</h3>
+          <p>We have your enquiry and will contact you on the number you gave. In a hurry? WhatsApp us on <a href="https://wa.me/919220499490" target="_blank" rel="noopener">+91 92204 99490</a>.</p>
         </div>
       </div>
     </div>
@@ -176,5 +214,6 @@
 
 <script src="js/downloads.js"></script>
 <script src="js/main.js"></script>
+<script src="js/enquiry.js"></script>
 </body>
 </html>

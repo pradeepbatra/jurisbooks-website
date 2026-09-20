@@ -533,3 +533,25 @@ p{margin:0 0 1em;}
 .version-links{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 6px;}
 .version-links a{font-weight:600;text-decoration:none;border-bottom:1px solid var(--rule-strong);}
 @media (max-width:760px){ .version-pair{grid-template-columns:1fr;} }
+
+/* ---- Enquiry form (contact page) ---- */
+.enquiry-card{max-width:760px;margin:0 auto;background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:clamp(20px,4vw,34px);}
+.enq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;margin-bottom:16px;}
+.enq-wide{grid-column:1/-1;}
+.enq-field label{display:block;font-weight:600;font-size:.88rem;margin-bottom:6px;}
+.enq-field .opt{font-weight:400;color:var(--ink-soft);}
+.enq-field input,.enq-field select,.enq-field textarea{width:100%;font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:1px solid var(--rule-strong);border-radius:4px;padding:11px 12px;}
+.enq-field textarea{resize:vertical;min-height:110px;}
+.enq-field input:focus,.enq-field select:focus,.enq-field textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.enq-trap{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+.enq-consent{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--ink-soft);margin:6px 0 16px;cursor:pointer;}
+.enq-consent input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--brass);}
+.enquiry-status{padding:10px 14px;border-radius:4px;font-size:.92rem;margin:0 0 14px;border:1px solid var(--rule-strong);}
+.enquiry-status.ok{background:var(--green-bg);color:var(--green);border-color:var(--green);}
+.enquiry-status.err{background:rgba(179,56,44,.1);color:#B3382C;border-color:#B3382C;}
+@media (prefers-color-scheme: dark){ .enquiry-status.err{color:#F08A7E;border-color:#F08A7E;} }
+.enquiry-status[hidden],.enq-thanks[hidden],#enquiryForm[hidden]{display:none !important;}
+.enq-fine{font-size:.82rem;color:var(--ink-soft);margin:14px 0 0;}
+.enq-thanks{text-align:center;padding:26px 8px;}
+.enq-thanks h3{font-size:1.5rem;}
+@media (max-width:640px){ .enq-grid{grid-template-columns:1fr;} }
