@@ -475,3 +475,45 @@ p{margin:0 0 1em;}
 .compare thead th:nth-child(3){border-bottom:3px solid #5AA9D6;}
 .compare tbody th{font-family:'IBM Plex Sans',sans-serif;font-weight:600;color:var(--ink);width:22%;}
 .compare td{color:var(--ink-soft);}
+
+/* ==========================================================================
+   Screenshot slider ("See it in action") — used on the home and Offline pages.
+   The app window itself is always light (it is a real screenshot), so the
+   frame colours are fixed; only the text around it follows the page theme.
+   ========================================================================== */
+.showcase{border-top:1px solid var(--rule);}
+.showcase .section-head{max-width:64ch;}
+.slider{max-width:1040px;margin:0 auto;}
+.slider-frame{position:relative;border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--shadow), 0 0 0 1px var(--rule);}
+.frame-bar{display:flex;align-items:center;gap:7px;padding:0 14px;height:34px;background:#E9EBF1;color:#5C6478;font-size:.72rem;font-weight:500;line-height:1;}
+.frame-bar i{display:block;width:10px;height:10px;border-radius:50%;flex:none;}
+.frame-bar i:nth-child(1){background:#FF5F57;} .frame-bar i:nth-child(2){background:#FEBC2E;} .frame-bar i:nth-child(3){background:#28C840;}
+.frame-bar span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.slides{display:grid;background:#fff;touch-action:pan-y;}
+.slide{grid-area:1/1;margin:0;opacity:0;visibility:hidden;transition:opacity .55s ease, visibility 0s linear .55s;}
+.slide.is-active{opacity:1;visibility:visible;transition:opacity .55s ease;}
+.slide img{width:100%;height:auto;aspect-ratio:1440/900;display:block;}
+.slider-btn{position:absolute;top:calc(50% + 17px);transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(22,33,58,.78);color:#ECEEE4;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s ease, background .2s ease;}
+.slider-btn svg{width:20px;height:20px;}
+.slider-btn:hover{background:rgba(22,33,58,.95);}
+.slider-frame:hover .slider-btn,.slider-btn:focus-visible{opacity:1;}
+.slider-btn.prev{left:12px;} .slider-btn.next{right:12px;}
+@media (hover:none){ .slider-btn{opacity:.9;width:38px;height:38px;} }
+.captions{display:grid;margin-top:22px;text-align:center;}
+.cap{grid-area:1/1;opacity:0;visibility:hidden;transition:opacity .4s ease;}
+.cap.is-active{opacity:1;visibility:visible;}
+.cap h3{font-size:clamp(1.25rem,2.4vw,1.6rem);margin:0 0 .3em;}
+.cap p{color:var(--ink-soft);max-width:60ch;margin:0 auto;min-height:3.4em;}
+.cap .cap-tag{display:inline-block;margin-left:10px;padding:2px 9px;border:1px solid var(--accent);border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);vertical-align:middle;}
+.slider-dots{display:flex;justify-content:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
+.slider-dots button{width:34px;height:22px;background:none;border:0;padding:0;cursor:pointer;position:relative;}
+.slider-dots button::after{content:"";position:absolute;left:0;right:0;top:9px;height:4px;border-radius:2px;background:var(--rule-strong);transition:background .2s ease;}
+.slider-dots button[aria-selected="true"]::after{background:var(--accent);}
+.showcase-note{text-align:center;font-size:.82rem;color:var(--ink-soft);margin:14px 0 0;}
+.tour{border-top:1px solid var(--rule);}
+.tour-video{max-width:960px;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:var(--shadow), 0 0 0 1px var(--rule);background:#10162A;}
+.tour-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#10162A;}
+@media (prefers-reduced-motion:reduce){ .slide,.cap{transition:none;} }
+.showcase,.tour{scroll-margin-top:70px;}
+@media (max-width:480px){ .slider-dots{gap:5px;} .slider-dots button{width:26px;} .slider-btn{width:34px;height:34px;} }
