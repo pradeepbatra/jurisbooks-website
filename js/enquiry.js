@@ -41,6 +41,7 @@ window.JURISBOOKS_FORM = {
     document.querySelectorAll('[data-interest]').forEach(function (a) {
       a.addEventListener('click', function (e) {
         setInterest(a.getAttribute('data-interest'));
+        var menu = document.querySelector('.nav-links'); if (menu) menu.classList.remove('open');   // close the phone menu
         var target = document.getElementById('enquiry');
         if (target) {
           e.preventDefault();
