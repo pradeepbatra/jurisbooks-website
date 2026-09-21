@@ -12,7 +12,7 @@
    switched off and the page shows the phone / WhatsApp number instead.
    ========================================================================== */
 window.JURISBOOKS_FORM = {
-  accessKey: '',                         // <- paste the Web3Forms access key between the quotes
+  accessKey: 'f02fa23f-a37e-4a5f-b95d-36ad00e78ce4',   // Web3Forms public access key (safe to publish; it only sends to the owner's inbox)
   fallbackEmail: 'info@jurisbooks.com'   // only shown in the "could not be sent" message
 };
 
