@@ -16,11 +16,15 @@
 window.JURISBOOKS_VERSIONS = {
   editions: {
     trial:    { name: 'Trial',            latest: '1.1.0', released: '20 Sep 2026' },
-    basic:    { name: 'Basic',            latest: '1.2.0', released: '21 Sep 2026' },
-    premium:  { name: 'Premium',          latest: '1.2.0', released: '21 Sep 2026' },
-    business: { name: 'Business Premium', latest: '1.2.0', released: '21 Sep 2026' }
+    basic:    { name: 'Basic',            latest: '1.2.1', released: '22 Sep 2026' },
+    premium:  { name: 'Premium',          latest: '1.2.1', released: '22 Sep 2026' },
+    business: { name: 'Business Premium', latest: '1.2.1', released: '22 Sep 2026' }
   },
   history: [
+    { v: '1.2.1', date: '22 Sep 2026', items: [
+      'Sharing over the office network now checks for a genuine Business Premium licence key.',
+      'A licence that has been edited without a genuine key is no longer accepted when the program starts.'
+    ] },
     { v: '1.2.0', date: '21 Sep 2026', items: [
       'Four separate editions: Trial, Basic, Premium and Business Premium, each with its own installer.',
       'Sharing over the office network is now part of Business Premium only.',
