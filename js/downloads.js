@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var a = document.createElement('a');
     a.className = el.className.replace('is-soon', 'is-live');
     a.href = url;
+    a.setAttribute('data-download', el.getAttribute('data-download'));
     a.setAttribute('download', '');
     a.innerHTML = el.innerHTML.replace(/<span class="soon-badge">[\s\S]*?<\/span>/, '');
     el.parentNode.replaceChild(a, el);
