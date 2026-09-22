@@ -13,7 +13,7 @@
      'online-windows'   ->  the Jurisbooks Online installer for Windows
    ========================================================================== */
 window.JURISBOOKS_DOWNLOADS = {
-  'offline-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/offline-trial-1.1.0/Jurisbooks-Trial-Setup-1.1.0.exe',
+  'offline-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/offline-trial-1.4.3/Jurisbooks-Trial-Setup-1.4.3.exe',
   'online-windows': ''
 };
 
