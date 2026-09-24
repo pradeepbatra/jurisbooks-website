@@ -54,6 +54,17 @@ window.JURISBOOKS_FORM = {
     // ...and links from other pages: contact.html?interest=online#enquiry
     try { setInterest(new URLSearchParams(location.search).get('interest')); } catch (e) {}
 
+    // ...and a specific plan from the pricing page: pricing.html links with &plan=team,
+    // so the owner knows which plan the visitor wants without them typing it themselves.
+    try {
+      var PLAN_LABELS = { solo: 'Solo', team: 'Team', business: 'Business' };
+      var planParam = new URLSearchParams(location.search).get('plan');
+      var messageEl = form.elements['message'];
+      if (planParam && PLAN_LABELS[planParam] && messageEl && !messageEl.value) {
+        messageEl.value = 'I would like to buy the ' + PLAN_LABELS[planParam] + ' plan.';
+      }
+    } catch (e) {}
+
     function say(msg, kind) {
       status.textContent = msg;
       status.className = 'enquiry-status ' + (kind || '');
