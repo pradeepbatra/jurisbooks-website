@@ -10,10 +10,19 @@
    The visitor never needs an email account or email program: the form posts the
    enquiry straight from the page. Until a key is pasted below the Send button is
    switched off and the page shows the phone / WhatsApp number instead.
+
+   The same enquiry ALSO goes to the Jurisbooks cloud (submitEnquiry), where it
+   becomes a ticket in the owner's Jurisbooks Back Office program. Both are sent
+   together; the visitor sees "thank you" if either one arrives. When the page is
+   opened from this computer for testing (localhost), only the LOCAL test cloud
+   is used and no email is sent.
    ========================================================================== */
 window.JURISBOOKS_FORM = {
   accessKey: 'f02fa23f-a37e-4a5f-b95d-36ad00e78ce4',   // Web3Forms public access key (safe to publish; it only sends to the owner's inbox)
-  fallbackEmail: 'jurisbooks1977@gmail.com'   // only shown in the "could not be sent" message
+  fallbackEmail: 'jurisbooks1977@gmail.com',  // only shown in the "could not be sent" message
+  ticketUrl: /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+    ? 'http://127.0.0.1:5001/jurisbooks-online-2609/asia-south1/submitEnquiry'
+    : 'https://asia-south1-jurisbooks-online-2609.cloudfunctions.net/submitEnquiry'
 };
 
 (function () {
@@ -128,13 +137,25 @@ window.JURISBOOKS_FORM = {
         interested_in: data.interest, message: data.message, page: data.page, botcheck: ''
       };
       if (!data.email) delete payload.email;
-      fetch('https://api.web3forms.com/submit', {
+      var testing = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+      var byEmail = testing ? Promise.reject(new Error('no email while testing')) : fetch('https://api.web3forms.com/submit', {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload)
       }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
-        .then(function (res) {
-          if (res.ok && res.j && res.j.success) { done(); return; }
-          throw new Error('rejected');
-        })
+        .then(function (res) { if (res.ok && res.j && res.j.success) return true; throw new Error('rejected'); });
+      var asTicket = fetch(cfg.ticketUrl, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: { name: data.name, phone: data.phone, email: data.email, business: data.business, interest: data.interest, message: data.message } })
+      }).then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (j) { if (j && j.result && j.result.ok) return true; throw new Error('rejected'); });
+      // "Thank you" as soon as either the email or the ticket has arrived.
+      var settled = 0, shown = false;
+      function oneDone(ok) {
+        settled++;
+        if (ok && !shown) { shown = true; done(); }
+        if (settled === 2 && !shown) throw new Error('both failed');
+      }
+      Promise.all([byEmail.then(function () { oneDone(true); }, function () { oneDone(false); }),
+                   asTicket.then(function () { oneDone(true); }, function () { oneDone(false); })])
         .catch(function () {
           say('Sorry, your enquiry could not be sent. Please call or WhatsApp us on +91 92204 99490, or email ' + (cfg.fallbackEmail) + '.', 'err');
         })
