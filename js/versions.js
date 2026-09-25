@@ -15,12 +15,20 @@
    ========================================================================== */
 window.JURISBOOKS_VERSIONS = {
   editions: {
-    trial:    { name: 'Trial',            latest: '1.4.3', released: '22 Sep 2026' },
-    basic:    { name: 'Basic',            latest: '1.4.3', released: '22 Sep 2026' },
-    premium:  { name: 'Premium',          latest: '1.4.3', released: '22 Sep 2026' },
-    business: { name: 'Business Premium', latest: '1.4.3', released: '22 Sep 2026' }
+    trial:    { name: 'Trial',            latest: '1.5.1', released: '25 Sep 2026' },
+    basic:    { name: 'Basic',            latest: '1.5.1', released: '25 Sep 2026' },
+    premium:  { name: 'Premium',          latest: '1.5.1', released: '25 Sep 2026' },
+    business: { name: 'Business Premium', latest: '1.5.1', released: '25 Sep 2026' }
   },
   history: [
+    { v: '1.5.1', date: '25 Sep 2026', items: [
+      'Negative billing switch: choose whether a bill may use more stock than you have.',
+      'Credit limit and credit days for each party, with a warning on the sale screen.',
+      'Payment reminders on the Dashboard, with a Remind on WhatsApp button.',
+      'Google Drive sync: keep your books in your own Google Drive and open them on another computer.',
+      'Stock Performance report by party and by your own price ranges (Premium and Business Premium).',
+      'Item pictures on items and bills, and Share via WhatsApp for invoices (from 1.4.4).'
+    ] },
     { v: '1.4.3', date: '22 Sep 2026', items: [
       'License keys are now cryptographically signed for stronger protection (every key issued before this version keeps working with nothing for you to do).',
       'Office sharing (Business Premium) was rebuilt: one main computer holds the only copy of the books, everyone signs in with their own name and password, and a new Administrator role was added.',
