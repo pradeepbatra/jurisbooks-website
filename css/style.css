@@ -612,3 +612,14 @@ body.agree-open{overflow:hidden;}
 .ver-entry h3{font-size:1.05rem;margin-bottom:.35em;}
 .ver-entry ul{padding-left:1.25em;margin:0;}
 .ver-entry li{margin-bottom:.35em;}
+
+/* ---- "Sign in to download" box (js/download-gate.js) ---- */
+.jb-gate { position: fixed; inset: 0; z-index: 1000; background: rgba(16,22,42,0.55); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.jb-gate-card { position: relative; background: var(--card); color: var(--ink); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); max-width: 420px; width: 100%; padding: 28px 24px 20px; text-align: center; }
+.jb-gate-card h2 { margin: 0 0 4px; font-size: 1.4rem; }
+.jb-gate-what { margin: 0 0 12px; font-weight: 600; color: var(--brass-strong); }
+.jb-gate-card p { margin: 0 0 14px; font-size: 0.95rem; color: var(--ink-soft); }
+.jb-gate-btn { display: flex; justify-content: center; min-height: 44px; margin-bottom: 10px; }
+.jb-gate-msg { min-height: 1.2em; }
+.jb-gate-x { position: absolute; top: 8px; right: 10px; background: none; border: 0; font-size: 26px; line-height: 1; color: var(--ink-soft); cursor: pointer; padding: 4px 8px; }
+.jb-gate-note { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 1000; max-width: calc(100% - 32px); background: var(--card); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 10px; box-shadow: var(--shadow); padding: 10px 14px; font-size: 0.95rem; }

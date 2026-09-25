@@ -12,7 +12,7 @@
    change in a way people should agree to again - everyone will be asked once more.
    ========================================================================== */
 (function () {
-  var TERMS_VERSION = '2026-09-21';
+  var TERMS_VERSION = '2026-09-25';   // 25 Sep: Privacy Notice gained Google Drive + Google sign-in sections
   var KEY = 'jb_agreed';
 
   function agreed() { try { return (localStorage.getItem(KEY) || '').split('|')[0] === TERMS_VERSION; } catch (e) { return false; } }
@@ -85,7 +85,9 @@
     go.addEventListener('click', function () {
       if (!tick.checked) return;
       remember(); var bar = document.getElementById('agreeBar'); if (bar) { bar.remove(); document.body.classList.remove('has-agree-bar'); }
-      close(); startDownload(url);
+      close();
+      // Next step: sign in with Google (js/download-gate.js), which then starts the download itself.
+      if (window.JB_GATE) window.JB_GATE.begin(url, key); else startDownload(url);
     });
     tick.focus();
   }
