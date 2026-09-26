@@ -2,7 +2,7 @@
    Download links for the two versions.
 
    OFFLINE is LIVE (the public Trial Edition, published as a GitHub Release on 20 Sep 2026).
-   ONLINE is still OFF ("Coming soon") until you are ready to publish.
+   ONLINE is LIVE since 26 Sep 2026 (the "online-updates" release; change the file name here with each new Online version).
    IMPORTANT: the Offline link must always be the TRIAL installer, never the full Premium one.
    To turn a download on, paste the installer's public web address between the
    quotes below - nothing else needs to change; every "Download" button on the
@@ -14,7 +14,7 @@
    ========================================================================== */
 window.JURISBOOKS_DOWNLOADS = {
   'offline-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/offline-trial-1.5.1/Jurisbooks-Trial-Setup-1.5.1.exe',
-  'online-windows': ''
+  'online-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/online-updates/Jurisbooks-Online-Setup-0.4.4.exe'
 };
 
 document.addEventListener('DOMContentLoaded', function () {
