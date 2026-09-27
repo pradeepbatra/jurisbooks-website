@@ -88,7 +88,7 @@
   function onSignedIn(credential, edition, url) {
     if (!credential) return setMsg('Google sign-in did not complete. Please try again.', true);
     setMsg('Checking with Google&hellip;');
-    fetch(RECORD_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: { credential: credential, edition: edition } }) })
+    fetch(RECORD_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: { credential: credential, edition: edition, termsVersion: window.JB_TERMS_VERSION || '' } }) })
       .then(function (r) { return r.json(); })
       .then(function (j) {
         if (!j || !j.result || !j.result.ok) {

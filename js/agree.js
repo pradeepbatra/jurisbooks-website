@@ -2,7 +2,7 @@
    "I agree" prompts.
 
    1. A slim bar at the bottom of every page: "By using this website you agree to our
-      Terms of Use and Privacy Notice.  [I agree]"  - shown until the visitor clicks
+      Terms of Service and Privacy Notice.  [I agree]"  - shown until the visitor clicks
       I agree (remembered in their own browser; shown again if the terms change).
    2. A pop-up before any software download: the visitor must tick "I have read and
       agree" and press "I agree & download" before the file starts downloading.
@@ -12,7 +12,7 @@
    change in a way people should agree to again - everyone will be asked once more.
    ========================================================================== */
 (function () {
-  var TERMS_VERSION = '2026-09-25';   // 25 Sep: Privacy Notice gained Google Drive + Google sign-in sections
+  var TERMS_VERSION = '2026-09-27'; window.JB_TERMS_VERSION = TERMS_VERSION;  // also sent with a download record   // 27 Sep: Terms of Service rewritten in full (plans, data, offline use, disputes, grievance)
   var KEY = 'jb_agreed';
 
   function agreed() { try { return (localStorage.getItem(KEY) || '').split('|')[0] === TERMS_VERSION; } catch (e) { return false; } }
@@ -25,7 +25,7 @@
     if (agreed() || document.getElementById('agreeBar')) return;
     var bar = document.createElement('div');
     bar.id = 'agreeBar'; bar.className = 'agree-bar'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Terms and privacy');
-    bar.innerHTML = '<p>By using this website you agree to our <a href="terms.html">Terms of Use</a> and <a href="privacy.html">Privacy Notice</a>.</p>' +
+    bar.innerHTML = '<p>By using this website you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Notice</a>.</p>' +
                     '<button type="button" class="agree-btn">I agree</button>';
     document.body.appendChild(bar);
     function size() { document.documentElement.style.setProperty('--agree-h', bar.offsetHeight + 'px'); }
@@ -49,7 +49,7 @@
     'default': {
       title: 'Before you download',
       points: [
-        'Please read the Terms of Use and Privacy Notice before installing Jurisbooks.',
+        'Please read the Terms of Service and Privacy Notice before installing Jurisbooks.',
         'You are responsible for keeping your own backups.',
         'We take full care, but we are not responsible for data loss, leaks or other events outside our control.'
       ]
@@ -70,7 +70,7 @@
       '<div class="agree-dialog" role="dialog" aria-modal="true" aria-labelledby="agreeTitle">' +
         '<h2 id="agreeTitle">' + c.title + '</h2>' +
         '<ul>' + c.points.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul>' +
-        '<label class="agree-check"><input type="checkbox" id="agreeTick"><span>I have read and I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Use</a> and the <a href="privacy.html" target="_blank" rel="noopener">Privacy Notice</a>.</span></label>' +
+        '<label class="agree-check"><input type="checkbox" id="agreeTick"><span>I have read and I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a> and the <a href="privacy.html" target="_blank" rel="noopener">Privacy Notice</a>.</span></label>' +
         '<div class="agree-actions"><button type="button" class="btn btn-outline" data-act="cancel">Cancel</button>' +
         '<button type="button" class="btn btn-primary" data-act="go" disabled>I agree &amp; download</button></div>' +
       '</div>';

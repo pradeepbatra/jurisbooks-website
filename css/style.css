@@ -518,7 +518,7 @@ p{margin:0 0 1em;}
 .slider-pause svg{width:12px;height:12px;}
 .slider-pause:hover{color:var(--ink);border-color:var(--ink);}
 .slider-dots{align-items:center;}
-.showcase,.tour{scroll-margin-top:70px;}
+.showcase,.tour,.edition{scroll-margin-top:80px;}
 @media (max-width:480px){ .slider-dots{gap:5px;} .slider-dots button{width:26px;} .slider-btn{width:34px;height:34px;} }
 
 /* ---- Offline / Online side-by-side cards (About, Contact) ---- */
@@ -623,3 +623,94 @@ body.agree-open{overflow:hidden;}
 .jb-gate-msg { min-height: 1.2em; }
 .jb-gate-x { position: absolute; top: 8px; right: 10px; background: none; border: 0; font-size: 26px; line-height: 1; color: var(--ink-soft); cursor: pointer; padding: 4px 8px; }
 .jb-gate-note { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 1000; max-width: calc(100% - 32px); background: var(--card); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 10px; box-shadow: var(--shadow); padding: 10px 14px; font-size: 0.95rem; }
+
+/* ---- Home: the two editions, Online first, stacked (26 Sep 2026) ----
+   The Online block is a light card with a gold border (27 Sep 2026: light theme at the owner's request). */
+.home-hero h1 em{font-style:italic;font-weight:600;color:var(--accent);display:block;}
+.edition{
+  display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(24px,4vw,56px); align-items:center;
+  border-radius:10px; padding:clamp(26px,4vw,52px); margin-top:28px; border:1px solid var(--rule);
+}
+@media (max-width:900px){ .edition{grid-template-columns:1fr;} }
+.edition h3{font-size:clamp(1.5rem,2.6vw,2.1rem); line-height:1.15; margin-bottom:.5em; max-width:22ch;}
+.edition p{max-width:56ch;}
+.edition-tag{
+  display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:16px;
+}
+.edition-tag span{opacity:.7; font-weight:500;}
+.edition-points{list-style:none; margin:18px 0 24px; padding:0; display:flex; flex-direction:column; gap:10px;}
+.edition-points li{position:relative; padding-left:28px; font-size:.95rem; line-height:1.5;}
+.edition-points li::before{content:''; position:absolute; left:0; top:.45em; width:14px; height:8px; border-left:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(-45deg); opacity:.85;}
+.edition-ctas{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;}
+.edition-foot{font-size:.82rem; opacity:.75; margin:0;}
+.edition-shot{margin:0; border-radius:8px; overflow:hidden; box-shadow:var(--shadow); border:1px solid rgba(0,0,0,.12);}
+.edition-shot img{display:block; width:100%; height:auto;}
+.edition-online{background:color-mix(in srgb, var(--accent) 7%, var(--card)); border:2px solid var(--accent);}
+.edition-online .edition-tag{color:var(--accent);}
+.edition-online .edition-points li::before{color:var(--accent);}
+.edition-offline{background:var(--card);}
+.edition-offline .edition-tag{color:var(--green);}
+.edition-offline .edition-points li::before{color:var(--green);}
+@media (max-width:900px){ .home-hero .hero-visual{display:none;} }
+/* Long legal documents: slightly smaller text, numbered clauses, a contents list */
+.legal.legal-doc{font-size:.94rem; line-height:1.62;}
+.legal.legal-doc h2{font-size:1.12rem; margin-top:2.2em; scroll-margin-top:90px;}
+.legal.legal-doc h3{font-size:.98rem; margin:1.3em 0 .4em;}
+.legal.legal-doc p, .legal.legal-doc li{max-width:78ch;}
+.legal-toc{columns:2; column-gap:40px; font-size:.88rem; padding:18px 22px; border:1px solid var(--rule); border-radius:8px; background:var(--card); margin:0 0 28px; list-style:decimal inside;}
+.legal-toc li{break-inside:avoid; margin:2px 0;}
+@media (max-width:700px){ .legal-toc{columns:1;} }
+.legal-summary{border-left:3px solid var(--accent); padding:12px 18px; background:var(--card); margin:0 0 24px; font-size:.92rem;}
+
+/* ---- My Account (account.html) ---- */
+.acct-card{background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:24px 26px; margin-bottom:20px;}
+.acct-card h2{font-size:1.4rem; margin-bottom:6px;} .acct-card h3{font-size:1.05rem; margin-bottom:12px;}
+.acct-signin{max-width:440px;}
+.acct-label{display:block; font-size:.85rem; font-weight:600; margin:14px 0 6px;}
+.acct-row{display:flex; gap:8px; align-items:center;}
+.acct-prefix{font-weight:700;}
+.acct-signin input{width:100%; font:inherit; padding:10px 12px; border:1px solid var(--rule-strong); border-radius:6px; background:var(--paper); color:var(--ink);}
+.acct-code{letter-spacing:6px; font-size:1.2rem !important; text-align:center;}
+.acct-wide{width:100%; justify-content:center; margin-top:12px;}
+.acct-or{display:flex; align-items:center; gap:10px; margin:18px 0; color:var(--ink-soft); font-size:.8rem;}
+.acct-or::before,.acct-or::after{content:''; flex:1; height:1px; background:var(--rule);}
+.acct-google{min-height:44px; display:flex; justify-content:center;}
+.acct-msg{min-height:1.4em; font-size:.88rem; color:#B23A2E; margin:12px 0 4px;} .acct-msg.ok{color:var(--green);}
+.acct-head{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18px; flex-wrap:wrap;}
+.acct-head h2{margin:2px 0;}
+.acct-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;} @media (max-width:820px){ .acct-grid{grid-template-columns:1fr;} }
+.acct-grid .acct-card{margin-bottom:0;} .acct-grid{margin-bottom:20px;}
+.acct-kv{display:grid; grid-template-columns:150px 1fr; gap:8px 14px; margin:0 0 18px;} .acct-kv dt{color:var(--ink-soft); font-size:.88rem;} .acct-kv dd{margin:0;}
+.acct-badge{display:inline-block; padding:1px 10px; border-radius:12px; font-size:.8rem; font-weight:600;}
+.acct-badge.ok{background:var(--green-bg); color:var(--green);} .acct-badge.bad{background:#F6E1DD; color:#9C2F22;}
+.acct-actions{display:flex; gap:10px; flex-wrap:wrap;}
+.acct-list{margin:0; padding-left:18px;} .acct-terms p{margin:0 0 8px; font-size:.92rem;} .acct-terms a{color:var(--accent);}
+.acct-pay td.num, .acct-pay th.num{text-align:right; white-space:nowrap;} .acct-pay td.mono{font-family:'IBM Plex Mono',monospace; font-size:.85rem;}
+.btn-small{padding:5px 12px; font-size:.82rem;}
+
+/* ---- Page transitions (27 Sep 2026) ----
+   Chrome / Edge: a smooth cross-fade from one page to the next (View Transitions); the menu bar stays put.
+   Other browsers: a gentle fade-in of the page content. Nothing moves for visitors who ask for less motion. */
+@view-transition { navigation: auto; }
+.site-header{view-transition-name:site-header;}
+::view-transition-old(root){animation:jb-fade-out .22s ease both;}
+::view-transition-new(root){animation:jb-fade-in .32s ease both;}
+@keyframes jb-fade-out{to{opacity:0; transform:translateY(-6px);}}
+@keyframes jb-fade-in{from{opacity:0; transform:translateY(8px);}}
+@supports not (view-transition-name: none){ main{animation:jb-fade-in .4s ease both;} }
+@media (prefers-reduced-motion: reduce){
+  @view-transition { navigation: none; }
+  main{animation:none !important;}
+  ::view-transition-old(root), ::view-transition-new(root){animation:none !important;}
+}
+
+/* ---- Newsletter box (footer) ---- */
+.news-form{margin-top:18px; max-width:380px;}
+.news-label{display:block; font-size:.85rem; margin-bottom:8px; color:inherit; opacity:.9;}
+.news-row{display:flex; gap:8px;}
+.news-row input{flex:1; min-width:0; font:inherit; font-size:.9rem; padding:9px 11px; border:1px solid var(--rule-strong); border-radius:6px; background:var(--paper); color:var(--ink);}
+.news-row .btn{padding:9px 16px; white-space:nowrap;}
+.news-trap{position:absolute; left:-9999px; width:1px; height:1px; opacity:0;}
+.news-note{font-size:.78rem; opacity:.8; margin:8px 0 0; min-height:1.2em;}
+.news-note a{color:inherit; text-decoration:underline;}

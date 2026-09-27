@@ -20,7 +20,7 @@
       add(tr, 'td', e.latest, 'mono');
       add(tr, 'td', e.released);
       var how = add(tr, 'td');
-      if (k === 'trial') how.textContent = 'Free download (below)'; else how.textContent = 'We send it to you';
+      how.textContent = 'We send it to you';   // Offline is provided personally (26 Sep 2026: no public download)
     });
     // ---- what's new ----
     var hist = el('verHistory');
@@ -48,15 +48,12 @@
     box.className = 'ver-result new';
     head.textContent = 'A newer version is available: ' + info.latest;
     text.textContent = 'You have Jurisbooks ' + v + ' — ' + info.name + ' edition. The latest for your edition is ' + info.latest + ' (released ' + info.released + '). Your data stays exactly as it is when you install it over your current version — see the steps below.';
-    if (ed === 'trial') {
-      var d = add(actions, 'a', 'Go to the Trial download', 'btn btn-primary'); d.href = '#trial-download';
-      add(actions, 'span', 'The Trial edition is a free download.', 'small-note');
-    } else {
+    {
       var a = add(actions, 'a', 'Ask us for the new version on WhatsApp', 'btn btn-primary');
       a.href = 'https://wa.me/919220499490?text=' + encodeURIComponent('Hello Jurisbooks! I use the ' + info.name + ' edition, version ' + v + '. Please send me the latest version (' + info.latest + '). My business name is: ');
       a.target = '_blank'; a.rel = 'noopener';
       var b = add(actions, 'a', 'Or send an enquiry', 'btn btn-outline'); b.href = 'contact.html#enquiry';
-      add(actions, 'span', 'Paid editions are sent to you personally. Please have your business name ready.', 'small-note');
+      add(actions, 'span', 'Jurisbooks Offline is sent to you personally. Please have your business name ready.', 'small-note');
     }
   });
 })();

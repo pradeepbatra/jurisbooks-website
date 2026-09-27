@@ -19,7 +19,7 @@
    ========================================================================== */
 window.JURISBOOKS_FORM = {
   accessKey: 'f02fa23f-a37e-4a5f-b95d-36ad00e78ce4',   // Web3Forms public access key (safe to publish; it only sends to the owner's inbox)
-  fallbackEmail: 'jurisbooks1977@gmail.com',  // only shown in the "could not be sent" message
+  fallbackEmail: 'support@jurisbooks.com',  // only shown in the "could not be sent" message
   ticketUrl: /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
     ? 'http://127.0.0.1:5001/jurisbooks-online-2609/asia-south1/submitEnquiry'
     : 'https://asia-south1-jurisbooks-online-2609.cloudfunctions.net/submitEnquiry'
