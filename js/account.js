@@ -1,5 +1,5 @@
 /* My Account (account.html): Jurisbooks Online customers sign in with a one-time code or Google and see their
-   plan, companies, the Terms they accepted, and their payments with printable receipts.
+   plan, companies, and their payments with printable receipts.
    Only EXISTING Online accounts can sign in here; it never creates an account or starts a trial.
    Everything shown is written with textContent (never innerHTML), except the receipt window, which escapes it. */
 (function () {
@@ -101,15 +101,6 @@
     var co = $('acctCompanies'); co.textContent = '';
     if (!a.companies.length) co.appendChild(el('p', 'small-note', 'No companies yet. Create one in Jurisbooks Online.'));
     a.companies.forEach(function (c) { co.appendChild(el('li', null, c.name + (c.role === 'owner' ? '' : ' (shared with you)'))); });
-    // terms
-    var tm = $('acctTerms'); tm.textContent = '';
-    if (a.terms.accepted && a.terms.record) {
-      tm.appendChild(el('p', null, 'You accepted the Terms of Service (version ' + a.terms.record.version + ') on ' + fDate(a.terms.record.acceptedAt) + ' at ' + new Date(a.terms.record.acceptedAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) + '.'));
-    } else {
-      tm.appendChild(el('p', null, 'The current Terms of Service will be shown for your acceptance the next time you open Jurisbooks Online.'));
-    }
-    var pdf = el('a', null, 'Download the Terms of Service you agreed to (PDF)'); pdf.href = (a.terms.record && a.terms.record.pdf) || a.terms.pdf; pdf.target = '_blank'; pdf.rel = 'noopener';
-    tm.appendChild(pdf);
     // payments
     var tb = $('acctPayments'); tb.textContent = '';
     if (!a.payments.length) { var tr0 = el('tr'); var td0 = el('td', 'small-note', 'No payments recorded yet.'); td0.colSpan = 5; tr0.appendChild(td0); tb.appendChild(tr0); }
