@@ -35,6 +35,24 @@
   .plan-limits li{display:flex;gap:10px;align-items:flex-start;font-size:.95rem;color:var(--ink-soft);}
   .plan-limits svg{flex:none;width:18px;height:18px;margin-top:2px;color:#5AA9D6;}
   .plan-card .btn{margin-top:auto;}
+  /* 28 Sep 2026: years dropdown, offers, savings */
+  .plan-years{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--ink-soft);margin:8px 0 2px;}
+  .plan-years select{font:inherit;font-weight:600;color:var(--ink);background:var(--paper);border:1px solid var(--rule-strong);border-radius:6px;padding:6px 30px 6px 10px;cursor:pointer;}
+  .plan-price{flex-wrap:wrap;}
+  .plan-price .was{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);font-size:1.05rem;text-decoration-thickness:2px;width:100%;margin-bottom:-4px;}
+  .plan-save{display:inline-flex;align-self:flex-start;gap:6px;align-items:center;background:var(--green-bg);color:var(--green);border:1px solid var(--green);font-weight:600;font-size:.85rem;padding:3px 10px;border-radius:20px;margin:2px 0 6px;}
+  .plan-ribbon{position:absolute;top:-13px;right:18px;background:linear-gradient(135deg,#C8322E,#E0633B);color:#fff;font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;padding:4px 12px;border-radius:20px;box-shadow:0 6px 14px -6px rgba(200,50,46,.6);}
+  .plan-card.has-offer{border-color:#E0633B;}
+  .plan-save[hidden], .plan-ribbon[hidden], .offer-strip[hidden]{display:none;}
+  .offer-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:30px;}
+  .offer-card{position:relative;overflow:hidden;border-radius:10px;padding:20px 22px 18px;color:#fff;background:linear-gradient(135deg,#16213A 0%,#2A3B63 55%,#93701F 140%);box-shadow:var(--shadow);}
+  .offer-card::before{content:'';position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(207,163,78,.22);}
+  .offer-card .big{font-family:'IBM Plex Mono',monospace;font-size:2rem;font-weight:700;color:#F3C969;line-height:1;position:relative;}
+  .offer-card .ttl{font-family:'Source Serif 4',serif;font-size:1.2rem;margin:8px 0 4px;position:relative;}
+  .offer-card .txt{font-size:.9rem;color:#D3D8E6;margin:0;position:relative;}
+  .offer-card .tag{position:absolute;top:14px;right:14px;background:#C8322E;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+  .offer-card .ends{display:inline-block;margin-top:10px;font-size:.8rem;color:#F3C969;border-top:1px dashed rgba(243,201,105,.5);padding-top:6px;position:relative;}
+
   .includes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 28px;margin-top:28px;}
   @media(max-width:700px){.includes-grid{grid-template-columns:1fr;}}
   .includes-grid li{display:flex;gap:10px;align-items:flex-start;font-size:.98rem;color:var(--ink-soft);list-style:none;}
@@ -83,52 +101,63 @@
         <p>Full GST billing and double-entry accounting on every plan &mdash; what differs by plan is barcode generation and the Stock Performance report, plus how many companies you run and how many computers can work at once. Start with a free 7-day trial, no card needed.</p>
       </div>
 
+      <div class="offer-strip" id="offerStrip" hidden></div>
+
       <div class="plan-grid">
 
-        <div class="plan-card">
+        <div class="plan-card" data-plan="basic">
+          <div class="plan-ribbon" hidden></div>
           <div class="plan-name">Online Basic</div>
           <p class="plan-note">For an owner running one or two businesses.</p>
-          <div class="plan-price"><span class="amount">&#8377;10,000</span><span class="period">/ year</span></div>
-          <p class="plan-note">Paid yearly in advance &middot; renews at a very nominal price.</p>
+          <label class="plan-years">Buy for <select aria-label="Number of years"><option value="1">1 year</option><option value="2">2 years</option><option value="3">3 years</option><option value="4">4 years</option><option value="5">5 years</option></select></label>
+          <div class="plan-price"><s class="was" hidden></s><span class="amount">&#8377;10,000</span><span class="period">for 1 year</span></div>
+          <div class="plan-save" hidden></div>
+          <p class="plan-note plan-renew">Paid in advance &middot; renews at a very nominal price.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 companies</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting &amp; GST reports</li>
           </ul>
-          <a href="contact.html?interest=pricing&amp;plan=basic#enquiry" class="btn btn-outline">Buy Basic</a>
+          <a href="contact.html?interest=pricing&amp;plan=basic#enquiry" class="btn btn-outline" data-buy>Buy Basic</a>
         </div>
 
-        <div class="plan-card is-featured">
+        <div class="plan-card is-featured" data-plan="premium">
           <span class="plan-badge">Most popular</span>
+          <div class="plan-ribbon" hidden></div>
           <div class="plan-name">Online Premium</div>
           <p class="plan-note">For businesses that want barcodes and sharper stock insight.</p>
-          <div class="plan-price"><span class="amount">&#8377;15,000</span><span class="period">/ year</span></div>
-          <p class="plan-note">Paid yearly in advance &middot; renews at a very nominal price.</p>
+          <label class="plan-years">Buy for <select aria-label="Number of years"><option value="1">1 year</option><option value="2">2 years</option><option value="3">3 years</option><option value="4">4 years</option><option value="5">5 years</option></select></label>
+          <div class="plan-price"><s class="was" hidden></s><span class="amount">&#8377;15,000</span><span class="period">for 1 year</span></div>
+          <div class="plan-save" hidden></div>
+          <p class="plan-note plan-renew">Paid in advance &middot; renews at a very nominal price.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>5 companies</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting, GST reports &amp; barcode generation</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Stock Performance report (by party &amp; price range)</li>
           </ul>
-          <a href="contact.html?interest=pricing&amp;plan=premium#enquiry" class="btn btn-primary">Buy Premium</a>
+          <a href="contact.html?interest=pricing&amp;plan=premium#enquiry" class="btn btn-primary" data-buy>Buy Premium</a>
         </div>
 
-        <div class="plan-card">
+        <div class="plan-card" data-plan="business">
+          <div class="plan-ribbon" hidden></div>
           <div class="plan-name">Online Business Premium</div>
           <p class="plan-note">For teams working on more than one computer.</p>
-          <div class="plan-price"><span class="amount">&#8377;20,000</span><span class="period">/ year</span></div>
-          <p class="plan-note">Paid yearly in advance &middot; renews at a very nominal price.</p>
+          <label class="plan-years">Buy for <select aria-label="Number of years"><option value="1">1 year</option><option value="2">2 years</option><option value="3">3 years</option><option value="4">4 years</option><option value="5">5 years</option></select></label>
+          <div class="plan-price"><s class="was" hidden></s><span class="amount">&#8377;20,000</span><span class="period">for 1 year</span></div>
+          <div class="plan-save" hidden></div>
+          <p class="plan-note plan-renew">Paid in advance &middot; renews at a very nominal price.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>10 companies (buy more as you grow, price on request)</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 computers included (buy more seats, price on request)</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting, GST reports &amp; barcode generation</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Staff logins with permissions &amp; an activity list</li>
           </ul>
-          <a href="contact.html?interest=pricing&amp;plan=business#enquiry" class="btn btn-outline">Buy Business Premium</a>
+          <a href="contact.html?interest=pricing&amp;plan=business#enquiry" class="btn btn-outline" data-buy>Buy Business Premium</a>
         </div>
 
       </div>
-      <p class="small-note" style="margin-top:14px;">Prices shown are introductory. <a href="contact.html?interest=pricing#enquiry" style="color:var(--accent);">Contact us</a> to purchase today and we will activate your plan promptly while online payment is being introduced.</p>
+      <p class="small-note" id="buyNote" style="margin-top:14px;">Prices are for a new plan. Already a customer? Renew or upgrade from <a href="account.html" style="color:var(--accent);">My Account</a> &mdash; an early renewal is added after your current end date, and an upgrade counts the value of the time left on your plan. <span id="buyNoteContact"><a href="contact.html?interest=pricing#enquiry" style="color:var(--accent);">Contact us</a> to purchase today and we will activate your plan promptly while online payment is being introduced.</span></p>
     </div>
   </section>
 
@@ -272,5 +301,7 @@
 <script src="js/newsletter.js"></script>
 <script src="js/agree.js"></script>
 <script src="js/whatsapp-float.js"></script>
+<script src="js/shop-common.js"></script>
+<script src="js/pricing-page.js"></script>
 </body>
 </html>

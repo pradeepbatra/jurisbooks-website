@@ -95,6 +95,12 @@
     var renew = el('a', 'btn btn-primary', a.plan.plan === 'trial' ? 'Choose a plan' : 'Renew or upgrade');
     renew.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent('Hello Jurisbooks, I would like to ' + (a.plan.plan === 'trial' ? 'choose a plan' : 'renew my ' + a.plan.label + ' plan') + '. My account: ' + (a.account.phone || a.account.email));
     renew.target = '_blank'; renew.rel = 'noopener';
+    // Once online payment is switched on, Renew / upgrade goes straight to checkout (already signed in: no code needed).
+    call('getPricing').then(function (pr) {
+      if (!pr || !pr.payments || pr.payments.provider === 'none') return;
+      renew.href = 'checkout.html?plan=' + (/^(basic|premium|business)$/.test(a.plan.plan) ? a.plan.plan : 'premium') + '&years=1';
+      renew.removeAttribute('target'); renew.removeAttribute('rel');
+    }).catch(function () {});
     var more = el('a', 'btn btn-outline', 'See plans & pricing'); more.href = 'pricing.html';
     var row = el('div', 'acct-actions'); row.appendChild(renew); row.appendChild(more); pl.appendChild(row);
     // companies

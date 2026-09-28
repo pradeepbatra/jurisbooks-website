@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Jurisbooks</title>
+<meta name="description" content="Buy, renew or upgrade Jurisbooks Online and pay securely online.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jurisbooks">
+<meta property="og:title" content="Checkout — Jurisbooks">
+<meta property="og:description" content="Buy, renew or upgrade Jurisbooks Online.">
+<meta property="og:image" content="https://jurisbooks.com/images/og-image.png">
+<meta property="og:url" content="https://jurisbooks.com/checkout.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Checkout — Jurisbooks">
+<meta name="twitter:description" content="Buy, renew or upgrade Jurisbooks Online.">
+<meta name="twitter:image" content="https://jurisbooks.com/images/og-image.png">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="index.html" class="brand">
+      <svg viewBox="0 0 200 200"><path fill="#CDA24B" opacity=".95" d="M18 58 L94 40 L94 158 L18 148 Z"/><path fill="#CDA24B" opacity=".95" d="M182 58 L106 40 L106 158 L182 148 Z"/><rect fill="#CDA24B" x="98" y="36" width="4" height="126"/><text x="55" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">J</text><text x="145" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">B</text><rect fill="#10162A" x="38" y="118" width="34" height="4"/><rect fill="#10162A" x="38" y="132" width="26" height="4"/><rect fill="#10162A" x="128" y="118" width="34" height="4"/><rect fill="#10162A" x="128" y="132" width="26" height="4"/></svg>
+      Juris<span class="brand-accent">books</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="online.html">Online</a></li>
+      <li><a href="offline.html">Offline</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="account.html">My Account</a></li>
+      <li class="nav-demo-li"><a href="contact.html#enquiry">Request a Demo</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="contact.html#enquiry" class="btn btn-outline">Request a Demo</a>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="section" style="padding-bottom:0;">
+    <div class="container">
+      <div class="eyebrow">Jurisbooks Online &middot; Checkout</div>
+      <h1 id="coTitle" style="max-width:26ch;">Buy, renew or upgrade your plan.</h1>
+      <p class="lede" style="max-width:62ch;">Pay securely online. Your plan is switched on the moment the payment is confirmed &mdash; on the same mobile number you sign in to Jurisbooks Online with.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container co-layout">
+
+      <div class="co-steps" id="coSteps">
+
+        <!-- 1. plan and years -->
+        <div class="acct-card co-step" id="coStepPlan">
+          <h2><span class="co-num">1</span> Choose your plan</h2>
+          <div class="co-plans" id="coPlans" role="radiogroup" aria-label="Plan"></div>
+          <label class="acct-label" for="coYears">For how long?</label>
+          <select id="coYears" class="co-select"></select>
+        </div>
+
+        <!-- 2. who -->
+        <div class="acct-card co-step" id="coStepWho">
+          <h2><span class="co-num">2</span> Your mobile number</h2>
+          <div id="coWhoKnown" hidden>
+            <p class="co-who" id="coWhoText"></p>
+            <p class="small-note"><a href="#" id="coWhoChange">Pay for a different number</a></p>
+          </div>
+          <div id="coWhoForm">
+            <p class="small-note">Your plan is linked to this number. Use the number you sign in to Jurisbooks Online with &mdash; or will sign in with, if you are new.</p>
+            <label class="acct-label" for="coName">Your name</label>
+            <input id="coName" type="text" maxlength="100" autocomplete="name" placeholder="Full name">
+            <label class="acct-label" for="coPhone">Mobile number</label>
+            <div class="acct-row"><span class="acct-prefix">+91</span><input id="coPhone" type="tel" inputmode="numeric" maxlength="14" placeholder="98765 43210" autocomplete="tel"></div>
+            <button id="coSend" type="button" class="btn btn-primary acct-wide">Send code</button>
+            <div id="coCodeBox" hidden>
+              <label class="acct-label" for="coCode">Enter the 6-digit code sent to <b id="coCodeFor"></b></label>
+              <input id="coCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code" class="acct-code">
+              <button id="coVerify" type="button" class="btn btn-primary acct-wide">Verify</button>
+            </div>
+          </div>
+          <p id="coWhoMsg" class="acct-msg" role="status" aria-live="polite"></p>
+        </div>
+
+        <!-- 3. pay -->
+        <div class="acct-card co-step" id="coStepPay">
+          <h2><span class="co-num">3</span> Review and pay</h2>
+          <div id="coPayLocked" class="small-note">Verify your mobile number first.</div>
+          <div id="coPayBox" hidden>
+            <p id="coWhat" class="co-what"></p>
+            <label class="co-agree"><input type="checkbox" id="coAgree"> <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a> and the <a href="refund.html" target="_blank" rel="noopener">Refund &amp; Cancellation Policy</a>. I understand that a plan is not refundable once it is switched on.</span></label>
+            <button id="coPay" type="button" class="btn btn-primary acct-wide co-paybtn" disabled>Pay</button>
+            <p class="co-secure">&#128274; You pay on the payment company&rsquo;s secure page (UPI, cards, net banking). Jurisbooks never sees your card or bank details.</p>
+          </div>
+          <p id="coPayMsg" class="acct-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <!-- order summary -->
+      <aside class="acct-card co-summary" id="coSummary" aria-live="polite">
+        <h3>Order summary</h3>
+        <div id="coSumPlan" class="co-sum-plan"></div>
+        <table class="co-lines"><tbody id="coLines"></tbody></table>
+        <div class="co-total"><span>Total</span><b id="coTotal">&mdash;</b></div>
+        <p id="coSumNote" class="small-note"></p>
+      </aside>
+
+      <!-- after paying -->
+      <div class="acct-card co-result" id="coResult" hidden>
+        <div id="coResultBody"></div>
+        <form id="coDetails" hidden novalidate>
+          <h3>A few details for your account</h3>
+          <p class="small-note">These appear on your receipts and help us look after your account.</p>
+          <div class="co-grid">
+            <div><label class="acct-label" for="dName">Your name</label><input id="dName" maxlength="120" autocomplete="name"></div>
+            <div><label class="acct-label" for="dBusiness">Business name *</label><input id="dBusiness" maxlength="160" autocomplete="organization" required></div>
+            <div><label class="acct-label" for="dEmail">Email (for receipts)</label><input id="dEmail" type="email" maxlength="200" autocomplete="email"></div>
+            <div><label class="acct-label" for="dCity">City</label><input id="dCity" maxlength="80" autocomplete="address-level2"></div>
+            <div><label class="acct-label" for="dState">State</label><input id="dState" maxlength="80" autocomplete="address-level1"></div>
+            <div><label class="acct-label" for="dGstin">GSTIN (if any)</label><input id="dGstin" maxlength="15" style="text-transform:uppercase"></div>
+          </div>
+          <button type="submit" class="btn btn-primary acct-wide" id="dSave">Save and continue</button>
+          <p id="dMsg" class="acct-msg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- the pretend payment page (local test server only) -->
+  <div class="co-fake" id="coFake" hidden>
+    <div class="co-fake-box">
+      <b>Test payment</b>
+      <p>This is the local test server. No real money moves.</p>
+      <p class="co-fake-amt" id="coFakeAmt"></p>
+      <button type="button" class="btn btn-primary" id="coFakePay">Pay (test)</button>
+      <button type="button" class="btn btn-outline" id="coFakeFail">Payment fails (test)</button>
+    </div>
+  </div>
+
+</main>
+
+
+
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg viewBox="0 0 200 200"><path fill="#CDA24B" opacity=".95" d="M18 58 L94 40 L94 158 L18 148 Z"/><path fill="#CDA24B" opacity=".95" d="M182 58 L106 40 L106 158 L182 148 Z"/><rect fill="#CDA24B" x="98" y="36" width="4" height="126"/><text x="55" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">J</text><text x="145" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">B</text><rect fill="#10162A" x="38" y="118" width="34" height="4"/><rect fill="#10162A" x="38" y="132" width="26" height="4"/><rect fill="#10162A" x="128" y="118" width="34" height="4"/><rect fill="#10162A" x="128" y="132" width="26" height="4"/></svg>
+          Juris<span class="brand-accent">books</span>
+        </a>
+        <p>GST billing and complete double-entry accounting for Indian businesses &mdash; in the cloud or on your own computer. Effortless to use, exact to the last paisa.</p>
+        <form id="newsForm" class="news-form" novalidate>
+          <label for="newsEmail" class="news-label">News, tips and new features &mdash; occasionally, never spam.</label>
+          <div class="news-row"><input id="newsEmail" type="email" placeholder="Your email address" autocomplete="email" required><button type="submit" class="btn btn-primary">Subscribe</button></div>
+          <input class="news-trap" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p id="newsNote" class="news-note" role="status" aria-live="polite">You can unsubscribe at any time from any email. See our <a href="privacy.html">Privacy Notice</a>.</p>
+        </form>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="online.html">Jurisbooks Online</a></li>
+          <li><a href="offline.html">Jurisbooks Offline</a></li>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="download.html">Download &amp; updates</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Jurisbooks</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="privacy.html">Privacy Notice</a></li>
+          <li><a href="refund.html">Refund &amp; Cancellation</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Jurisbooks. All rights reserved.</span>
+      <span>Run your business, by the book.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/downloads.js"></script>
+<script src="js/main.js"></script>
+<script src="js/newsletter.js"></script>
+<script src="js/agree.js"></script>
+<script src="js/whatsapp-float.js"></script>
+<script src="js/shop-common.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>
