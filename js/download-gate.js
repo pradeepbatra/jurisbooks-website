@@ -15,7 +15,7 @@
   var RECORD_URL = 'https://asia-south1-jurisbooks-online-2609.cloudfunctions.net/recordDownload';
   var REMEMBER_KEY = 'jb_download_signed_in';
   var REMEMBER_MS = 30 * 24 * 60 * 60 * 1000;
-  var NAMES = { 'offline-windows': 'Jurisbooks (Offline) for Windows', 'online-windows': 'Jurisbooks Online for Windows' };
+  var NAMES = { 'offline-windows': 'Jurisbooks (Offline) for Windows', 'online-windows': 'Jurisbooks for Windows' };
 
   function remembered() {
     try {

@@ -10,11 +10,11 @@
    working download link the next time the page loads.
 
      'offline-windows'  ->  the Jurisbooks (offline) installer for Windows
-     'online-windows'   ->  the Jurisbooks Online installer for Windows
+     'online-windows'   ->  the Jurisbooks installer for Windows
    ========================================================================== */
 window.JURISBOOKS_DOWNLOADS = {
   'offline-windows': '',   // 26 Sep 2026: Offline is a showcase only (no public download) - "Call us" instead
-  'online-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/online-updates/Jurisbooks-Online-Setup-0.4.11.exe'
+  'online-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/online-updates/Jurisbooks-Setup-0.4.12.exe'
 };
 
 document.addEventListener('DOMContentLoaded', function () {

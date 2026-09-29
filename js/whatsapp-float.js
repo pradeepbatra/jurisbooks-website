@@ -7,7 +7,7 @@
   ready(function () {
     if (document.getElementById('waFloat')) return;
     var p = location.pathname.toLowerCase();
-    var topic = /offline/.test(p) ? 'Jurisbooks Offline' : /online/.test(p) ? 'Jurisbooks Online' : 'Jurisbooks';
+    var topic = /offline/.test(p) ? 'Jurisbooks Offline' : /online/.test(p) ? 'Jurisbooks' : 'Jurisbooks';
     var a = document.createElement('a');
     a.id = 'waFloat'; a.className = 'wa-float';
     a.href = 'https://wa.me/' + NUMBER + '?text=' + encodeURIComponent('Hello Jurisbooks! I would like to know more about ' + topic + '.');

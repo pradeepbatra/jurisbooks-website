@@ -1,4 +1,4 @@
-/* My Account (account.html): Jurisbooks Online customers sign in with a one-time code or Google and see their
+/* My Account (account.html): Jurisbooks customers sign in with a one-time code or Google and see their
    plan, companies, and their payments with printable receipts.
    Only EXISTING Online accounts can sign in here; it never creates an account or starts a trial.
    Everything shown is written with textContent (never innerHTML), except the receipt window, which escapes it. */
@@ -105,7 +105,7 @@
     var row = el('div', 'acct-actions'); row.appendChild(renew); row.appendChild(more); pl.appendChild(row);
     // companies
     var co = $('acctCompanies'); co.textContent = '';
-    if (!a.companies.length) co.appendChild(el('p', 'small-note', 'No companies yet. Create one in Jurisbooks Online.'));
+    if (!a.companies.length) co.appendChild(el('p', 'small-note', 'No companies yet. Create one in Jurisbooks.'));
     a.companies.forEach(function (c) { co.appendChild(el('li', null, c.name + (c.role === 'owner' ? '' : ' (shared with you)'))); });
     // payments
     var tb = $('acctPayments'); tb.textContent = '';

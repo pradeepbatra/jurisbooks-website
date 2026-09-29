@@ -225,9 +225,9 @@
   }
   function nextSteps(v, isNew) {
     return isNew
-      ? '<div class="co-next"><h3>Next: install Jurisbooks Online</h3><ol><li>Download and install Jurisbooks Online for Windows.</li><li>Open it and sign in with <b>' + v.phone + '</b> (a code is sent by SMS).</li><li>Choose a PIN and create your company &mdash; your paid plan is already on your account.</li></ol>' +
-        '<a class="btn btn-primary" href="download.html">Download Jurisbooks Online</a> <a class="btn btn-outline" href="account.html">My Account &amp; receipt</a></div>'
-      : '<div class="co-next"><p>Jurisbooks Online picks up the new plan by itself within a few minutes (or straight away when you next open it). Your receipt is on My Account.</p>' +
+      ? '<div class="co-next"><h3>Next: install Jurisbooks</h3><ol><li>Download and install Jurisbooks for Windows.</li><li>Open it and sign in with <b>' + v.phone + '</b> (a code is sent by SMS).</li><li>Choose a PIN and create your company &mdash; your paid plan is already on your account.</li></ol>' +
+        '<a class="btn btn-primary" href="download.html">Download Jurisbooks</a> <a class="btn btn-outline" href="account.html">My Account &amp; receipt</a></div>'
+      : '<div class="co-next"><p>Jurisbooks picks up the new plan by itself within a few minutes (or straight away when you next open it). Your receipt is on My Account.</p>' +
         '<a class="btn btn-primary" href="account.html">My Account &amp; receipt</a></div>';
   }
 

@@ -29,7 +29,7 @@ window.JURISBOOKS_FORM = {
   var LABELS = {
     demo: 'Request a demo',
     offline: 'Jurisbooks Offline',
-    online: 'Jurisbooks Online',
+    online: 'Jurisbooks',
     pricing: 'Pricing',
     other: 'Other question'
   };
@@ -83,7 +83,7 @@ window.JURISBOOKS_FORM = {
 
     // "Chat on WhatsApp": opens WhatsApp with what the visitor has typed so far already written out.
     var wa = document.getElementById('enquiryWhatsApp');
-    var TOPIC_TEXT = { demo: 'a demo of Jurisbooks', offline: 'Jurisbooks Offline', online: 'Jurisbooks Online', pricing: 'pricing', other: 'Jurisbooks' };
+    var TOPIC_TEXT = { demo: 'a demo of Jurisbooks', offline: 'Jurisbooks Offline', online: 'Jurisbooks', pricing: 'pricing', other: 'Jurisbooks' };
     function buildWhatsApp() {
       if (!wa) return;
       var f = form.elements, name = f['name'].value.trim(), biz = f['business'].value.trim(), msg = f['message'].value.trim();
