@@ -10,9 +10,9 @@
   var DEFAULT = {
     years: [1, 2, 3, 4, 5],
     plans: [
-      { plan: 'basic', label: 'Online Basic', price: 10000, renewal: 2000 },
-      { plan: 'premium', label: 'Online Premium', price: 15000, renewal: 4000 },
-      { plan: 'business', label: 'Online Business Premium', price: 20000, renewal: 6000 }
+      { plan: 'basic', label: 'Basic', price: 10000, renewal: 2000 },
+      { plan: 'premium', label: 'Premium', price: 15000, renewal: 4000 },
+      { plan: 'business', label: 'Business Premium', price: 20000, renewal: 6000 }
     ],
     offers: [],
     payments: { provider: 'none' }
