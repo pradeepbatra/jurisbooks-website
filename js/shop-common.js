@@ -15,6 +15,7 @@
       { plan: 'business', label: 'Business Premium', price: 20000, renewal: 6000 }
     ],
     offers: [],
+    seatPrice: 5000,
     payments: { provider: 'none' }
   };
 

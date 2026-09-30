@@ -83,6 +83,7 @@
       <li class="nav-demo-li"><a href="contact.html?interest=online#enquiry">Request a Demo</a></li>
     </ul>
     <div class="nav-cta">
+      <a href="checkout.html" class="btn btn-primary nav-buy">Buy</a>
       <a href="contact.html?interest=online#enquiry" class="btn btn-outline">Request a Demo</a>
       <button class="nav-toggle" aria-label="Toggle menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -115,7 +116,7 @@
           <p class="plan-note plan-renew">Paid in advance &middot; renews at a very nominal price.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 companies</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time <span class="plan-addon">(add seats: &#8377;5,000/yr each)</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting &amp; GST reports</li>
           </ul>
           <a href="contact.html?interest=pricing&amp;plan=basic#enquiry" class="btn btn-outline" data-buy>Buy Basic</a>
@@ -132,7 +133,7 @@
           <p class="plan-note plan-renew">Paid in advance &middot; renews at a very nominal price.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>5 companies</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time <span class="plan-addon">(add seats: &#8377;5,000/yr each)</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting, GST reports &amp; barcode generation</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Stock Performance report (by party &amp; price range)</li>
           </ul>
@@ -149,13 +150,29 @@
           <p class="plan-note plan-renew">Paid in advance &middot; renews at a very nominal price.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>10 companies (buy more as you grow, price on request)</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 computers included (buy more seats, price on request)</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 computers included <span class="plan-addon">(add seats: &#8377;5,000/yr each)</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting, GST reports &amp; barcode generation</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Staff logins with permissions &amp; an activity list</li>
           </ul>
           <a href="contact.html?interest=pricing&amp;plan=business#enquiry" class="btn btn-outline" data-buy>Buy Business Premium</a>
         </div>
 
+      </div>
+      <div class="seat-card" id="seats">
+        <div>
+          <div class="eyebrow">Extra seats</div>
+          <h3>More people working at the same time</h3>
+          <p>Each extra seat lets one more computer (you or your staff) work in Jurisbooks at the same time &mdash; on any paid plan. With an extra seat, Basic and Premium can add staff logins too.</p>
+          <p class="small-note">Seats run for the years you buy, from the day you buy them. You need a running paid plan; add seats from here or from My Account.</p>
+        </div>
+        <div>
+          <div class="seat-pick">
+            <select id="seatCount" aria-label="Number of seats"><option value="1">1 seat</option><option value="2">2 seats</option><option value="3">3 seats</option><option value="4">4 seats</option><option value="5">5 seats</option><option value="10">10 seats</option></select>
+            <select id="seatYears" aria-label="Number of years"><option value="1">1 year</option><option value="2">2 years</option><option value="3">3 years</option><option value="4">4 years</option><option value="5">5 years</option></select>
+          </div>
+          <div class="seat-price"><span id="seatTotal">&#8377;5,000</span> <small id="seatEach">&#8377;5,000 per seat per year</small></div>
+          <a href="contact.html?interest=seats#enquiry" class="btn btn-primary" id="seatBuy" style="margin-top:12px;">Buy extra seats</a>
+        </div>
       </div>
       <p class="small-note" id="buyNote" style="margin-top:14px;">Prices are for a new plan. Already a customer? Renew or upgrade from <a href="account.html" style="color:var(--accent);">My Account</a> &mdash; an early renewal is added after your current end date, and an upgrade counts the value of the time left on your plan. <span id="buyNoteContact"><a href="contact.html?interest=pricing#enquiry" style="color:var(--accent);">Contact us</a> to purchase today and we will activate your plan promptly while online payment is being introduced.</span></p>
     </div>
@@ -193,11 +210,12 @@
           <tbody>
             <tr><th scope="row">Price</th><td>&#8377;10,000 / year</td><td>&#8377;15,000 / year</td><td>&#8377;20,000 / year</td></tr>
             <tr><th scope="row">Companies</th><td>2</td><td>5</td><td>10 (buy more)</td></tr>
-            <tr><th scope="row">Computers at once</th><td>1</td><td>1</td><td>2 (buy more seats)</td></tr>
+            <tr><th scope="row">Computers at once</th><td>1 (+ extra seats)</td><td>1 (+ extra seats)</td><td>2 (+ extra seats)</td></tr>
+            <tr><th scope="row">Extra seat (one more computer at once)</th><td>&#8377;5,000 / year</td><td>&#8377;5,000 / year</td><td>&#8377;5,000 / year</td></tr>
             <tr><th scope="row">Full accounting &amp; GST reports</th><td>Yes</td><td>Yes</td><td>Yes</td></tr>
             <tr><th scope="row">Barcode generation</th><td>&mdash;</td><td>Yes</td><td>Yes</td></tr>
             <tr><th scope="row">Stock Performance report</th><td>&mdash;</td><td>Yes</td><td>Yes</td></tr>
-            <tr><th scope="row">Staff logins (mobile number or Google email), with permissions &amp; activity list</th><td>&mdash;</td><td>&mdash;</td><td>Yes</td></tr>
+            <tr><th scope="row">Staff logins (mobile number or Google email), with permissions &amp; activity list</th><td>With an extra seat</td><td>With an extra seat</td><td>Yes</td></tr>
             <tr><th scope="row">Free trial</th><td>7 days</td><td>&mdash;</td><td>&mdash;</td></tr>
           </tbody>
         </table>

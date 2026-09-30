@@ -11,8 +11,11 @@
   function msg(id, text, ok) { var el = $(id); if (!el) return; el.textContent = text || ''; el.classList.toggle('ok', !!ok); }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
-  var state = { pricing: S.DEFAULT, plan: qs.get('plan') || 'premium', years: Math.min(5, Math.max(1, Number(qs.get('years')) || 1)), pass: '', account: null, quote: null, busy: false };
-  if (!/^(basic|premium|business)$/.test(state.plan)) state.plan = 'premium';
+  var state = { pricing: S.DEFAULT, plan: qs.get('plan') || 'premium', years: Math.min(5, Math.max(1, Number(qs.get('years')) || 1)), seats: Math.min(20, Math.max(1, Number(qs.get('seats')) || 1)), pass: '', account: null, quote: null, busy: false };
+  if (!/^(basic|premium|business|seats)$/.test(state.plan)) state.plan = 'premium';
+  var isSeats = function () { return state.plan === 'seats'; };
+  var seatPrice = function () { return state.pricing.seatPrice || 5000; };
+  function whatLabel() { return isSeats() ? state.seats + ' extra seat' + (state.seats > 1 ? 's' : '') : ((S.planOf(state.pricing, state.plan) || {}).label || ''); }
 
   // ---------- step 1: plan + years ----------
   function renderPlans() {
@@ -28,6 +31,20 @@
       b.addEventListener('click', function () { state.plan = p.plan; renderPlans(); refresh(); });
       box.appendChild(b);
     });
+    var sb = el('button', 'co-plan' + (isSeats() ? ' is-on' : ''));
+    sb.type = 'button'; sb.setAttribute('role', 'radio'); sb.setAttribute('aria-checked', isSeats() ? 'true' : 'false');
+    sb.appendChild(el('span', 'co-plan-name', 'Extra seats'));
+    sb.appendChild(el('span', 'co-plan-price', S.rs(seatPrice()) + ' per seat'));
+    sb.appendChild(el('span', 'co-plan-renew', 'per year · for a paid plan'));
+    sb.addEventListener('click', function () { state.plan = 'seats'; renderPlans(); refresh(); });
+    box.appendChild(sb);
+    $('coSeatsBox').hidden = !isSeats();
+    var sc = $('coSeats');
+    if (!sc.options.length) {
+      [1, 2, 3, 4, 5, 6, 8, 10, 15, 20].forEach(function (n) { var o = el('option', null, n + ' seat' + (n > 1 ? 's' : '')); o.value = n; sc.appendChild(o); });
+      sc.addEventListener('change', function () { state.seats = Number(sc.value); refresh(); });
+    }
+    sc.value = String(state.seats);
     var y = $('coYears');
     if (!y.options.length) {
       state.pricing.years.forEach(function (n) { var o = el('option', null, n + ' year' + (n > 1 ? 's' : '')); o.value = n; y.appendChild(o); });
@@ -39,16 +56,21 @@
   // ---------- summary ----------
   function renderSummary() {
     var lines = $('coLines'); lines.innerHTML = '';
-    var q = state.quote, label = (S.planOf(state.pricing, state.plan) || {}).label || '';
+    var q = state.quote, label = whatLabel();
     $('coSumPlan').textContent = label + ' · ' + state.years + ' year' + (state.years > 1 ? 's' : '');
     var rows, total, note = '';
     if (q && q.ok) {
       rows = q.lines.map(function (l) { return [l.text.replace(/Rs /g, '₹'), l.amount]; });
       total = q.total;
-      if (q.kind === 'renewal') note = q.currentEndsAt ? 'Added after your current end date (' + S.fDate(q.currentEndsAt) + '). New end date: ' + S.fDate(q.expiresAt) + '.' : 'Your plan runs until ' + S.fDate(q.expiresAt) + '.';
+      if (q.kind === 'seats') note = 'The seats work from the day you pay until ' + S.fDate(q.expiresAt) + (q.beyondPlan && q.planEndsAt ? ' — while your plan runs (it ends ' + S.fDate(q.planEndsAt) + '; renew it to keep using the seats after that).' : '.');
+      else if (q.kind === 'renewal') note = q.currentEndsAt ? 'Added after your current end date (' + S.fDate(q.currentEndsAt) + '). New end date: ' + S.fDate(q.expiresAt) + '.' : 'Your plan runs until ' + S.fDate(q.expiresAt) + '.';
       else if (q.kind === 'upgrade') note = 'Your plan changes to ' + q.label + ' today and runs until ' + S.fDate(q.expiresAt) + '.' +
         (q.endsEarlier ? ' ⚠ That is before your current plan would have ended (' + S.fDate(q.currentEndsAt) + ').' : '');
       else note = 'Your plan runs from the day you pay until ' + S.fDate(q.expiresAt) + '.';
+    } else if (isSeats()) {
+      rows = [[state.seats + ' seat' + (state.seats > 1 ? 's' : '') + ' × ' + state.years + ' year' + (state.years > 1 ? 's' : '') + ' × ' + S.rs(seatPrice()), state.seats * state.years * seatPrice()]];
+      total = state.seats * state.years * seatPrice();
+      note = q && !q.ok ? q.reason : 'Extra seats are for a paid plan you already have. Your account is checked after step 2.';
     } else {
       var lp = S.listPrice(state.pricing, state.plan, state.years);
       var p = S.planOf(state.pricing, state.plan);
@@ -122,7 +144,7 @@
     renderSummary(); updatePay();
     if (!state.pass) return Promise.resolve();
     var my = ++seq;
-    return S.call('buyQuote', { pass: state.pass, plan: state.plan, years: state.years }).then(function (r) {
+    return S.call('buyQuote', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined }).then(function (r) {
       if (my !== seq) return;
       state.quote = r.quote; state.account = r.account; showWho(); renderSummary(); updatePay();
     }).catch(function (e) {
@@ -133,11 +155,12 @@
   function updatePay() {
     var q = state.quote, btn = $('coPay');
     var live = state.pricing.payments && state.pricing.payments.provider !== 'none';
-    var ok = !!(state.pass && q && q.ok && q.plan === state.plan && q.years === state.years && live);
+    var match = q && q.ok && (isSeats() ? q.kind === 'seats' && q.seats === state.seats : q.plan === state.plan && q.kind !== 'seats');
+    var ok = !!(state.pass && match && q.years === state.years && live);
     btn.disabled = !ok || !$('coAgree').checked || state.busy;
     btn.textContent = q && q.ok ? 'Pay ' + S.rs(q.total) : 'Pay';
     var what = $('coWhat');
-    if (q && q.ok) what.textContent = { 'new': 'New plan: ', renewal: 'Renewal: ', upgrade: 'Upgrade: ' }[q.kind] + q.label + ' for ' + q.years + ' year' + (q.years > 1 ? 's' : '') + ', valid until ' + S.fDate(q.expiresAt) + '.';
+    if (q && q.ok) what.textContent = { 'new': 'New plan: ', renewal: 'Renewal: ', upgrade: 'Upgrade: ', seats: 'Extra seats: ' }[q.kind] + q.label + ' for ' + q.years + ' year' + (q.years > 1 ? 's' : '') + ', valid until ' + S.fDate(q.expiresAt) + '.';
     else what.textContent = q ? q.reason : '';
     var OFF = 'Online payment is being switched on. Meanwhile, please contact us to buy — we activate plans the same day.';
     if (!live && state.pricingLoaded) msg('coPayMsg', OFF);
@@ -147,7 +170,7 @@
   $('coPay').addEventListener('click', function () {
     if (state.busy) return;
     state.busy = true; updatePay(); msg('coPayMsg', 'Opening the payment page…', true);
-    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-09-27' })
+    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-09-27' })
       .then(function (r) { ss(K_ORDER, r.orderId); return openCheckout(r); })
       .catch(function (e) { state.busy = false; updatePay(); msg('coPayMsg', e.message); });
   });
@@ -195,7 +218,7 @@
           return setTimeout(poll, 3000);
         }
         if (v.status === 'pending') return show('<div class="co-state wait"><h2>Still waiting for the payment company</h2><p>If money was taken, your plan switches on by itself as soon as they confirm it. You can close this page. Order <b>' + orderId + '</b>.</p></div>');
-        if (v.status === 'failed') return show('<div class="co-state bad"><h2>The payment did not go through</h2><p>No plan was changed. If money was deducted, it is returned by your bank automatically, usually within a few days.</p><a class="btn btn-primary" href="checkout.html?plan=' + (v.plan || '') + '&years=' + (v.years || 1) + '">Try again</a></div>');
+        if (v.status === 'failed') return show('<div class="co-state bad"><h2>The payment did not go through</h2><p>No plan was changed. If money was deducted, it is returned by your bank automatically, usually within a few days.</p><a class="btn btn-primary" href="checkout.html?plan=' + (v.kind === 'seats' ? 'seats&seats=' + (v.seats || 1) : (v.plan || '')) + '&years=' + (v.years || 1) + '">Try again</a></div>');
         if (v.status === 'problem') return show('<div class="co-state bad"><h2>We received your payment and are checking it</h2><p>Something about this payment needs a quick look from our side. We will call you shortly &mdash; or reach us on +91 92204 99490. Order <b>' + orderId + '</b>.</p></div>');
         ss(K_ORDER, null);
         paid(v, orderId);
@@ -206,7 +229,7 @@
   function paid(v, orderId) {
     var until = v.expiresAt ? S.fDate(v.expiresAt) : '';
     var head = '<div class="co-state good"><div class="co-tick" aria-hidden="true">✓</div><h2>Payment received — thank you!</h2>' +
-      '<p><b>' + (v.label || 'Your plan') + '</b> is active' + (until ? ' until <b>' + until + '</b>' : '') + ' on ' + v.phone + '.</p></div>';
+      '<p><b>' + (v.label || 'Your plan') + '</b> ' + (v.kind === 'seats' && v.seats > 1 ? 'are' : 'is') + ' active' + (until ? ' until <b>' + until + '</b>' : '') + ' on ' + v.phone + '.</p></div>';
     var body = $('coResultBody');
     if (v.needsDetails) {
       body.innerHTML = head;
@@ -221,7 +244,9 @@
       });
       return;
     }
-    body.innerHTML = head + nextSteps(v, v.newAccount);
+    body.innerHTML = head + (v.kind === 'seats'
+      ? '<div class="co-next"><p>Jurisbooks picks up the extra seats by itself within a few minutes: that many more computers (you or your staff) can now work at the same time. Your receipt is on My Account.</p><a class="btn btn-primary" href="account.html">My Account &amp; receipt</a></div>'
+      : nextSteps(v, v.newAccount));
   }
   function nextSteps(v, isNew) {
     return isNew

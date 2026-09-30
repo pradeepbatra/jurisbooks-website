@@ -61,8 +61,22 @@
     }
   }
 
+  // Extra seats: seats x years x the seat price (the cloud works out the real amount at checkout).
+  function renderSeats(pr) {
+    var cnt = document.getElementById('seatCount'), yrs = document.getElementById('seatYears'), buy = document.getElementById('seatBuy');
+    if (!cnt || !yrs || !buy) return;
+    var each = pr.seatPrice || 5000, n = Number(cnt.value) || 1, y = Number(yrs.value) || 1;
+    document.getElementById('seatTotal').textContent = S.rs(n * y * each);
+    document.getElementById('seatEach').textContent = S.rs(each) + ' per seat per year';
+    [].slice.call(document.querySelectorAll('.plan-addon')).forEach(function (a) { a.textContent = '(add seats: ' + S.rs(each) + '/yr each)'; });
+    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
+    else { buy.href = 'contact.html?interest=seats#enquiry'; buy.textContent = 'Buy extra seats'; }
+  }
+  ['seatCount', 'seatYears'].forEach(function (id) { var e = document.getElementById(id); if (e) e.addEventListener('change', function () { renderSeats(current); }); });
+
   function renderAll(pr) {
     renderOffers(pr);
+    renderSeats(pr);
     cards.forEach(function (c) { renderCard(pr, c); });
     var contact = document.getElementById('buyNoteContact');
     if (contact) contact.hidden = !!(pr.payments && pr.payments.provider !== 'none');

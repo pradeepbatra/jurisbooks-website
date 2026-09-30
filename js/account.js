@@ -90,7 +90,8 @@
     kv(dl, 'Plan', a.plan.label); kv(dl, 'Status', status);
     kv(dl, a.plan.active ? 'Valid until' : 'Ended on', a.plan.until >= 9e15 ? 'No end date' : fDate(a.plan.until) + (a.plan.active && a.plan.daysLeft != null ? '  (' + a.plan.daysLeft + ' day' + (a.plan.daysLeft === 1 ? '' : 's') + ' left)' : ''));
     kv(dl, 'Companies', (a.companies.filter(function (c) { return c.role === 'owner'; }).length) + ' of ' + a.plan.maxCompanies);
-    kv(dl, 'Computers at a time', String(a.plan.maxSeats));
+    kv(dl, 'Computers at a time', String(a.plan.maxSeats) + (a.plan.extraSeats ? '  (' + (a.plan.baseSeats || 1) + ' in the plan + ' + a.plan.extraSeats + ' extra)' : ''));
+    (a.plan.seatGrants || []).forEach(function (g) { kv(dl, 'Extra seats', g.n + ' until ' + fDate(g.until) + (g.source === 'free' ? ' (given free)' : '')); });
     pl.appendChild(dl);
     var renew = el('a', 'btn btn-primary', a.plan.plan === 'trial' ? 'Choose a plan' : 'Renew or upgrade');
     renew.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent('Hello Jurisbooks, I would like to ' + (a.plan.plan === 'trial' ? 'choose a plan' : 'renew my ' + a.plan.label + ' plan') + '. My account: ' + (a.account.phone || a.account.email));
@@ -102,7 +103,9 @@
       renew.removeAttribute('target'); renew.removeAttribute('rel');
     }).catch(function () {});
     var more = el('a', 'btn btn-outline', 'See plans & pricing'); more.href = 'pricing.html';
-    var row = el('div', 'acct-actions'); row.appendChild(renew); row.appendChild(more); pl.appendChild(row);
+    var row = el('div', 'acct-actions'); row.appendChild(renew);
+    if (a.plan.plan !== 'trial' && a.plan.active) { var seats = el('a', 'btn btn-outline', 'Add seats'); seats.href = 'checkout.html?plan=seats&seats=1&years=1'; row.appendChild(seats); }
+    row.appendChild(more); pl.appendChild(row);
     // companies
     var co = $('acctCompanies'); co.textContent = '';
     if (!a.companies.length) co.appendChild(el('p', 'small-note', 'No companies yet. Create one in Jurisbooks.'));
