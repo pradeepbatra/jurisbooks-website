@@ -92,7 +92,7 @@
     kv(dl, 'Companies', (a.companies.filter(function (c) { return c.role === 'owner'; }).length) + ' of ' + a.plan.maxCompanies);
     kv(dl, 'Computers at a time', String(a.plan.maxSeats) + (a.plan.extraSeats ? '  (' + (a.plan.baseSeats || 1) + ' in the plan + ' + a.plan.extraSeats + ' extra)' : ''));
     (a.plan.seatGrants || []).forEach(function (g) { kv(dl, 'Extra seats', g.n + ' until ' + fDate(g.until) + (g.source === 'free' ? ' (given free)' : '')); });
-    if (a.plan.messages) kv(dl, 'Customer messages', (a.plan.messages.active ? 'WhatsApp / SMS, until ' : 'Ended on ') + fDate(a.plan.messages.until));
+    if (a.plan.messages) kv(dl, 'Customer messages', (a.plan.messages.active ? 'SMS, until ' : 'Ended on ') + fDate(a.plan.messages.until));
     pl.appendChild(dl);
     var renew = el('a', 'btn btn-primary', a.plan.plan === 'trial' ? 'Choose a plan' : 'Renew or upgrade');
     renew.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent('Hello Jurisbooks, I would like to ' + (a.plan.plan === 'trial' ? 'choose a plan' : 'renew my ' + a.plan.label + ' plan') + '. My account: ' + (a.account.phone || a.account.email));

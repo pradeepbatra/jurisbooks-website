@@ -14,7 +14,7 @@
    ========================================================================== */
 window.JURISBOOKS_DOWNLOADS = {
   'offline-windows': '',   // 26 Sep 2026: Offline is a showcase only (no public download) - "Call us" instead
-  'online-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/online-updates/Jurisbooks-Setup-0.4.18.exe'
+  'online-windows': 'https://github.com/pradeepbatra/jurisbooks-website/releases/download/online-updates/Jurisbooks-Setup-0.4.20.exe'
 };
 
 document.addEventListener('DOMContentLoaded', function () {

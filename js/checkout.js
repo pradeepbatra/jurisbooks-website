@@ -14,7 +14,7 @@
   var state = { pricing: S.DEFAULT, plan: qs.get('plan') || 'premium', years: Math.min(5, Math.max(1, Number(qs.get('years')) || 1)), seats: Math.min(20, Math.max(1, Number(qs.get('seats')) || 1)), pass: '', account: null, quote: null, busy: false };
   if (!/^(basic|premium|business|seats|messages)$/.test(state.plan)) state.plan = 'premium';
   var isSeats = function () { return state.plan === 'seats'; };
-  // Customer messages: invoices and receipts to the customer's own customers on WhatsApp / SMS (an add-on).
+  // Customer messages: invoices and receipts to the customer's own customers by SMS (an add-on).
   var isMsg = function () { return state.plan === 'messages'; };
   var msgPrice = function () { return state.pricing.msgPrice || 500; };
   var seatPrice = function () { return state.pricing.seatPrice || 5000; };
@@ -45,7 +45,7 @@
     mb.type = 'button'; mb.setAttribute('role', 'radio'); mb.setAttribute('aria-checked', isMsg() ? 'true' : 'false');
     mb.appendChild(el('span', 'co-plan-name', 'Customer messages'));
     mb.appendChild(el('span', 'co-plan-price', S.rs(msgPrice()) + ' per year'));
-    mb.appendChild(el('span', 'co-plan-renew', 'WhatsApp / SMS · for a paid plan'));
+    mb.appendChild(el('span', 'co-plan-renew', 'SMS · for a paid plan'));
     mb.addEventListener('click', function () { state.plan = 'messages'; renderPlans(); refresh(); });
     box.appendChild(mb);
     $('coMsgBox').hidden = !isMsg();
@@ -261,7 +261,7 @@
       return;
     }
     body.innerHTML = head + (v.kind === 'messages'
-      ? '<div class="co-next"><p><b>To start:</b> open Jurisbooks, go to <b>Settings</b>, find <b>Customer messages</b>, tick <b>Send automatically when I save</b> and press Save. From then on your customers get each invoice and payment receipt on WhatsApp or SMS, with the PDF. Your receipt is on My Account.</p><a class="btn btn-primary" href="account.html">My Account &amp; receipt</a></div>'
+      ? '<div class="co-next"><p><b>To start:</b> open Jurisbooks, go to <b>Settings</b>, find <b>Customer messages</b>, tick <b>Send automatically when I save</b> and press Save. From then on your customers get an SMS for each invoice and payment receipt, with a link to the PDF. Your receipt is on My Account.</p><a class="btn btn-primary" href="account.html">My Account &amp; receipt</a></div>'
       : v.kind === 'seats'
       ? '<div class="co-next"><p>Jurisbooks picks up the extra seats by itself within a few minutes: that many more computers (you or your staff) can now work at the same time. Your receipt is on My Account.</p><a class="btn btn-primary" href="account.html">My Account &amp; receipt</a></div>'
       : nextSteps(v, v.newAccount));
