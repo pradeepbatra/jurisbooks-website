@@ -12,10 +12,13 @@
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
   var state = { pricing: S.DEFAULT, plan: qs.get('plan') || 'premium', years: Math.min(5, Math.max(1, Number(qs.get('years')) || 1)), seats: Math.min(20, Math.max(1, Number(qs.get('seats')) || 1)), pass: '', account: null, quote: null, busy: false };
-  if (!/^(basic|premium|business|seats)$/.test(state.plan)) state.plan = 'premium';
+  if (!/^(basic|premium|business|seats|messages)$/.test(state.plan)) state.plan = 'premium';
   var isSeats = function () { return state.plan === 'seats'; };
+  // Customer messages: invoices and receipts to the customer's own customers on WhatsApp / SMS (an add-on).
+  var isMsg = function () { return state.plan === 'messages'; };
+  var msgPrice = function () { return state.pricing.msgPrice || 500; };
   var seatPrice = function () { return state.pricing.seatPrice || 5000; };
-  function whatLabel() { return isSeats() ? state.seats + ' extra seat' + (state.seats > 1 ? 's' : '') : ((S.planOf(state.pricing, state.plan) || {}).label || ''); }
+  function whatLabel() { return isMsg() ? 'Customer messages' : isSeats() ? state.seats + ' extra seat' + (state.seats > 1 ? 's' : '') : ((S.planOf(state.pricing, state.plan) || {}).label || ''); }
 
   // ---------- step 1: plan + years ----------
   function renderPlans() {
@@ -38,6 +41,14 @@
     sb.appendChild(el('span', 'co-plan-renew', 'per year · for a paid plan'));
     sb.addEventListener('click', function () { state.plan = 'seats'; renderPlans(); refresh(); });
     box.appendChild(sb);
+    var mb = el('button', 'co-plan' + (isMsg() ? ' is-on' : ''));
+    mb.type = 'button'; mb.setAttribute('role', 'radio'); mb.setAttribute('aria-checked', isMsg() ? 'true' : 'false');
+    mb.appendChild(el('span', 'co-plan-name', 'Customer messages'));
+    mb.appendChild(el('span', 'co-plan-price', S.rs(msgPrice()) + ' per year'));
+    mb.appendChild(el('span', 'co-plan-renew', 'WhatsApp / SMS · for a paid plan'));
+    mb.addEventListener('click', function () { state.plan = 'messages'; renderPlans(); refresh(); });
+    box.appendChild(mb);
+    $('coMsgBox').hidden = !isMsg();
     $('coSeatsBox').hidden = !isSeats();
     var sc = $('coSeats');
     if (!sc.options.length) {
@@ -62,11 +73,16 @@
     if (q && q.ok) {
       rows = q.lines.map(function (l) { return [l.text.replace(/Rs /g, '₹'), l.amount]; });
       total = q.total;
-      if (q.kind === 'seats') note = 'The seats work from the day you pay until ' + S.fDate(q.expiresAt) + (q.beyondPlan && q.planEndsAt ? ' — while your plan runs (it ends ' + S.fDate(q.planEndsAt) + '; renew it to keep using the seats after that).' : '.');
+      if (q.kind === 'messages') note = (q.renewal ? 'Added after your current end date. Customer messages then run until ' : 'Customer messages work from the day you pay until ') + S.fDate(q.expiresAt) + ', up to ' + (q.yearLimit || 2000).toLocaleString('en-IN') + ' messages a year' + (q.beyondPlan && q.planEndsAt ? ' — while your plan runs (it ends ' + S.fDate(q.planEndsAt) + ').' : '.');
+      else if (q.kind === 'seats') note = 'The seats work from the day you pay until ' + S.fDate(q.expiresAt) + (q.beyondPlan && q.planEndsAt ? ' — while your plan runs (it ends ' + S.fDate(q.planEndsAt) + '; renew it to keep using the seats after that).' : '.');
       else if (q.kind === 'renewal') note = q.currentEndsAt ? 'Added after your current end date (' + S.fDate(q.currentEndsAt) + '). New end date: ' + S.fDate(q.expiresAt) + '.' : 'Your plan runs until ' + S.fDate(q.expiresAt) + '.';
       else if (q.kind === 'upgrade') note = 'Your plan changes to ' + q.label + ' today and runs until ' + S.fDate(q.expiresAt) + '.' +
         (q.endsEarlier ? ' ⚠ That is before your current plan would have ended (' + S.fDate(q.currentEndsAt) + ').' : '');
       else note = 'Your plan runs from the day you pay until ' + S.fDate(q.expiresAt) + '.';
+    } else if (isMsg()) {
+      rows = [['Customer messages: ' + state.years + ' year' + (state.years > 1 ? 's' : '') + ' × ' + S.rs(msgPrice()), state.years * msgPrice()]];
+      total = state.years * msgPrice();
+      note = q && !q.ok ? q.reason : 'Customer messages are for a paid plan you already have. Your account is checked after step 2.';
     } else if (isSeats()) {
       rows = [[state.seats + ' seat' + (state.seats > 1 ? 's' : '') + ' × ' + state.years + ' year' + (state.years > 1 ? 's' : '') + ' × ' + S.rs(seatPrice()), state.seats * state.years * seatPrice()]];
       total = state.seats * state.years * seatPrice();
@@ -155,12 +171,12 @@
   function updatePay() {
     var q = state.quote, btn = $('coPay');
     var live = state.pricing.payments && state.pricing.payments.provider !== 'none';
-    var match = q && q.ok && (isSeats() ? q.kind === 'seats' && q.seats === state.seats : q.plan === state.plan && q.kind !== 'seats');
+    var match = q && q.ok && (isMsg() ? q.kind === 'messages' : isSeats() ? q.kind === 'seats' && q.seats === state.seats : q.plan === state.plan && q.kind !== 'seats' && q.kind !== 'messages');
     var ok = !!(state.pass && match && q.years === state.years && live);
     btn.disabled = !ok || !$('coAgree').checked || state.busy;
     btn.textContent = q && q.ok ? 'Pay ' + S.rs(q.total) : 'Pay';
     var what = $('coWhat');
-    if (q && q.ok) what.textContent = { 'new': 'New plan: ', renewal: 'Renewal: ', upgrade: 'Upgrade: ', seats: 'Extra seats: ' }[q.kind] + q.label + ' for ' + q.years + ' year' + (q.years > 1 ? 's' : '') + ', valid until ' + S.fDate(q.expiresAt) + '.';
+    if (q && q.ok) what.textContent = { 'new': 'New plan: ', renewal: 'Renewal: ', upgrade: 'Upgrade: ', seats: 'Extra seats: ', messages: 'Add-on: ' }[q.kind] + q.label + ' for ' + q.years + ' year' + (q.years > 1 ? 's' : '') + ', valid until ' + S.fDate(q.expiresAt) + '.';
     else what.textContent = q ? q.reason : '';
     var OFF = 'Online payment is being switched on. Meanwhile, please contact us to buy — we activate plans the same day.';
     if (!live && state.pricingLoaded) msg('coPayMsg', OFF);
@@ -244,7 +260,9 @@
       });
       return;
     }
-    body.innerHTML = head + (v.kind === 'seats'
+    body.innerHTML = head + (v.kind === 'messages'
+      ? '<div class="co-next"><p><b>To start:</b> open Jurisbooks, go to <b>Settings</b>, find <b>Customer messages</b>, tick <b>Send automatically when I save</b> and press Save. From then on your customers get each invoice and payment receipt on WhatsApp or SMS, with the PDF. Your receipt is on My Account.</p><a class="btn btn-primary" href="account.html">My Account &amp; receipt</a></div>'
+      : v.kind === 'seats'
       ? '<div class="co-next"><p>Jurisbooks picks up the extra seats by itself within a few minutes: that many more computers (you or your staff) can now work at the same time. Your receipt is on My Account.</p><a class="btn btn-primary" href="account.html">My Account &amp; receipt</a></div>'
       : nextSteps(v, v.newAccount));
   }

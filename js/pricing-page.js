@@ -72,11 +72,24 @@
     if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
     else { buy.href = 'contact.html?interest=seats#enquiry'; buy.textContent = 'Buy extra seats'; }
   }
+  // Customer messages add-on: years x the yearly price.
+  function renderMsg(pr) {
+    var yrs = document.getElementById('msgYears'), buy = document.getElementById('msgBuy');
+    if (!yrs || !buy) return;
+    var each = pr.msgPrice || 500, y = Number(yrs.value) || 1;
+    document.getElementById('msgTotal').textContent = S.rs(y * each);
+    document.getElementById('msgEach').textContent = S.rs(each) + ' per year';
+    document.getElementById('msgLimit').textContent = (pr.msgYearLimit || 2000).toLocaleString('en-IN');
+    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=messages&years=' + y; buy.textContent = 'Add customer messages · ' + S.rs(y * each); }
+    else { buy.href = 'contact.html?interest=messages#enquiry'; buy.textContent = 'Add customer messages'; }
+  }
+  var my = document.getElementById('msgYears'); if (my) my.addEventListener('change', function () { renderMsg(current); });
   ['seatCount', 'seatYears'].forEach(function (id) { var e = document.getElementById(id); if (e) e.addEventListener('change', function () { renderSeats(current); }); });
 
   function renderAll(pr) {
     renderOffers(pr);
     renderSeats(pr);
+    renderMsg(pr);
     cards.forEach(function (c) { renderCard(pr, c); });
     var contact = document.getElementById('buyNoteContact');
     if (contact) contact.hidden = !!(pr.payments && pr.payments.provider !== 'none');

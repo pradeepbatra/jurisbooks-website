@@ -145,8 +145,11 @@ p{margin:0 0 1em;}
 .nav-links a:hover, .nav-links a.active{color:var(--ink);}
 .nav-cta{display:flex; align-items:center; gap:20px;}
 .nav-cta .nav-buy{padding-left:22px; padding-right:22px;}
+.nav-cta{gap:12px;} .nav-cta .nav-dl{background:var(--accent); color:var(--paper); border-color:var(--accent); padding-left:18px; padding-right:18px;} .nav-cta .nav-dl:hover{box-shadow:var(--shadow);}
 @media (max-width:1120px) and (min-width:821px){ .nav-cta .btn-outline{display:none;} .nav-links{gap:20px;} }
-@media (max-width:820px){ .nav-cta{gap:10px;} .nav-cta .nav-buy{padding:8px 16px;} }
+@media (max-width:820px){ .nav-cta{gap:8px;} .nav-cta .nav-buy{padding:8px 14px;} .nav-cta .nav-dl{padding:8px 12px;} }
+@media (max-width:480px){ .nav-cta .nav-buy, .nav-cta .nav-dl{padding:7px 9px; font-size:.82rem;} .nav-cta{gap:6px; margin-left:8px;} .site-header .brand{font-size:1.18rem; gap:6px;} .site-header .brand svg{width:28px;height:28px;} }
+@media (max-width:360px){ .nav-cta .nav-buy, .nav-cta .nav-dl{padding:6px 7px; font-size:.76rem;} .nav-cta{gap:5px; margin-left:6px;} .site-header .brand{font-size:1.02rem; gap:5px;} .site-header .brand svg{width:24px;height:24px;} .nav-toggle{padding:4px;} }
 .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:6px;}
 .nav-toggle svg{width:26px;height:26px;color:var(--ink);}
 
@@ -729,7 +732,10 @@ body.agree-open{overflow:hidden;}
 @media (max-width:620px){ .co-plans{grid-template-columns:1fr;} }
 .seat-card{display:grid; grid-template-columns:1.3fr 1fr; gap:28px; align-items:center; background:var(--card); border:1px solid var(--rule); border-radius:8px; padding:26px; margin-top:22px;}
 .seat-card h3{margin:0 0 6px;} .seat-card p{margin:0 0 6px;} .seat-pick{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0 12px;}
-.seat-pick select{font:inherit; padding:8px 10px; border:1px solid var(--rule-strong); border-radius:6px; background:var(--paper);}
+.seat-pick select{font:inherit; padding:8px 10px; border:1px solid var(--rule-strong); border-radius:6px; background:var(--paper); color:var(--ink);}
+/* the open list of a dropdown: same paper and ink as the page, in light and in dark (it was dark text on a dark list) */
+select option{background:var(--paper); color:var(--ink);}
+.plan-years select{font:inherit; color:var(--ink); background:var(--paper); border:1px solid var(--rule-strong); border-radius:6px; padding:4px 8px;}
 .seat-price{font-size:1.6rem; font-weight:700;} .seat-price small{font-size:.85rem; font-weight:500; color:var(--ink-soft);}
 @media (max-width:820px){ .seat-card{grid-template-columns:1fr;} }
 .co-plan{position:relative; display:flex; flex-direction:column; gap:3px; text-align:left; font:inherit; color:var(--ink); background:var(--paper); border:1.5px solid var(--rule-strong); border-radius:8px; padding:12px 14px; cursor:pointer;}
