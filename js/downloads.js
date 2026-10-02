@@ -30,6 +30,13 @@ document.addEventListener('DOMContentLoaded', function () {
     a.innerHTML = el.innerHTML.replace(/<span class="soon-badge">[\s\S]*?<\/span>/, '');
     el.parentNode.replaceChild(a, el);
   });
+  // The "Download" button in the top bar of every page: the installer itself, straight away.
+  document.querySelectorAll('[data-direct-download]').forEach(function (el) {
+    var url = cfg[el.getAttribute('data-direct-download')];
+    if (!url) return;                                   // no installer published: it stays a link to the Download page
+    el.href = url;
+    el.setAttribute('download', '');
+  });
   // Text that only makes sense while a download is not yet available.
   document.querySelectorAll('[data-soon-only]').forEach(function (el) {
     if (cfg[el.getAttribute('data-soon-only')]) el.hidden = true;
