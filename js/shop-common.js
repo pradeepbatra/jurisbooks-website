@@ -12,7 +12,8 @@
     plans: [
       { plan: 'basic', label: 'Basic', price: 10000, renewal: 2000 },
       { plan: 'premium', label: 'Premium', price: 15000, renewal: 4000 },
-      { plan: 'business', label: 'Business Premium', price: 20000, renewal: 6000 }
+      { plan: 'business', label: 'Business Premium', price: 20000, renewal: 6000 },
+      { plan: 'android', label: 'Android', price: 3000, renewal: 1500, phoneOnly: true }
     ],
     offers: [],
     seatPrice: 5000, msgPrice: 500, msgYearLimit: 2000,

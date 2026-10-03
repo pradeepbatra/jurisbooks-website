@@ -13,7 +13,7 @@
     strip.hidden = !offers.length;
     offers.forEach(function (o) {
       var c = document.createElement('div'); c.className = 'offer-card';
-      var plans = o.plans.length === 3 ? 'all plans' : o.plans.map(function (p) { return (S.planOf(pr, p) || {}).label || p; }).join(', ').replace(/Online /g, '');
+      var plans = o.plans.length >= 3 ? 'all plans' : o.plans.map(function (p) { return (S.planOf(pr, p) || {}).label || p; }).join(', ').replace(/Online /g, '');
       var kinds = o.appliesTo.map(function (k) { return { 'new': 'new plans', renewal: 'renewals', upgrade: 'upgrades' }[k]; }).join(' & ');
       c.innerHTML = (o.badge ? '<span class="tag"></span>' : '') + '<div class="big"></div><div class="ttl"></div><p class="txt"></p>' + (o.to ? '<span class="ends"></span>' : '');
       if (o.badge) c.querySelector('.tag').textContent = o.badge;
@@ -72,6 +72,18 @@
     if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
     else { buy.href = 'contact.html?interest=seats#enquiry'; buy.textContent = 'Buy extra seats'; }
   }
+  // The mobile only (Android) plan: first year + renewal years, with the best running offer.
+  function renderMobile(pr) {
+    var yrs = document.getElementById('mobileYears'), buy = document.getElementById('mobileBuy');
+    if (!yrs || !buy) return;
+    var y = Number(yrs.value) || 1, lp = S.listPrice(pr, 'android', y);
+    if (!lp) return;
+    document.getElementById('mobileTotal').textContent = S.rs(lp.total);
+    document.getElementById('mobileEach').textContent = (lp.discount ? (lp.offer.badge || S.offerHeadline(lp.offer)) + ' · ' : '') + 'then ' + S.rs(lp.renewal) + ' a year';
+    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=android&years=' + y; buy.textContent = 'Buy the mobile plan · ' + S.rs(lp.total); }
+    else { buy.href = 'contact.html?interest=pricing&plan=android#enquiry'; buy.textContent = 'Buy the mobile plan'; }
+  }
+  var mob = document.getElementById('mobileYears'); if (mob) mob.addEventListener('change', function () { renderMobile(current); });
   // Customer messages add-on: years x the yearly price.
   function renderMsg(pr) {
     var yrs = document.getElementById('msgYears'), buy = document.getElementById('msgBuy');
@@ -90,6 +102,7 @@
     renderOffers(pr);
     renderSeats(pr);
     renderMsg(pr);
+    renderMobile(pr);
     cards.forEach(function (c) { renderCard(pr, c); });
     var contact = document.getElementById('buyNoteContact');
     if (contact) contact.hidden = !!(pr.payments && pr.payments.provider !== 'none');

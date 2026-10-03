@@ -12,7 +12,7 @@
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
   var state = { pricing: S.DEFAULT, plan: qs.get('plan') || 'premium', years: Math.min(5, Math.max(1, Number(qs.get('years')) || 1)), seats: Math.min(20, Math.max(1, Number(qs.get('seats')) || 1)), pass: '', account: null, quote: null, busy: false };
-  if (!/^(basic|premium|business|seats|messages)$/.test(state.plan)) state.plan = 'premium';
+  if (!/^(basic|premium|business|android|seats|messages)$/.test(state.plan)) state.plan = 'premium';
   var isSeats = function () { return state.plan === 'seats'; };
   // Customer messages: invoices and receipts to the customer's own customers by SMS (an add-on).
   var isMsg = function () { return state.plan === 'messages'; };
@@ -29,7 +29,7 @@
       b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', p.plan === state.plan ? 'true' : 'false');
       b.appendChild(el('span', 'co-plan-name', p.label.replace('Online ', '')));
       b.appendChild(el('span', 'co-plan-price', S.rs(lp.total) + ' first year'));
-      b.appendChild(el('span', 'co-plan-renew', 'then ' + S.rs(p.renewal) + '/year'));
+      b.appendChild(el('span', 'co-plan-renew', 'then ' + S.rs(p.renewal) + '/year' + (p.phoneOnly ? ' · phone app only' : '')));
       if (lp.discount) b.appendChild(el('span', 'co-plan-offer', (lp.offer.badge || S.offerHeadline(lp.offer))));
       b.addEventListener('click', function () { state.plan = p.plan; renderPlans(); refresh(); });
       box.appendChild(b);
@@ -279,6 +279,13 @@
   if (orderId) { resultView(orderId); return; }
   renderPlans(); renderSummary(); showWho(); updatePay();
   S.getPricing().then(function (pr) { state.pricing = pr; state.pricingLoaded = true; renderPlans(); renderSummary(); updatePay(); });
+  // Opened from "Buy plan" inside the program or the phone app: the sign-in pass for that account comes after
+  // the '#' (a browser never sends that part to any server). It is taken once and removed from the address.
+  var hp = /[#&]pass=([A-Za-z0-9_.-]+)/.exec(location.hash || '');
+  if (hp) {
+    ss(K_PASS, hp[1]);
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { location.hash = ''; }
+  }
   var p = ss(K_PASS) || ss(K_ACCT);
   if (p) usePass(p);
 })();

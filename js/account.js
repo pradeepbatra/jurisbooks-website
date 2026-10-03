@@ -100,7 +100,7 @@
     // Once online payment is switched on, Renew / upgrade goes straight to checkout (already signed in: no code needed).
     call('getPricing').then(function (pr) {
       if (!pr || !pr.payments || pr.payments.provider === 'none') return;
-      renew.href = 'checkout.html?plan=' + (/^(basic|premium|business)$/.test(a.plan.plan) ? a.plan.plan : 'premium') + '&years=1';
+      renew.href = 'checkout.html?plan=' + (/^(basic|premium|business|android)$/.test(a.plan.plan) ? a.plan.plan : 'premium') + '&years=1';
       renew.removeAttribute('target'); renew.removeAttribute('rel');
     }).catch(function () {});
     var more = el('a', 'btn btn-outline', 'See plans & pricing'); more.href = 'pricing.html';
