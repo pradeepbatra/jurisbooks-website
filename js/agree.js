@@ -10,7 +10,7 @@
    change in a way people should agree to again - everyone will be asked once more.
    ========================================================================== */
 (function () {
-  var TERMS_VERSION = '2026-09-27'; window.JB_TERMS_VERSION = TERMS_VERSION;  // also sent with a download record   // 27 Sep: Terms of Service rewritten in full (plans, data, offline use, disputes, grievance)
+  var TERMS_VERSION = '2026-10-04'; window.JB_TERMS_VERSION = TERMS_VERSION;  // also sent with a download record   // 4 Oct: clause 4.1 - the cloud edition's free trial is 15 days (Offline 7). 27 Sep: rewritten in full.
   var KEY = 'jb_agreed';
 
   function agreed() { try { return (localStorage.getItem(KEY) || '').split('|')[0] === TERMS_VERSION; } catch (e) { return false; } }

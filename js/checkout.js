@@ -13,6 +13,7 @@
 
   var state = { pricing: S.DEFAULT, plan: qs.get('plan') || 'premium', years: Math.min(5, Math.max(1, Number(qs.get('years')) || 1)), seats: Math.min(20, Math.max(1, Number(qs.get('seats')) || 1)), pass: '', account: null, quote: null, busy: false };
   if (!/^(basic|premium|business|android|seats|messages)$/.test(state.plan)) state.plan = 'premium';
+  var cameForMobile = state.plan === 'android';
   var isSeats = function () { return state.plan === 'seats'; };
   // Customer messages: invoices and receipts to the customer's own customers by SMS (an add-on).
   var isMsg = function () { return state.plan === 'messages'; };
@@ -24,6 +25,9 @@
   function renderPlans() {
     var box = $('coPlans'); box.innerHTML = '';
     state.pricing.plans.forEach(function (p) {
+      // The mobile only plan is offered here only to someone who came for it (the app's own "Buy plan" button),
+      // until the app is on Google Play.
+      if (p.phoneOnly && !cameForMobile) return;
       var lp = S.listPrice(state.pricing, p.plan, 1);
       var b = el('button', 'co-plan' + (p.plan === state.plan ? ' is-on' : ''));
       b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', p.plan === state.plan ? 'true' : 'false');
@@ -186,7 +190,7 @@
   $('coPay').addEventListener('click', function () {
     if (state.busy) return;
     state.busy = true; updatePay(); msg('coPayMsg', 'Opening the payment page…', true);
-    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-09-27' })
+    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-10-04' })
       .then(function (r) { ss(K_ORDER, r.orderId); return openCheckout(r); })
       .catch(function (e) { state.busy = false; updatePay(); msg('coPayMsg', e.message); });
   });

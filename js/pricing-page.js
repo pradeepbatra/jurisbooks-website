@@ -80,6 +80,7 @@
     if (!lp) return;
     document.getElementById('mobileTotal').textContent = S.rs(lp.total);
     document.getElementById('mobileEach').textContent = (lp.discount ? (lp.offer.badge || S.offerHeadline(lp.offer)) + ' · ' : '') + 'then ' + S.rs(lp.renewal) + ' a year';
+    if (buy.getAttribute('data-soon')) return;      // the app is not on Google Play yet: the price shows, the button waits
     if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=android&years=' + y; buy.textContent = 'Buy the mobile plan · ' + S.rs(lp.total); }
     else { buy.href = 'contact.html?interest=pricing&plan=android#enquiry'; buy.textContent = 'Buy the mobile plan'; }
   }
