@@ -66,7 +66,7 @@ window.JURISBOOKS_FORM = {
     // ...and a specific plan from the pricing page: pricing.html links with &plan=team,
     // so the owner knows which plan the visitor wants without them typing it themselves.
     try {
-      var PLAN_LABELS = { basic: 'Basic', premium: 'Premium', business: 'Business Premium', android: 'Mobile only (Android)' };
+      var PLAN_LABELS = { basic: 'Basic', premium: 'Premium', business: 'Business Premium', android: 'Mobile Premium', androidbasic: 'Mobile Basic' };
       var planParam = new URLSearchParams(location.search).get('plan');
       var messageEl = form.elements['message'];
       if (planParam && PLAN_LABELS[planParam] && messageEl && !messageEl.value) {

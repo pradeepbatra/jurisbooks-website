@@ -72,19 +72,15 @@
     if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
     else { buy.href = 'contact.html?interest=seats#enquiry'; buy.textContent = 'Buy extra seats'; }
   }
-  // The mobile only (Android) plan: first year + renewal years, with the best running offer.
+  // The two mobile plans (Mobile Basic, Mobile Premium): the price of a year, with the best running offer.
   function renderMobile(pr) {
-    var yrs = document.getElementById('mobileYears'), buy = document.getElementById('mobileBuy');
-    if (!yrs || !buy) return;
-    var y = Number(yrs.value) || 1, lp = S.listPrice(pr, 'android', y);
-    if (!lp) return;
-    document.getElementById('mobileTotal').textContent = S.rs(lp.total);
-    document.getElementById('mobileEach').textContent = (lp.discount ? (lp.offer.badge || S.offerHeadline(lp.offer)) + ' · ' : '') + 'then ' + S.rs(lp.renewal) + ' a year';
-    if (buy.getAttribute('data-soon')) return;      // the app is not on Google Play yet: the price shows, the button waits
-    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=android&years=' + y; buy.textContent = 'Buy the mobile plan · ' + S.rs(lp.total); }
-    else { buy.href = 'contact.html?interest=pricing&plan=android#enquiry'; buy.textContent = 'Buy the mobile plan'; }
+    [['androidbasic', 'mobileBasicPrice', 'mobileBasicNote'], ['android', 'mobilePremiumPrice', 'mobilePremiumNote']].forEach(function (m) {
+      var price = document.getElementById(m[1]), note = document.getElementById(m[2]), lp = S.listPrice(pr, m[0], 1);
+      if (!price || !note || !lp) return;
+      price.textContent = S.rs(lp.total);
+      note.textContent = 'a year' + (lp.discount ? ' · ' + (lp.offer.badge || S.offerHeadline(lp.offer)) + ' (was ' + S.rs(lp.gross) + ')' : '') + (lp.renewal !== lp.price ? ' · then ' + S.rs(lp.renewal) + ' a year' : '');
+    });
   }
-  var mob = document.getElementById('mobileYears'); if (mob) mob.addEventListener('change', function () { renderMobile(current); });
   // Customer messages add-on: years x the yearly price.
   function renderMsg(pr) {
     var yrs = document.getElementById('msgYears'), buy = document.getElementById('msgBuy');
