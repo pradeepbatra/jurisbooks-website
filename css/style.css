@@ -604,6 +604,13 @@ body.agree-open{overflow:hidden;}
 @media (max-width:600px){ .agree-bar{flex-wrap:nowrap;justify-content:space-between;gap:12px;font-size:.84rem;} .agree-btn{flex:none;padding:9px 16px;} }
 
 /* "Request a Demo" inside the phone menu (the header button is hidden on small screens) */
+/* "Open App" (the program in a web browser): a button beside Buy + Download when there is room, otherwise a line in the menu */
+.nav-cta .nav-app{background:transparent; color:var(--accent); border:1.5px solid var(--accent); padding-left:16px; padding-right:16px; white-space:nowrap;}
+.nav-cta .nav-app:hover{background:var(--accent); color:var(--paper);}
+.nav-app-li{display:none;}
+/* 1001-1079px: no room for a third button beside the full menu - the link is on the home page and in Online/Download */
+@media (max-width:1079px){ .nav-cta .nav-app{display:none;} }
+@media (max-width:1000px){ .nav-app-li{display:block;} .nav-app-li a{font-weight:700;color:var(--accent);} }
 .nav-demo-li{display:none;}
 @media (max-width:1000px){ .nav-demo-li{display:block;} .nav-demo-li a{font-weight:700;color:var(--accent);} }
 
