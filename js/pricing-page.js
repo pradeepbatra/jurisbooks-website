@@ -70,6 +70,9 @@
     document.getElementById('seatTotal').textContent = S.rs(n * y * each);
     document.getElementById('seatEach').textContent = S.rs(each) + ' per seat per year';
     [].slice.call(document.querySelectorAll('.plan-addon')).forEach(function (a) { a.textContent = '(add seats: ' + S.rs(each) + '/yr each)'; });
+    // the comparison table further down the page: today's prices, not numbers typed into the page
+    [].slice.call(document.querySelectorAll('.cmp-seat')).forEach(function (td) { td.textContent = S.rs(each) + ' / year'; });
+    [].slice.call(document.querySelectorAll('[data-cmp-price]')).forEach(function (td) { var p = S.planOf(pr, td.getAttribute('data-cmp-price')); if (p) td.textContent = S.rs(p.price) + ' / year'; });
     if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
     else { buy.href = 'contact.html?interest=seats#enquiry'; buy.textContent = 'Buy extra seats'; }
   }
