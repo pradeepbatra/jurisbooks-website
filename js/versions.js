@@ -15,12 +15,20 @@
    ========================================================================== */
 window.JURISBOOKS_VERSIONS = {
   editions: {
-    trial:    { name: 'Trial',            latest: '1.5.1', released: '25 Sep 2026' },
-    basic:    { name: 'Basic',            latest: '1.5.1', released: '25 Sep 2026' },
-    premium:  { name: 'Premium',          latest: '1.5.1', released: '25 Sep 2026' },
-    business: { name: 'Business Premium', latest: '1.5.1', released: '25 Sep 2026' }
+    trial:    { name: 'Trial',            latest: '1.5.12', released: '7 Oct 2026' },
+    basic:    { name: 'Basic',            latest: '1.5.12', released: '7 Oct 2026' },
+    premium:  { name: 'Premium',          latest: '1.5.12', released: '7 Oct 2026' },
+    business: { name: 'Business Premium', latest: '1.5.12', released: '7 Oct 2026' }
   },
   history: [
+    { v: '1.5.12', date: '7 Oct 2026', items: [
+      'Salesman and Agent on every bill, and both print on the invoice. Agent replaces the old Broker Name box.',
+      'Salesmen & Agents page: keep your own list of salesmen and agents.',
+      'New report, Salesman / Agent: sales, returns and net sales for each person, with their bills.',
+      'The list of items while billing can always be seen: the page moves up to make room for it.',
+      'Description box on bill lines can be switched off in Business Settings.',
+      'Business Settings arranged in groups, with buttons to jump to each group.'
+    ] },
     { v: '1.5.1', date: '25 Sep 2026', items: [
       'Negative billing switch: choose whether a bill may use more stock than you have.',
       'Credit limit and credit days for each party, with a warning on the sale screen.',
