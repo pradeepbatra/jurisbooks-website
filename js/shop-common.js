@@ -1,7 +1,8 @@
 /* Shared by the Pricing page and the checkout: talking to the Jurisbooks cloud, prices and offers.
    The amount actually charged is always worked out by the cloud (lib/pricing.js); the numbers here are only
    for showing prices, and follow the same rules:
-     buying N years = first-year price + (N-1) x renewal price;  the best running offer applies. */
+     a yearly subscription - the same price every year (the cloud may still send a different price for later
+     years, 'renewal'; it is then used as sent);  the best running offer applies. */
 (function () {
   'use strict';
   var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
@@ -10,9 +11,9 @@
   var DEFAULT = {
     years: [1, 2, 3, 4, 5],
     plans: [
-      { plan: 'basic', label: 'Basic', price: 10000, renewal: 2000 },
-      { plan: 'premium', label: 'Premium', price: 15000, renewal: 4000 },
-      { plan: 'business', label: 'Business Premium', price: 20000, renewal: 6000 },
+      { plan: 'basic', label: 'Basic', price: 10000, renewal: 10000 },
+      { plan: 'premium', label: 'Premium', price: 15000, renewal: 15000 },
+      { plan: 'business', label: 'Business Premium', price: 20000, renewal: 20000 },
       { plan: 'android', label: 'Mobile Premium', price: 3999, renewal: 3999, phoneOnly: true },
       { plan: 'androidbasic', label: 'Mobile Basic', price: 1999, renewal: 1999, phoneOnly: true }
     ],

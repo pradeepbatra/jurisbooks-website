@@ -38,7 +38,8 @@
     var save = card.querySelector('.plan-save');
     save.hidden = !lp.discount;
     save.textContent = lp.discount ? 'You save ' + S.rs(lp.discount) + (lp.offer ? ' · ' + lp.offer.title : '') : '';
-    card.querySelector('.plan-renew').textContent = (years > 1 ? 'Works out to ' + S.rs(lp.perYear) + ' a year · ' : 'Paid in advance · ') + 'then renews at just ' + S.rs(lp.renewal) + ' a year.';
+    // a yearly subscription: the same price every year (a different later-years price, if one is ever set, is simply shown)
+    card.querySelector('.plan-renew').textContent = (years > 1 ? 'Works out to ' + S.rs(lp.perYear) + ' a year · ' : 'Yearly subscription · ') + (lp.renewal === lp.price ? 'the same price every year.' : 'then ' + S.rs(lp.renewal) + ' a year.');
     // the ribbon: the offer on the years chosen if there is one, otherwise the best offer this plan can get
     var ribbon = card.querySelector('.plan-ribbon');
     var top = lp.offer, topYears = years;

@@ -32,9 +32,9 @@
       var b = el('button', 'co-plan' + (p.plan === state.plan ? ' is-on' : ''));
       b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', p.plan === state.plan ? 'true' : 'false');
       b.appendChild(el('span', 'co-plan-name', p.label.replace('Online ', '')));
-      var yearly = p.phoneOnly && p.renewal === p.price;
+      var yearly = p.renewal === p.price;   // the same price every year
       b.appendChild(el('span', 'co-plan-price', S.rs(lp.total) + (yearly ? ' a year' : ' first year')));
-      b.appendChild(el('span', 'co-plan-renew', yearly ? 'phone app only' : 'then ' + S.rs(p.renewal) + '/year' + (p.phoneOnly ? ' · phone app only' : '')));
+      b.appendChild(el('span', 'co-plan-renew', (yearly ? 'every year' : 'then ' + S.rs(p.renewal) + '/year') + (p.phoneOnly ? ' · phone app only' : '')));
       if (lp.discount) b.appendChild(el('span', 'co-plan-offer', (lp.offer.badge || S.offerHeadline(lp.offer))));
       b.addEventListener('click', function () { state.plan = p.plan; renderPlans(); refresh(); });
       box.appendChild(b);
@@ -95,8 +95,11 @@
     } else {
       var lp = S.listPrice(state.pricing, state.plan, state.years);
       var p = S.planOf(state.pricing, state.plan);
-      rows = [[label + ': first year', p.price]];
-      if (state.years > 1) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ' × ' + S.rs(p.renewal), (state.years - 1) * p.renewal]);
+      if (p.renewal === p.price) rows = [[label + ': ' + state.years + ' year' + (state.years > 1 ? 's' : '') + ' × ' + S.rs(p.price), state.years * p.price]];
+      else {
+        rows = [[label + ': first year', p.price]];
+        if (state.years > 1) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ' × ' + S.rs(p.renewal), (state.years - 1) * p.renewal]);
+      }
       if (lp.discount) rows.push(['Offer: ' + lp.offer.title, -lp.discount]);
       total = lp.total;
       note = q && !q.ok ? q.reason : 'Price for a new plan. Renewals and upgrades are worked out for your account after step 2.';
