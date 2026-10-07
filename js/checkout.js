@@ -18,7 +18,10 @@
   // Customer messages: invoices and receipts to the customer's own customers by SMS (an add-on).
   var isMsg = function () { return state.plan === 'messages'; };
   var msgPrice = function () { return state.pricing.msgPrice || 500; };
-  var seatPrice = function () { return state.pricing.seatPrice || 5000; };
+  // before signing in the plan is not known: the price shown is for the plan named in the link (?for=), else Basic's;
+  // after step 2 the cloud works it out for the customer's own plan.
+  var seatFor = (function () { try { var f = new URLSearchParams(location.search).get('for'); return /^(basic|premium|business)$/.test(f || '') ? f : 'basic'; } catch (e) { return 'basic'; } })();
+  var seatPrice = function () { return S.seatPriceOf(state.pricing, seatFor); };
   function whatLabel() { return isMsg() ? 'Customer messages' : isSeats() ? state.seats + ' extra seat' + (state.seats > 1 ? 's' : '') : ((S.planOf(state.pricing, state.plan) || {}).label || ''); }
 
   // ---------- step 1: plan + years ----------

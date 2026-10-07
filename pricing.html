@@ -119,7 +119,7 @@
           <p class="plan-note plan-renew">Yearly subscription &middot; the same price every year.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 companies</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time <span class="plan-addon">(add seats: &#8377;5,000/yr each)</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time <span class="plan-addon"></span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Jurisbooks on your phone, free <span class="plan-phone">(1 phone)</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting &amp; GST reports</li>
           </ul>
@@ -137,7 +137,7 @@
           <p class="plan-note plan-renew">Yearly subscription &middot; the same price every year.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>5 companies</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time <span class="plan-addon">(add seats: &#8377;5,000/yr each)</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>1 computer at a time <span class="plan-addon"></span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Jurisbooks on your phone, free <span class="plan-phone">(1 phone)</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting, GST reports &amp; barcode generation</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Stock Performance report (by party &amp; price range)</li>
@@ -155,7 +155,7 @@
           <p class="plan-note plan-renew">Yearly subscription &middot; the same price every year.</p>
           <ul class="plan-limits">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>10 companies (buy more as you grow, price on request)</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 computers included <span class="plan-addon">(add seats: &#8377;5,000/yr each)</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>2 computers included <span class="plan-addon"></span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Jurisbooks on your phone, free <span class="plan-phone">(1 phone for each person)</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Full accounting, GST reports &amp; barcode generation</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>Staff logins with permissions &amp; an activity list</li>
@@ -187,10 +187,11 @@
         </div>
         <div>
           <div class="seat-pick">
+            <select id="seatPlan" aria-label="Your plan"><option value="basic">Basic</option><option value="premium">Premium</option><option value="business">Business Premium</option></select>
             <select id="seatCount" aria-label="Number of seats"><option value="1">1 seat</option><option value="2">2 seats</option><option value="3">3 seats</option><option value="4">4 seats</option><option value="5">5 seats</option><option value="10">10 seats</option></select>
             <select id="seatYears" aria-label="Number of years"><option value="1">1 year</option><option value="2">2 years</option><option value="3">3 years</option><option value="4">4 years</option><option value="5">5 years</option></select>
           </div>
-          <div class="seat-price"><span id="seatTotal">&#8377;5,000</span> <small id="seatEach">&#8377;5,000 per seat per year</small></div>
+          <div class="seat-price"><span id="seatTotal">&#8377;9,000</span> <small id="seatEach">&#8377;9,000 per seat per year</small></div>
           <a href="contact.html?interest=seats#enquiry" class="btn btn-primary" id="seatBuy" style="margin-top:12px;">Buy extra seats</a>
         </div>
       </div>
@@ -248,7 +249,7 @@
             <tr><th scope="row">Companies</th><td>2</td><td>5</td><td>10 (buy more)</td></tr>
             <tr><th scope="row">Computers at once</th><td>1 (+ extra seats)</td><td>1 (+ extra seats)</td><td>2 (+ extra seats)</td></tr>
             <tr><th scope="row">Jurisbooks on your phone</th><td>Free &middot; 1 phone</td><td>Free &middot; 1 phone</td><td>Free &middot; 1 phone for each person</td></tr>
-            <tr><th scope="row">Extra seat (one more computer at once)</th><td class="cmp-seat">/ year</td><td class="cmp-seat">/ year</td><td class="cmp-seat">/ year</td></tr>
+            <tr><th scope="row">Extra seat (one more computer at once)</th><td class="cmp-seat" data-seat-plan="basic">&#8377;9,000 / year</td><td class="cmp-seat" data-seat-plan="premium">&#8377;13,500 / year</td><td class="cmp-seat" data-seat-plan="business">&#8377;18,000 / year</td></tr>
             <tr><th scope="row">Full accounting &amp; GST reports</th><td>Yes</td><td>Yes</td><td>Yes</td></tr>
             <tr><th scope="row">Barcode generation</th><td>&mdash;</td><td>Yes</td><td>Yes</td></tr>
             <tr><th scope="row">Stock Performance report</th><td>&mdash;</td><td>Yes</td><td>Yes</td></tr>

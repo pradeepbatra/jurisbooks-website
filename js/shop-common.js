@@ -18,7 +18,7 @@
       { plan: 'androidbasic', label: 'Mobile Basic', price: 1999, renewal: 1999, phoneOnly: true }
     ],
     offers: [],
-    seatPrice: 5000, msgPrice: 500, msgYearLimit: 2000,
+    seatDiscount: 10, msgPrice: 500, msgYearLimit: 2000,
     payments: { provider: 'none' }
   };
 
@@ -62,5 +62,12 @@
   function fDate(t) { return new Date(t).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }); }
   function offerHeadline(o) { return o.kind === 'percent' ? o.value + '% OFF' : rs(o.value) + ' OFF'; }
 
-  window.JBShop = { call: call, getPricing: getPricing, planOf: planOf, bestOffer: bestOffer, listPrice: listPrice, rs: rs, fDate: fDate, offerHeadline: offerHeadline, DEFAULT: DEFAULT, LOCAL: LOCAL };
+  // An extra seat on a plan, a year: that plan's own yearly price less the seat discount (10% unless the cloud says otherwise).
+  function seatPriceOf(pr, plan) {
+    var p = planOf(pr, plan) || planOf(pr, 'basic');
+    if (!p) return 0;
+    if (p.seatPrice != null) return p.seatPrice;
+    return Math.round(p.price * (100 - (pr.seatDiscount == null ? 10 : pr.seatDiscount)) / 100);
+  }
+  window.JBShop = { call: call, getPricing: getPricing, planOf: planOf, seatPriceOf: seatPriceOf, bestOffer: bestOffer, listPrice: listPrice, rs: rs, fDate: fDate, offerHeadline: offerHeadline, DEFAULT: DEFAULT, LOCAL: LOCAL };
 })();

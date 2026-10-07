@@ -66,14 +66,16 @@
   function renderSeats(pr) {
     var cnt = document.getElementById('seatCount'), yrs = document.getElementById('seatYears'), buy = document.getElementById('seatBuy');
     if (!cnt || !yrs || !buy) return;
-    var each = pr.seatPrice || 5000, n = Number(cnt.value) || 1, y = Number(yrs.value) || 1;
+    var forPlan = document.getElementById('seatPlan'), plan = (forPlan && forPlan.value) || 'basic';
+    var each = S.seatPriceOf(pr, plan), n = Number(cnt.value) || 1, y = Number(yrs.value) || 1;
     document.getElementById('seatTotal').textContent = S.rs(n * y * each);
     document.getElementById('seatEach').textContent = S.rs(each) + ' per seat per year';
-    [].slice.call(document.querySelectorAll('.plan-addon')).forEach(function (a) { a.textContent = '(add seats: ' + S.rs(each) + '/yr each)'; });
+    // each plan card and each column of the table shows the seat price of ITS plan
+    [].slice.call(document.querySelectorAll('.plan-card[data-plan]')).forEach(function (card) { var a = card.querySelector('.plan-addon'); if (a) a.textContent = '(add seats: ' + S.rs(S.seatPriceOf(pr, card.getAttribute('data-plan'))) + '/yr each)'; });
     // the comparison table further down the page: today's prices, not numbers typed into the page
-    [].slice.call(document.querySelectorAll('.cmp-seat')).forEach(function (td) { td.textContent = S.rs(each) + ' / year'; });
+    [].slice.call(document.querySelectorAll('.cmp-seat')).forEach(function (td) { td.textContent = S.rs(S.seatPriceOf(pr, td.getAttribute('data-seat-plan') || 'basic')) + ' / year'; });
     [].slice.call(document.querySelectorAll('[data-cmp-price]')).forEach(function (td) { var p = S.planOf(pr, td.getAttribute('data-cmp-price')); if (p) td.textContent = S.rs(p.price) + ' / year'; });
-    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
+    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y + '&for=' + plan; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
     else { buy.href = 'contact.html?interest=seats#enquiry'; buy.textContent = 'Buy extra seats'; }
   }
   // The two mobile plans (Mobile Basic, Mobile Premium): the price of a year, with the best running offer.
@@ -97,7 +99,7 @@
     else { buy.href = 'contact.html?interest=messages#enquiry'; buy.textContent = 'Add customer messages'; }
   }
   var my = document.getElementById('msgYears'); if (my) my.addEventListener('change', function () { renderMsg(current); });
-  ['seatCount', 'seatYears'].forEach(function (id) { var e = document.getElementById(id); if (e) e.addEventListener('change', function () { renderSeats(current); }); });
+  ['seatPlan', 'seatCount', 'seatYears'].forEach(function (id) { var e = document.getElementById(id); if (e) e.addEventListener('change', function () { renderSeats(current); }); });
 
   function renderAll(pr) {
     renderOffers(pr);
