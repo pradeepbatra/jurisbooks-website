@@ -103,8 +103,8 @@
         rows = [[label + ': first year', p.price]];
         if (state.years > 1) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ' × ' + S.rs(p.renewal), (state.years - 1) * p.renewal]);
       }
-      if (lp.yearDiscount) rows.push([state.years + ' years together: ' + lp.yearPercent + '% off', -lp.yearDiscount]);
       if (lp.offer) rows.push(['Offer: ' + lp.offer.title, -lp.offerDiscount]);
+      if (lp.yearDiscount) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ': extra ' + lp.yearPercent + '% off', -lp.yearDiscount]);
       total = lp.total;
       note = q && !q.ok ? q.reason : 'Price for a new plan. Renewals and upgrades are worked out for your account after step 2.';
     }

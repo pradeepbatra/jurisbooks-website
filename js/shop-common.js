@@ -56,9 +56,10 @@
     var p = planOf(pr, plan);
     if (!p) return null;
     var gross = p.price + (years - 1) * p.renewal;
-    // buying several years together: a % off by itself (set in Back Office), then the best running offer on what is left
-    var yp = yearPercent(pr, years), yd = Math.round(gross * yp / 100);
-    var b = bestOffer(pr, plan, 'new', years, gross - yd);
+    // the best running offer on the whole amount; buying several years adds an extra % on the years after the first
+    // (set in Back Office): first year = the offer alone, each further year = the offer and the extra %
+    var b = bestOffer(pr, plan, 'new', years, gross);
+    var yp = yearPercent(pr, years), yd = Math.min(gross - b.discount, Math.round((gross - p.price) * yp / 100));
     var off = yd + b.discount;
     return { gross: gross, discount: off, yearDiscount: yd, yearPercent: yp, offerDiscount: b.discount, offer: b.offer, total: gross - off, perYear: Math.round((gross - off) / years), renewal: p.renewal, price: p.price };
   }
