@@ -37,9 +37,13 @@
     was.hidden = !lp.discount; was.textContent = lp.discount ? S.rs(lp.gross) : '';
     var save = card.querySelector('.plan-save');
     save.hidden = !lp.discount;
-    save.textContent = lp.discount ? 'You save ' + S.rs(lp.discount) + (lp.offer ? ' · ' + lp.offer.title : '') : '';
-    // a yearly subscription: the same price every year (a different later-years price, if one is ever set, is simply shown)
-    card.querySelector('.plan-renew').textContent = (years > 1 ? 'Works out to ' + S.rs(lp.perYear) + ' a year · ' : 'Yearly subscription · ') + (lp.renewal === lp.price ? 'the same price every year.' : 'then ' + S.rs(lp.renewal) + ' a year.');
+    save.textContent = lp.discount ? 'You save ' + S.rs(lp.discount) + [lp.yearDiscount ? years + ' years: ' + lp.yearPercent + '% off' : '', lp.offer ? lp.offer.title : ''].filter(Boolean).map(function (x) { return ' · ' + x; }).join('') : '';
+    // the "Buy for" list says what each number of years saves
+    [].slice.call(sel.options).forEach(function (o) { var y = Number(o.value), pct = S.yearPercent(pr, y); o.textContent = y + ' year' + (y > 1 ? 's' : '') + (pct ? ' — ' + pct + '% off' : ''); });
+    // under the price: what it works out to a year when several years are bought (and a different later-years price, if one is ever set)
+    var renew = card.querySelector('.plan-renew');
+    renew.textContent = [years > 1 ? 'Works out to ' + S.rs(lp.perYear) + ' a year.' : '', lp.renewal !== lp.price ? 'Then ' + S.rs(lp.renewal) + ' a year.' : ''].filter(Boolean).join(' ');
+    renew.hidden = !renew.textContent;
     // the ribbon: the offer on the years chosen if there is one, otherwise the best offer this plan can get
     var ribbon = card.querySelector('.plan-ribbon');
     var top = lp.offer, topYears = years;
@@ -48,8 +52,10 @@
       var y = Math.max(o.minYears || 1, 1), l2 = S.listPrice(pr, plan, y);
       if (l2 && l2.offer && l2.offer.id === o.id && (!top || l2.discount > S.listPrice(pr, plan, topYears).discount)) { top = o; topYears = y; }
     });
-    ribbon.hidden = !top;
-    ribbon.textContent = !top ? '' : (top.minYears > 1 && !lp.offer ? S.offerHeadline(top) + ' on ' + top.minYears + '+ years' : (top.badge || S.offerHeadline(top)));
+    // no offer to announce: say what buying more years saves, if anything
+    var maxPct = 0; (pr.years || [1, 2, 3, 4, 5]).forEach(function (y) { maxPct = Math.max(maxPct, S.yearPercent(pr, y)); });
+    ribbon.hidden = !top && !maxPct;
+    ribbon.textContent = top ? (top.minYears > 1 && !lp.offer ? S.offerHeadline(top) + ' on ' + top.minYears + '+ years' : (top.badge || S.offerHeadline(top))) : maxPct ? 'Up to ' + maxPct + '% off on more years' : '';
     card.classList.toggle('has-offer', !!lp.offer);
     var buy = card.querySelector('[data-buy]');
     var label = (S.planOf(pr, plan) || {}).label || '';

@@ -38,7 +38,7 @@
       var yearly = p.renewal === p.price;   // the same price every year
       b.appendChild(el('span', 'co-plan-price', S.rs(lp.total) + (yearly ? ' a year' : ' first year')));
       b.appendChild(el('span', 'co-plan-renew', (yearly ? 'every year' : 'then ' + S.rs(p.renewal) + '/year') + (p.phoneOnly ? ' · phone app only' : '')));
-      if (lp.discount) b.appendChild(el('span', 'co-plan-offer', (lp.offer.badge || S.offerHeadline(lp.offer))));
+      if (lp.offer) b.appendChild(el('span', 'co-plan-offer', (lp.offer.badge || S.offerHeadline(lp.offer))));
       b.addEventListener('click', function () { state.plan = p.plan; renderPlans(); refresh(); });
       box.appendChild(b);
     });
@@ -103,7 +103,8 @@
         rows = [[label + ': first year', p.price]];
         if (state.years > 1) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ' × ' + S.rs(p.renewal), (state.years - 1) * p.renewal]);
       }
-      if (lp.discount) rows.push(['Offer: ' + lp.offer.title, -lp.discount]);
+      if (lp.yearDiscount) rows.push([state.years + ' years together: ' + lp.yearPercent + '% off', -lp.yearDiscount]);
+      if (lp.offer) rows.push(['Offer: ' + lp.offer.title, -lp.offerDiscount]);
       total = lp.total;
       note = q && !q.ok ? q.reason : 'Price for a new plan. Renewals and upgrades are worked out for your account after step 2.';
     }

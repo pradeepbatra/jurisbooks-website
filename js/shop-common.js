@@ -50,13 +50,17 @@
     });
     return { offer: best, discount: off };
   }
+  function yearPercent(pr, years) { return (years > 1 && pr.yearDiscounts && Number(pr.yearDiscounts[years])) || 0; }
   // The list price of buying a plan new (not a renewal/upgrade - those need the account, so the cloud works them out).
   function listPrice(pr, plan, years) {
     var p = planOf(pr, plan);
     if (!p) return null;
     var gross = p.price + (years - 1) * p.renewal;
-    var b = bestOffer(pr, plan, 'new', years, gross);
-    return { gross: gross, discount: b.discount, offer: b.offer, total: gross - b.discount, perYear: Math.round((gross - b.discount) / years), renewal: p.renewal, price: p.price };
+    // buying several years together: a % off by itself (set in Back Office), then the best running offer on what is left
+    var yp = yearPercent(pr, years), yd = Math.round(gross * yp / 100);
+    var b = bestOffer(pr, plan, 'new', years, gross - yd);
+    var off = yd + b.discount;
+    return { gross: gross, discount: off, yearDiscount: yd, yearPercent: yp, offerDiscount: b.discount, offer: b.offer, total: gross - off, perYear: Math.round((gross - off) / years), renewal: p.renewal, price: p.price };
   }
   function rs(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
   function fDate(t) { return new Date(t).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }); }
@@ -69,5 +73,5 @@
     if (p.seatPrice != null) return p.seatPrice;
     return Math.round(p.price * (100 - (pr.seatDiscount == null ? 10 : pr.seatDiscount)) / 100);
   }
-  window.JBShop = { call: call, getPricing: getPricing, planOf: planOf, seatPriceOf: seatPriceOf, bestOffer: bestOffer, listPrice: listPrice, rs: rs, fDate: fDate, offerHeadline: offerHeadline, DEFAULT: DEFAULT, LOCAL: LOCAL };
+  window.JBShop = { call: call, getPricing: getPricing, planOf: planOf, seatPriceOf: seatPriceOf, yearPercent: yearPercent, bestOffer: bestOffer, listPrice: listPrice, rs: rs, fDate: fDate, offerHeadline: offerHeadline, DEFAULT: DEFAULT, LOCAL: LOCAL };
 })();
