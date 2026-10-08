@@ -15,12 +15,17 @@
    ========================================================================== */
 window.JURISBOOKS_VERSIONS = {
   editions: {
-    trial:    { name: 'Trial',            latest: '1.5.12', released: '7 Oct 2026' },
-    basic:    { name: 'Basic',            latest: '1.5.12', released: '7 Oct 2026' },
-    premium:  { name: 'Premium',          latest: '1.5.12', released: '7 Oct 2026' },
-    business: { name: 'Business Premium', latest: '1.5.12', released: '7 Oct 2026' }
+    trial:    { name: 'Trial',            latest: '1.5.13', released: '8 Oct 2026' },
+    basic:    { name: 'Basic',            latest: '1.5.13', released: '8 Oct 2026' },
+    premium:  { name: 'Premium',          latest: '1.5.13', released: '8 Oct 2026' },
+    business: { name: 'Business Premium', latest: '1.5.13', released: '8 Oct 2026' }
   },
   history: [
+    { v: '1.5.13', date: '8 Oct 2026', items: [
+      'Party balance on bills can be switched off: Business Settings, Printing & Invoice Format, Invoice Content.',
+      'A short A4 or A5 bill now fills the whole page, with the totals and footer at the foot of the page.',
+      'Jurisdiction line: type a city and every bill prints "Subject to ... jurisdiction".'
+    ] },
     { v: '1.5.12', date: '7 Oct 2026', items: [
       'Salesman and Agent on every bill, and both print on the invoice. Agent replaces the old Broker Name box.',
       'Salesmen & Agents page: keep your own list of salesmen and agents.',
