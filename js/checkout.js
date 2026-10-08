@@ -166,15 +166,37 @@
   $('coCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('coVerify').click(); });
   $('coWhoChange').addEventListener('click', function (e) { e.preventDefault(); ss(K_PASS, null); state.pass = ''; state.account = null; state.quote = null; showWho(); renderSummary(); updatePay(); });
 
+  // ---------- referral code: typed here, or carried by the link the buyer came by (js/main.js) ----------
+  function refCode() { var b = $('coRef'); return b ? b.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12) : (window.JB_REF || ''); }
+  function showRef() {
+    var m = $('coRefMsg'); if (!m) return;
+    var q = state.quote, r = q && q.referral, code = refCode();
+    var text = '', ok = false;
+    if (isSeats() || isMsg()) text = code ? 'A referral code is for buying a plan.' : '';
+    else if (r && r.ok) { ok = true; text = r.discount ? 'Code ' + r.code + ' applied: ' + r.percent + '% off (' + S.rs(r.discount) + ').' : 'Code ' + r.code + ' added.'; }
+    else if (r && !r.ok) text = r.reason;
+    else if (code && !state.pass) text = 'The code is checked after you verify your mobile number.';
+    m.textContent = text; m.classList.toggle('ok', ok);
+  }
+  (function () {
+    var b = $('coRef'); if (!b) return;
+    if (window.JB_REF && !b.value) b.value = window.JB_REF;
+    var go = function () { b.value = refCode(); showRef(); refresh(); };
+    $('coRefApply').addEventListener('click', go);
+    b.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+    b.addEventListener('change', go);
+    showRef();
+  })();
+
   // ---------- step 3: price + pay ----------
   var seq = 0;
   function refresh() {
     renderSummary(); updatePay();
     if (!state.pass) return Promise.resolve();
     var my = ++seq;
-    return S.call('buyQuote', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined }).then(function (r) {
+    return S.call('buyQuote', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, ref: refCode() }).then(function (r) {
       if (my !== seq) return;
-      state.quote = r.quote; state.account = r.account; showWho(); renderSummary(); updatePay();
+      state.quote = r.quote; state.account = r.account; showWho(); renderSummary(); updatePay(); showRef();
     }).catch(function (e) {
       if (e.code === 'unauthenticated' || /sign in again/i.test(e.message)) { ss(K_PASS, null); state.pass = ''; state.account = null; showWho(); }
       msg('coPayMsg', e.message);
@@ -198,7 +220,7 @@
   $('coPay').addEventListener('click', function () {
     if (state.busy) return;
     state.busy = true; updatePay(); msg('coPayMsg', 'Opening the payment page…', true);
-    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-10-04', ref: window.JB_REF || '' })
+    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-10-04', ref: refCode() })
       .then(function (r) { ss(K_ORDER, r.orderId); return openCheckout(r); })
       .catch(function (e) { state.busy = false; updatePay(); msg('coPayMsg', e.message); });
   });
