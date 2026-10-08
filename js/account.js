@@ -114,18 +114,43 @@
     a.companies.forEach(function (c) { co.appendChild(el('li', null, c.name + (c.role === 'owner' ? '' : ' (shared with you)'))); });
     // payments
     var tb = $('acctPayments'); tb.textContent = '';
-    if (!a.payments.length) { var tr0 = el('tr'); var td0 = el('td', 'small-note', 'No payments recorded yet.'); td0.colSpan = 5; tr0.appendChild(td0); tb.appendChild(tr0); }
+    if (!a.payments.length) { var tr0 = el('tr'); var td0 = el('td', 'small-note', 'No payments recorded yet.'); td0.colSpan = 7; tr0.appendChild(td0); tb.appendChild(tr0); }
     a.payments.forEach(function (p) {
       var tr = el('tr');
       tr.appendChild(el('td', null, fDate(p.date)));
-      tr.appendChild(el('td', 'mono', p.receiptNo));
       tr.appendChild(el('td', null, p.what));
+      var by = el('td', null, MODES[p.mode] || p.mode || ''); if (p.ref) by.appendChild(el('div', 'small-note', p.ref)); tr.appendChild(by);
       tr.appendChild(el('td', 'num', money(p.amount)));
+      tr.appendChild(el('td', 'mono', p.receiptNo));
+      tr.appendChild(el('td', p.invoiceNo ? 'mono' : 'small-note', p.invoiceNo || 'being made'));
       var td = el('td'); var b = el('button', 'btn btn-outline btn-small', 'Receipt'); b.type = 'button';
-      b.addEventListener('click', function () { openReceipt(p); }); td.appendChild(b); tr.appendChild(td);
+      b.addEventListener('click', function () { openReceipt(p); }); td.appendChild(b);
+      if (p.invoiceNo) {
+        var iv = el('button', 'btn btn-outline btn-small', 'Invoice'); iv.type = 'button'; iv.title = 'Download invoice ' + p.invoiceNo + ' (PDF)';
+        iv.addEventListener('click', function () { downloadInvoice(p, iv); });
+        td.appendChild(document.createTextNode(' ')); td.appendChild(iv);
+      }
+      tr.appendChild(td);
       tb.appendChild(tr);
     });
     msg('acctMsg', '');
+  }
+
+  // ---- invoice (PDF, made by Jurisbooks after the payment) ----
+  function downloadInvoice(p, btn) {
+    btn.disabled = true; msg('acctMsg', 'Getting your invoice\u2026', true);
+    call('portalInvoice', { pass: getPass(), paymentId: p.id }).then(function (r) {
+      var bin = atob(r.pdfBase64), bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      var url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+      var a = document.createElement('a'); a.href = url; a.download = r.name || 'Jurisbooks-Invoice.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
+      msg('acctMsg', 'Invoice ' + r.no + ' downloaded.', true);
+    }).catch(function (e) {
+      if (e.code === 'portal-expired' || /sign in again/i.test(e.message)) { setPass(''); return showSignIn('Please sign in again.'); }
+      msg('acctMsg', e.message);
+    }).then(function () { btn.disabled = false; });
   }
 
   // ---- receipt (printable) ----
@@ -140,7 +165,7 @@
     if (cr) out.push(three(cr) + ' Crore'); if (lk) out.push(two(lk) + ' Lakh'); if (th) out.push(two(th) + ' Thousand'); if (rest) out.push(three(rest));
     return out.join(' ');
   }
-  var MODES = { upi: 'UPI', cash: 'Cash', bank: 'Bank transfer', cheque: 'Cheque', card: 'Card', razorpay: 'Online payment', other: 'Other' };
+  var MODES = { upi: 'UPI', cash: 'Cash', bank: 'Bank transfer', cheque: 'Cheque', card: 'Card', razorpay: 'Online payment', cashfree: 'Online payment', online: 'Online payment', other: 'Other' };
   function openReceipt(p) {
     var a = DATA, s = a.seller, w = window.open('', '_blank');
     if (!w) return alert('Please allow pop-ups for this page to view the receipt.');
@@ -159,7 +184,7 @@
       '<tr class="total"><td>Total received</td><td class="num">' + esc(money(p.amount)) + '</td></tr></tbody></table>' +
       '<div><span class="muted">Amount in words:</span> Rupees ' + esc(words(p.amount)) + (paise ? ' and ' + esc(words(paise)) + ' Paise' : '') + ' only</div>' +
       '<div><span class="muted">Payment mode:</span> ' + esc(MODES[p.mode] || p.mode) + (p.ref ? ' &middot; <span class="muted">Reference:</span> ' + esc(p.ref) : '') + '</div>' +
-      '<div class="foot">' + esc(s.gstNote) + ' &mdash; no GST has been charged. This is a computer-generated receipt and does not require a signature.</div>' +
+      '<div class="foot">This is a receipt for your payment, not an invoice. Your invoice is sent separately and appears here in My Account once it is made. This is a computer-generated receipt and does not require a signature.</div>' +
       '</div><div class="btns"><button onclick="window.print()">Print or save as PDF</button></div></body></html>');
     w.document.close();
   }

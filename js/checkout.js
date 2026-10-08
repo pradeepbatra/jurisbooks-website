@@ -13,6 +13,10 @@
 
   var state = { pricing: S.DEFAULT, plan: qs.get('plan') || 'premium', years: Math.min(5, Math.max(1, Number(qs.get('years')) || 1)), seats: Math.min(20, Math.max(1, Number(qs.get('seats')) || 1)), pass: '', account: null, quote: null, busy: false };
   if (!/^(basic|premium|business|android|androidbasic|seats|messages)$/.test(state.plan)) state.plan = 'premium';
+  // Opened by a payment link from a sales person (checkout.html?link=...): the plan, the years and the price are
+  // fixed by the link; the buyer only proves the mobile number the link was made for, and pays.
+  var LINK = (function () { var t = qs.get('link') || ''; return /^[A-Za-z0-9_-]{16,40}$/.test(t) ? t : ''; })();
+  var linkInfo = null;
   var cameForMobile = state.plan === 'android' || state.plan === 'androidbasic';
   var isSeats = function () { return state.plan === 'seats'; };
   // Customer messages: invoices and receipts to the customer's own customers by SMS (an add-on).
@@ -26,6 +30,7 @@
 
   // ---------- step 1: plan + years ----------
   function renderPlans() {
+    if (LINK) return;                 // a payment link fixes the plan: nothing to choose
     var box = $('coPlans'); box.innerHTML = '';
     state.pricing.plans.forEach(function (p) {
       // The mobile only plan is offered here only to someone who came for it (the app's own "Buy plan" button),
@@ -87,6 +92,12 @@
       else if (q.kind === 'upgrade') note = 'Your plan changes to ' + q.label + ' today and runs until ' + S.fDate(q.expiresAt) + '.' +
         (q.endsEarlier ? ' ⚠ That is before your current plan would have ended (' + S.fDate(q.currentEndsAt) + ').' : '');
       else note = 'Your plan runs from the day you pay until ' + S.fDate(q.expiresAt) + '.';
+    } else if (LINK && linkInfo) {
+      rows = [[linkInfo.label + ': ' + linkInfo.years + ' year' + (linkInfo.years > 1 ? 's' : ''), linkInfo.normal]];
+      if (linkInfo.discount > 0) rows.push(['Special price from ' + (linkInfo.seller || 'Jurisbooks'), -linkInfo.discount]);
+      if (linkInfo.gst) rows.push(['GST ' + linkInfo.gst.rate + '%', linkInfo.gst.amount]);
+      total = linkInfo.total;
+      note = q && !q.ok ? q.reason : 'The price agreed with ' + (linkInfo.seller || 'Jurisbooks') + '. Verify your mobile number to pay.';
     } else if (isMsg()) {
       rows = [['Customer messages: ' + state.years + ' year' + (state.years > 1 ? 's' : '') + ' × ' + S.rs(msgPrice()), state.years * msgPrice()]];
       total = state.years * msgPrice();
@@ -108,6 +119,9 @@
       total = lp.total;
       note = q && !q.ok ? q.reason : 'Price for a new plan. Renewals and upgrades are worked out for your account after step 2.';
     }
+    // before the account is known the prices above are without GST: add it when the business charges it
+    var gr = state.pricing.gstRate || 0;
+    if (gr && !(q && q.ok) && !(LINK && linkInfo)) { var g = Math.round(total * gr / 100); rows.push(['GST ' + gr + '%', g]); total += g; }
     rows.forEach(function (r) {
       var tr = el('tr'); tr.appendChild(el('td', null, r[0]));
       var td = el('td', 'num' + (r[1] < 0 ? ' neg' : ''), (r[1] < 0 ? '− ' : '') + S.rs(Math.abs(r[1]))); tr.appendChild(td); lines.appendChild(tr);
@@ -194,11 +208,12 @@
     renderSummary(); updatePay();
     if (!state.pass) return Promise.resolve();
     var my = ++seq;
-    return S.call('buyQuote', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, ref: refCode() }).then(function (r) {
+    return S.call('buyQuote', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, ref: LINK ? '' : refCode(), link: LINK || undefined }).then(function (r) {
       if (my !== seq) return;
       state.quote = r.quote; state.account = r.account; showWho(); renderSummary(); updatePay(); showRef();
     }).catch(function (e) {
       if (e.code === 'unauthenticated' || /sign in again/i.test(e.message)) { ss(K_PASS, null); state.pass = ''; state.account = null; showWho(); }
+      if (LINK) { state.quote = { ok: false, reason: e.message }; renderSummary(); updatePay(); }
       msg('coPayMsg', e.message);
     });
   }
@@ -220,7 +235,7 @@
   $('coPay').addEventListener('click', function () {
     if (state.busy) return;
     state.busy = true; updatePay(); msg('coPayMsg', 'Opening the payment page…', true);
-    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-10-04', ref: refCode() })
+    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-10-04', ref: LINK ? '' : refCode(), link: LINK || undefined })
       .then(function (r) { ss(K_ORDER, r.orderId); return openCheckout(r); })
       .catch(function (e) { state.busy = false; updatePay(); msg('coPayMsg', e.message); });
   });
@@ -319,6 +334,27 @@
   if (hp) {
     ss(K_PASS, hp[1]);
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { location.hash = ''; }
+  }
+  if (LINK) {
+    // a link is for one number: never carry over a sign-in from another purchase in this browser
+    ss(K_PASS, null); state.pass = ''; state.account = null;
+    var stepPlan = $('coStepPlan');
+    S.call('buyLinkInfo', { token: LINK }).then(function (info) {
+      linkInfo = info; state.plan = info.plan; state.years = info.years;
+      $('coTitle').textContent = 'Your Jurisbooks ' + info.label + ' plan';
+      stepPlan.textContent = '';
+      var h = el('h2'); h.appendChild(el('span', 'co-num', '1')); h.appendChild(document.createTextNode(' Your plan')); stepPlan.appendChild(h);
+      stepPlan.appendChild(el('p', 'co-who', 'Jurisbooks ' + info.label + ' for ' + info.years + ' year' + (info.years > 1 ? 's' : '') + ' — ' + S.rs(info.total) + (info.gst ? ' (including GST)' : '') + '.'));
+      var st = info.status === 'paid' ? 'This payment link has already been paid.' : info.status === 'expired' ? 'This payment link has expired. Please ask ' + (info.seller || 'your Jurisbooks contact') + ' for a new one.'
+        : 'Sent by ' + (info.seller || 'Jurisbooks') + ' for the mobile number ending ' + info.phoneEnds + '. Valid until ' + new Date(info.expiresAt).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) + ' today.';
+      var note = el('p', info.status === 'open' ? 'small-note' : 'acct-msg', st); stepPlan.appendChild(note);
+      if (info.name && !$('coName').value) $('coName').value = info.name;
+      if (info.status !== 'open') { $('coStepWho').hidden = true; $('coStepPay').hidden = true; }
+      renderSummary(); updatePay();
+    }).catch(function (e) {
+      stepPlan.textContent = ''; stepPlan.appendChild(el('p', 'acct-msg', e.message)); $('coStepWho').hidden = true; $('coStepPay').hidden = true;
+    });
+    return;
   }
   var p = ss(K_PASS) || ss(K_ACCT);
   if (p) usePass(p);

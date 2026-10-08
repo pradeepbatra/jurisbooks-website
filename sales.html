@@ -96,6 +96,27 @@
           <div class="acct-actions"><a id="salesShare" class="btn btn-primary" target="_blank" rel="noopener" href="#">Share on WhatsApp</a><button id="salesCopy" type="button" class="btn btn-outline">Copy link</button></div>
         </div>
 
+        <div class="acct-card acct-signin sales-linkcard" id="salesLinkCard" hidden>
+          <h3>Send a payment link</h3>
+          <p class="small-note" id="salesLinkRule"></p>
+          <label class="acct-label" for="slName">Customer's name</label>
+          <input id="slName" type="text" maxlength="100" autocomplete="off">
+          <label class="acct-label" for="slPhone">Customer's mobile number</label>
+          <div class="acct-row"><span class="acct-prefix">+91</span><input id="slPhone" type="tel" inputmode="numeric" maxlength="14" placeholder="98765 43210" autocomplete="off"></div>
+          <label class="acct-label" for="slPlan">Plan</label>
+          <div class="acct-row"><select id="slPlan" class="co-select"></select><select id="slYears" class="co-select"></select></div>
+          <label class="acct-label" for="slAmount">Price you agreed (&#8377;)</label>
+          <input id="slAmount" type="number" inputmode="numeric" min="1" step="1">
+          <p class="small-note" id="slHint"></p>
+          <button id="slMake" type="button" class="btn btn-primary acct-wide">Make the link</button>
+          <p id="slMsg" class="acct-msg" role="status" aria-live="polite"></p>
+          <div id="slResult" hidden>
+            <p class="sales-link" id="slLink"></p>
+            <div class="acct-actions"><a id="slWhats" class="btn btn-primary" target="_blank" rel="noopener" href="#">WhatsApp to customer</a><a id="slMail" class="btn btn-outline" href="#">Email</a><button id="slCopy" type="button" class="btn btn-outline">Copy</button></div>
+          </div>
+          <div id="slList"></div>
+        </div>
+
         <div class="sales-tiles" id="salesTiles"></div>
 
         <div class="acct-card" id="salesCommCard" hidden>

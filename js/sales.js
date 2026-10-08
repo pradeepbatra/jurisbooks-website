@@ -119,6 +119,7 @@
       var who = el('div', 'sales-who');
       who.appendChild(el('b', null, l.customer || 'Customer'));
       who.appendChild(el('div', 'small-note', [fDate(l.at), SHARE[l.level] + (l.level !== 'seller' && l.seller ? ' (sold by ' + l.seller + ')' : ''), l.first ? '' : 'renewal'].filter(Boolean).join(' · ')));
+      if (l.deduct > 0) who.appendChild(el('div', 'small-note', money(l.gross) + ' less ' + money(l.deduct) + ' you took off the price on your payment link'));
       row.appendChild(who);
       var st = el('div', 'sales-status');
       st.appendChild(el('b', null, money(l.commission)));
@@ -131,6 +132,77 @@
     if (c.payouts.length) {
       po.appendChild(el('p', 'small-note', 'Paid to you: ' + c.payouts.map(function (p) { return money(p.amount) + ' on ' + fDate(p.date) + ' (' + (MODE[p.mode] || p.mode) + (p.ref ? ' ' + p.ref : '') + ')'; }).join('; ')));
     }
+  }
+  // ---- payment links: agree a price with a new customer and send them a link to pay (valid for one hour) ----
+  var LINKS = null;
+  function linkNormal() { var p = (LINKS.plans || []).filter(function (x) { return x.plan === $('slPlan').value; })[0]; return p ? p.prices[$('slYears').value] || 0 : 0; }
+  function linkHint(setPrice) {
+    var n = linkNormal(), max = LINKS.maxDiscount || 0, floor = Math.ceil(n * (100 - max) / 100);
+    if (setPrice) $('slAmount').value = n || '';
+    var a = Math.round(Number($('slAmount').value) || 0), off = n - a;
+    var t = 'Normal price ' + money(n) + (LINKS.gstRate ? ' + ' + LINKS.gstRate + '% GST' : '') + '. ' + (max > 0 ? 'Lowest you can give: ' + money(floor) + ' (' + max + '% off).' : 'A lower price is not allowed.');
+    if (a > 0 && off > 0 && a >= floor) t += ' You are giving ' + money(off) + ' off - that comes out of your commission on this sale.';
+    if (LINKS.gstRate && a > 0) t += ' The customer pays ' + money(a + Math.round(a * LINKS.gstRate / 100)) + ' with GST.';
+    $('slHint').textContent = t;
+  }
+  function linkStatus(l) { return l.status === 'paid' ? ['Paid', 'ok'] : l.status === 'expired' ? ['Expired', 'bad'] : ['Waiting - ' + Math.max(1, Math.round((l.expiresAt - Date.now()) / 60000)) + ' min left', 'wait']; }
+  function linkText(l) { return 'Namaste ' + l.name + ', here is your Jurisbooks ' + l.label + ' payment link (' + l.years + ' year' + (l.years > 1 ? 's' : '') + ', ' + money(l.amount) + (LINKS.gstRate ? ' + GST' : '') + '). It works for ' + (LINKS.minutes || 60) + ' minutes: ' + l.link; }
+  function showLink(l) {
+    $('slResult').hidden = false; $('slLink').textContent = l.link;
+    var text = linkText(l);
+    $('slWhats').href = 'https://wa.me/' + String(l.phone).replace(/\D/g, '') + '?text=' + encodeURIComponent(text);
+    $('slMail').href = 'mailto:?subject=' + encodeURIComponent('Your Jurisbooks payment link') + '&body=' + encodeURIComponent(text);
+    $('slCopy').onclick = function () {
+      var done = function () { $('slCopy').textContent = 'Copied'; setTimeout(function () { $('slCopy').textContent = 'Copy'; }, 1600); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { window.prompt('Copy:', text); }); else window.prompt('Copy:', text);
+    };
+  }
+  function drawLinks() {
+    var box = $('slList'); box.textContent = '';
+    if (!LINKS.links.length) return;
+    box.appendChild(el('p', 'acct-label', 'Your links'));
+    LINKS.links.forEach(function (l) {
+      var row = el('div', 'sales-lead'), who = el('div', 'sales-who');
+      who.appendChild(el('b', null, l.name));
+      who.appendChild(el('div', 'small-note', [fPhone(l.phone), l.label + ' ' + l.years + 'y', money(l.amount) + (l.discount > 0 ? ' (' + money(l.discount) + ' off)' : '')].join(' · ')));
+      row.appendChild(who);
+      var st = el('div', 'sales-status'), s = linkStatus(l);
+      st.appendChild(el('span', 'acct-badge ' + s[1], s[0]));
+      if (l.status === 'open') { var acts = el('div', 'sales-acts'); var b = el('button', 'btn btn-outline', 'Send again'); b.type = 'button'; b.addEventListener('click', function () { showLink(l); $('slResult').scrollIntoView({ block: 'center' }); }); acts.appendChild(b); st.appendChild(acts); }
+      row.appendChild(st); box.appendChild(row);
+    });
+  }
+  function loadLinks() {
+    call('salesLinkOptions', { pass: getPass() }).then(function (o) {
+      var first = !LINKS; LINKS = o;
+      $('salesLinkCard').hidden = false;
+      $('salesLinkRule').textContent = 'For a NEW customer only. Agree the plan and the price, then send the link: the customer verifies their mobile number and pays. A link works for ' + o.minutes + ' minutes.';
+      if (first) {
+        var ps = $('slPlan'), ys = $('slYears'); ps.textContent = ''; ys.textContent = '';
+        o.plans.forEach(function (p) { var op = el('option', null, p.label); op.value = p.plan; ps.appendChild(op); });
+        [1, 2, 3, 4, 5].forEach(function (n) { var op = el('option', null, n + ' year' + (n > 1 ? 's' : '')); op.value = n; ys.appendChild(op); });
+        if (o.plans.some(function (p) { return p.plan === 'premium'; })) ps.value = 'premium';
+        ps.addEventListener('change', function () { linkHint(true); }); ys.addEventListener('change', function () { linkHint(true); });
+        $('slAmount').addEventListener('input', function () { linkHint(false); });
+        $('slMake').addEventListener('click', makeLink);
+        linkHint(true);
+      } else linkHint(false);
+      drawLinks();
+    }).catch(function () { $('salesLinkCard').hidden = true; });
+  }
+  function makeLink() {
+    var m = $('slMsg'); m.textContent = ''; m.className = 'acct-msg';
+    var ph = $('slPhone').value.replace(/\D/g, '').slice(-10);
+    if ($('slName').value.trim().length < 2) { m.textContent = 'Enter the customer\u2019s name.'; return; }
+    if (!/^[6-9]\d{9}$/.test(ph)) { m.textContent = 'Enter the customer\u2019s 10-digit mobile number.'; return; }
+    $('slMake').disabled = true; m.textContent = 'Making the link\u2026'; m.className = 'acct-msg ok';
+    call('salesMakeLink', { pass: getPass(), name: $('slName').value.trim(), phone: ph, plan: $('slPlan').value, years: Number($('slYears').value), amount: Number($('slAmount').value) }).then(function (l) {
+      m.textContent = 'Link ready - send it now. It works for ' + (LINKS.minutes || 60) + ' minutes.';
+      LINKS.links.unshift(l); showLink(l); drawLinks();
+    }).catch(function (e) {
+      if (e.code === 'portal-expired' || /sign in again/i.test(e.message)) { setPass(''); return showSignIn('Please sign in again.'); }
+      m.className = 'acct-msg'; m.textContent = e.message;
+    }).then(function () { $('slMake').disabled = false; });
   }
   function render(a) {
     msg('');
@@ -149,6 +221,7 @@
     tiles($('salesTiles'), a.totals, a.shows.amounts);
     leadList($('salesLeads'), a.leads, a.shows, 'Nobody has joined with your link yet. Share it - each person who signs up by it appears here.');
     commission(a.commission);
+    loadLinks();
     var t = a.team;
     $('salesTeamCard').hidden = !t; $('salesTeamLeadsCard').hidden = !t;
     if (t) {
