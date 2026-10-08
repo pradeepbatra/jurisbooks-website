@@ -103,11 +103,40 @@
     if (!leads.length) return box.appendChild(el('p', 'small-note', empty));
     leads.forEach(function (l) { box.appendChild(leadRow(l, shows)); });
   }
+  // What this person has earned: on their own sales, and - a leader or distributor - their share of the team's.
+  var SHARE = { seller: 'Your sale', leader: 'Team leader share', distributor: 'Distributor share' };
+  var MODE = { upi: 'UPI', bank: 'Bank transfer', cash: 'Cash', cheque: 'Cheque', other: 'Other' };
+  function commission(c) {
+    $('salesCommCard').hidden = !c;
+    if (!c) return;
+    var box = $('salesCommTiles'); box.textContent = '';
+    var add = function (n, label) { var d = el('div', 'sales-tile'); d.appendChild(el('b', null, n)); d.appendChild(el('span', null, label)); box.appendChild(d); };
+    add(money(c.earned), 'Earned'); add(money(c.paid), 'Paid to you'); add(money(c.due), 'Due to you');
+    var list = $('salesCommLines'); list.textContent = '';
+    if (!c.lines.length) list.appendChild(el('p', 'small-note', 'Nothing yet. Commission is added here when a customer you brought pays for a plan.'));
+    c.lines.forEach(function (l) {
+      var row = el('div', 'sales-lead' + (l.status === 'void' ? ' sales-void' : ''));
+      var who = el('div', 'sales-who');
+      who.appendChild(el('b', null, l.customer || 'Customer'));
+      who.appendChild(el('div', 'small-note', [fDate(l.at), SHARE[l.level] + (l.level !== 'seller' && l.seller ? ' (sold by ' + l.seller + ')' : ''), l.first ? '' : 'renewal'].filter(Boolean).join(' · ')));
+      row.appendChild(who);
+      var st = el('div', 'sales-status');
+      st.appendChild(el('b', null, money(l.commission)));
+      st.appendChild(document.createTextNode(' '));
+      st.appendChild(el('span', 'acct-badge ' + (l.status === 'paid' ? 'ok' : l.status === 'void' ? 'bad' : 'wait'), l.status === 'paid' ? 'Paid ' + fDate(l.paidAt) : l.status === 'void' ? 'Cancelled' : 'Due'));
+      row.appendChild(st);
+      list.appendChild(row);
+    });
+    var po = $('salesPayouts'); po.textContent = '';
+    if (c.payouts.length) {
+      po.appendChild(el('p', 'small-note', 'Paid to you: ' + c.payouts.map(function (p) { return money(p.amount) + ' on ' + fDate(p.date) + ' (' + (MODE[p.mode] || p.mode) + (p.ref ? ' ' + p.ref : '') + ')'; }).join('; ')));
+    }
+  }
   function render(a) {
     msg('');
     $('salesSignIn').hidden = true; $('salesView').hidden = false;
     $('salesWho').textContent = a.me.name;
-    $('salesTeam').textContent = [a.me.team ? (a.me.role === 'leader' ? 'Team leader, ' : 'Team ') + a.me.team : 'Jurisbooks sales', a.me.area].filter(Boolean).join(' · ');
+    $('salesTeam').textContent = [a.me.role === 'distributor' ? 'Distributor' : a.me.team ? (a.me.role === 'leader' ? 'Team leader, ' : 'Team ') + a.me.team : 'Jurisbooks sales', a.me.area].filter(Boolean).join(' · ');
     $('salesCodeText').textContent = a.me.code;
     $('salesLink').textContent = a.me.link;
     var shareText = 'Try Jurisbooks - GST billing and accounting, free for 15 days: ' + a.me.link;
@@ -119,16 +148,17 @@
     };
     tiles($('salesTiles'), a.totals, a.shows.amounts);
     leadList($('salesLeads'), a.leads, a.shows, 'Nobody has joined with your link yet. Share it - each person who signs up by it appears here.');
+    commission(a.commission);
     var t = a.team;
     $('salesTeamCard').hidden = !t; $('salesTeamLeadsCard').hidden = !t;
     if (t) {
-      $('salesTeamName').textContent = 'Your team: ' + t.name;
+      $('salesTeamName').textContent = (t.teams > 1 ? 'Your teams: ' : 'Your team: ') + t.name;
       tiles($('salesTeamTiles'), t.totals, a.shows.amounts);
       var body = $('salesPeople'); body.textContent = '';
       t.people.forEach(function (p) {
         var tr = el('tr');
         var td = el('td'); td.appendChild(el('b', null, p.name + (p.you ? ' (you)' : '')));
-        var sub = [p.role === 'leader' ? 'team leader' : '', p.phone ? fPhone(p.phone) : '', p.active ? '' : 'left'].filter(Boolean).join(' · ');
+        var sub = [p.team, p.role === 'leader' ? 'team leader' : '', p.phone ? fPhone(p.phone) : '', p.active ? '' : 'left'].filter(Boolean).join(' · ');
         if (sub) td.appendChild(el('div', 'small-note', sub));
         tr.appendChild(td);
         tr.appendChild(el('td', 'num', String(p.joined))); tr.appendChild(el('td', 'num', String(p.paid)));

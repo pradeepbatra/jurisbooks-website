@@ -804,7 +804,7 @@ select option{background:var(--paper); color:var(--ink);}
 .sales-who{min-width:0; flex:1 1 220px;} .sales-who b{word-break:break-word;}
 .sales-status{text-align:right; flex:0 1 auto;} .sales-acts{display:flex; gap:8px; justify-content:flex-end; margin-top:8px;}
 .sales-acts .btn{padding:5px 12px; font-size:.82rem;}
-.acct-badge.wait{background:#FBF1D8; color:#7A5A12;}
+.acct-badge.wait{background:#FBF1D8; color:#7A5A12;} .sales-void .sales-who, .sales-void .sales-status b{opacity:.55; text-decoration:line-through;}
 .sales-people{width:100%;} .sales-people td, .sales-people th{padding:8px 6px; text-align:left; border-top:1px solid var(--rule);} .sales-people thead th{border-top:0; font-size:.8rem; color:var(--ink-soft);}
 @media (max-width:560px){ .sales-status{text-align:left; flex-basis:100%;} .sales-acts{justify-content:flex-start;} }
 .acct-card .small-note + .acct-actions{margin-top:14px;}
