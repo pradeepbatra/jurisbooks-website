@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales team — Jurisbooks</title>
+<meta name="description" content="Sign-in for the Jurisbooks sales team.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jurisbooks">
+<meta property="og:title" content="Sales team — Jurisbooks">
+<meta property="og:description" content="Sign-in for the Jurisbooks sales team.">
+<meta property="og:image" content="https://jurisbooks.com/images/og-image.png">
+<meta property="og:url" content="https://jurisbooks.com/sales.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sales team — Jurisbooks">
+<meta name="twitter:description" content="Sign-in for the Jurisbooks sales team.">
+<meta name="twitter:image" content="https://jurisbooks.com/images/og-image.png">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="index.html" class="brand">
+      <svg viewBox="0 0 200 200"><path fill="#CDA24B" opacity=".95" d="M18 58 L94 40 L94 158 L18 148 Z"/><path fill="#CDA24B" opacity=".95" d="M182 58 L106 40 L106 158 L182 148 Z"/><rect fill="#CDA24B" x="98" y="36" width="4" height="126"/><text x="55" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">J</text><text x="145" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">B</text><rect fill="#10162A" x="38" y="118" width="34" height="4"/><rect fill="#10162A" x="38" y="132" width="26" height="4"/><rect fill="#10162A" x="128" y="118" width="34" height="4"/><rect fill="#10162A" x="128" y="132" width="26" height="4"/></svg>
+      Juris<span class="brand-accent">books</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="online.html">Online</a></li>
+      <li><a href="offline.html">Offline</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="account.html">My Account</a></li>
+      <li class="nav-app-li"><a href="https://app.jurisbooks.com" target="_blank" rel="noopener">Open App</a></li>
+      <li class="nav-demo-li"><a href="contact.html#enquiry">Request a Demo</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="checkout.html" class="btn btn-primary nav-buy">Buy</a>
+      <a href="download.html" class="btn nav-dl" data-direct-download="online-windows">Download</a>
+      <a href="https://app.jurisbooks.com" target="_blank" rel="noopener" class="btn nav-app">Open App</a>
+      <a href="contact.html#enquiry" class="btn btn-outline">Request a Demo</a>
+      <button class="nav-toggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="section" style="padding-bottom:0;">
+    <div class="container">
+      <div class="eyebrow">Sales team</div>
+      <h1 style="max-width:24ch;">Your link and your customers.</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <div id="salesSignIn" class="acct-card acct-signin">
+        <h2>Sign in</h2>
+        <p class="small-note">For the Jurisbooks sales team. Customers: use <a href="account.html">My Account</a>.</p>
+        <div id="salesStepPhone">
+          <label class="acct-label" for="salesPhone">Mobile number</label>
+          <div class="acct-row"><span class="acct-prefix">+91</span><input id="salesPhone" type="tel" inputmode="numeric" maxlength="14" placeholder="98765 43210" autocomplete="tel"></div>
+          <button id="salesSend" type="button" class="btn btn-primary acct-wide">Send code</button>
+        </div>
+        <div id="salesStepCode" hidden>
+          <label class="acct-label" for="salesCode">Enter the code sent to <b id="salesCodeFor"></b></label>
+          <input id="salesCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="one-time-code" class="acct-code">
+          <button id="salesVerify" type="button" class="btn btn-primary acct-wide">Sign in</button>
+          <p class="small-note"><a href="#" id="salesChange">&larr; Use a different number</a></p>
+        </div>
+        <p id="salesMsg" class="acct-msg" role="status" aria-live="polite"></p>
+      </div>
+
+      <div id="salesView" hidden>
+        <div class="acct-head">
+          <div><div class="eyebrow">Signed in</div><h2 id="salesWho"></h2><p class="small-note" id="salesTeam"></p></div>
+          <div class="acct-actions"><button id="salesRefresh" type="button" class="btn btn-outline">Refresh</button><button id="salesSignOut" type="button" class="btn btn-outline">Sign out</button></div>
+        </div>
+
+        <div class="acct-card">
+          <h3>Your link</h3>
+          <p class="sales-link" id="salesLink"></p>
+          <p class="small-note">Your code: <b class="sales-code" id="salesCodeText"></b> &mdash; a customer can also type it in My Account before buying.</p>
+          <div class="acct-actions"><a id="salesShare" class="btn btn-primary" target="_blank" rel="noopener" href="#">Share on WhatsApp</a><button id="salesCopy" type="button" class="btn btn-outline">Copy link</button></div>
+        </div>
+
+        <div class="sales-tiles" id="salesTiles"></div>
+
+        <div class="acct-card">
+          <h3>Your customers</h3>
+          <div id="salesLeads"></div>
+        </div>
+
+        <div class="acct-card" id="salesTeamCard" hidden>
+          <h3 id="salesTeamName">Your team</h3>
+          <div class="sales-tiles" id="salesTeamTiles"></div>
+          <div class="table-scroll"><table class="acct-pay sales-people">
+            <thead><tr><th>Person</th><th class="num">Joined</th><th class="num">Bought</th><th class="num" id="salesPeopleAmt">Paid by them</th></tr></thead>
+            <tbody id="salesPeople"></tbody>
+          </table></div>
+        </div>
+
+        <div class="acct-card" id="salesTeamLeadsCard" hidden>
+          <h3>Your team's customers</h3>
+          <div id="salesTeamLeads"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg viewBox="0 0 200 200"><path fill="#CDA24B" opacity=".95" d="M18 58 L94 40 L94 158 L18 148 Z"/><path fill="#CDA24B" opacity=".95" d="M182 58 L106 40 L106 158 L182 148 Z"/><rect fill="#CDA24B" x="98" y="36" width="4" height="126"/><text x="55" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">J</text><text x="145" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">B</text><rect fill="#10162A" x="38" y="118" width="34" height="4"/><rect fill="#10162A" x="38" y="132" width="26" height="4"/><rect fill="#10162A" x="128" y="118" width="34" height="4"/><rect fill="#10162A" x="128" y="132" width="26" height="4"/></svg>
+          Juris<span class="brand-accent">books</span>
+        </a>
+        <p>GST billing and complete double-entry accounting for Indian businesses &mdash; in the cloud or on your own computer. Effortless to use, exact to the last paisa.</p>
+        <form id="newsForm" class="news-form" novalidate>
+          <label for="newsEmail" class="news-label">News, tips and new features &mdash; occasionally, never spam.</label>
+          <div class="news-row"><input id="newsEmail" type="email" placeholder="Your email address" autocomplete="email" required><button type="submit" class="btn btn-primary">Subscribe</button></div>
+          <input class="news-trap" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p id="newsNote" class="news-note" role="status" aria-live="polite">You can unsubscribe at any time from any email. See our <a href="privacy.html">Privacy Notice</a>.</p>
+        </form>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="online.html">Jurisbooks</a></li>
+          <li><a href="offline.html">Jurisbooks Offline</a></li>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="download.html">Download &amp; updates</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Jurisbooks</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="privacy.html">Privacy Notice</a></li>
+          <li><a href="refund.html">Refund &amp; Cancellation</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Jurisbooks. All rights reserved.</span>
+      <span>Run your business, by the book.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/downloads.js"></script>
+<script src="js/main.js"></script>
+<script src="js/newsletter.js"></script>
+<script src="js/agree.js"></script>
+<script src="js/whatsapp-float.js"></script>
+<script src="js/sales.js"></script>
+</body>
+</html>

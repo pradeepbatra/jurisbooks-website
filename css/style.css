@@ -791,3 +791,20 @@ select option{background:var(--paper); color:var(--ink);}
 .co-fake-amt{font-family:'IBM Plex Mono',monospace; font-size:1.8rem; font-weight:700;}
 .co-fake-box .btn{width:100%; justify-content:center; margin-top:8px;}
 .co-fix{margin-top:10px; font-size:.85rem; padding:6px 12px;}
+
+/* ---------- Sales team page (sales.html) ---------- */
+.sales-link{font-family:'IBM Plex Mono',monospace; font-size:.95rem; word-break:break-all; background:var(--paper); border:1px solid var(--rule); border-radius:6px; padding:10px 12px; margin:0 0 10px;}
+.sales-code{font-family:'IBM Plex Mono',monospace; letter-spacing:1px;}
+.sales-tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:14px; margin-bottom:20px;}
+.sales-tile{background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:14px 16px;}
+.sales-tile b{display:block; font-size:1.6rem; line-height:1.2;} .sales-tile span{font-size:.82rem; color:var(--ink-soft);}
+.acct-card .sales-tiles{margin-bottom:14px;} .acct-card .sales-tile{background:var(--paper);}
+.sales-lead{display:flex; justify-content:space-between; gap:14px; padding:12px 0; border-top:1px solid var(--rule); flex-wrap:wrap;}
+.sales-lead:first-child{border-top:0; padding-top:0;}
+.sales-who{min-width:0; flex:1 1 220px;} .sales-who b{word-break:break-word;}
+.sales-status{text-align:right; flex:0 1 auto;} .sales-acts{display:flex; gap:8px; justify-content:flex-end; margin-top:8px;}
+.sales-acts .btn{padding:5px 12px; font-size:.82rem;}
+.acct-badge.wait{background:#FBF1D8; color:#7A5A12;}
+.sales-people{width:100%;} .sales-people td, .sales-people th{padding:8px 6px; text-align:left; border-top:1px solid var(--rule);} .sales-people thead th{border-top:0; font-size:.8rem; color:var(--ink-soft);}
+@media (max-width:560px){ .sales-status{text-align:left; flex-basis:100%;} .sales-acts{justify-content:flex-start;} }
+.acct-card .small-note + .acct-actions{margin-top:14px;}
