@@ -15,12 +15,15 @@
    ========================================================================== */
 window.JURISBOOKS_VERSIONS = {
   editions: {
-    trial:    { name: 'Trial',            latest: '1.5.13', released: '8 Oct 2026' },
-    basic:    { name: 'Basic',            latest: '1.5.13', released: '8 Oct 2026' },
-    premium:  { name: 'Premium',          latest: '1.5.13', released: '8 Oct 2026' },
-    business: { name: 'Business Premium', latest: '1.5.13', released: '8 Oct 2026' }
+    trial:    { name: 'Trial',            latest: '1.5.14', released: '10 Oct 2026' },
+    basic:    { name: 'Basic',            latest: '1.5.14', released: '10 Oct 2026' },
+    premium:  { name: 'Premium',          latest: '1.5.14', released: '10 Oct 2026' },
+    business: { name: 'Business Premium', latest: '1.5.14', released: '10 Oct 2026' }
   },
   history: [
+    { v: '1.5.14', date: '10 Oct 2026', items: [
+      'Serial numbers (1, 2, 3...) beside the items while a bill is being typed.'
+    ] },
     { v: '1.5.13', date: '8 Oct 2026', items: [
       'Party balance on bills can be switched off: Business Settings, Printing & Invoice Format, Invoice Content.',
       'A short A4 or A5 bill now fills the whole page, with the totals and footer at the foot of the page.',
