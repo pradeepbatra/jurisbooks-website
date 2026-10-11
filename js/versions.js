@@ -15,12 +15,17 @@
    ========================================================================== */
 window.JURISBOOKS_VERSIONS = {
   editions: {
-    trial:    { name: 'Trial',            latest: '1.5.15', released: '11 Oct 2026' },
-    basic:    { name: 'Basic',            latest: '1.5.15', released: '11 Oct 2026' },
-    premium:  { name: 'Premium',          latest: '1.5.15', released: '11 Oct 2026' },
-    business: { name: 'Business Premium', latest: '1.5.15', released: '11 Oct 2026' }
+    trial:    { name: 'Trial',            latest: '1.5.16', released: '12 Oct 2026' },
+    basic:    { name: 'Basic',            latest: '1.5.16', released: '12 Oct 2026' },
+    premium:  { name: 'Premium',          latest: '1.5.16', released: '12 Oct 2026' },
+    business: { name: 'Business Premium', latest: '1.5.16', released: '12 Oct 2026' }
   },
   history: [
+    { v: '1.5.16', date: '12 Oct 2026', items: [
+      'E-way bill file and GSTR-1 file for the government websites (Premium and Business Premium).',
+      'City, PIN code and a State list on the business and on every party; the e-way bill form opens filled in.',
+      'A customer with no state is a local customer: CGST + SGST on new bills.'
+    ] },
     { v: '1.5.15', date: '11 Oct 2026', items: [
       'Printed bills: a two-page bill is closed properly on each page, in every invoice style.',
       'Total Pcs prints once at the end; empty rows such as Discount 0 are left out; a line after the serial number.'
