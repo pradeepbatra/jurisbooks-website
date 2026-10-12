@@ -5,8 +5,7 @@
 
    TO RELEASE A NEW VERSION:
      1. Change "latest" and "released" for the editions that have a new build.
-     2. Add a new entry at the TOP of "history" saying what is new.
-     3. Push the website. Customers who press "Check for Updates" in the
+     2. Push the website. Customers who press "Check for Updates" in the
         program will now be told a newer version exists.
 
    "trial" is the only edition that is downloadable from the website. Basic,
@@ -19,60 +18,5 @@ window.JURISBOOKS_VERSIONS = {
     basic:    { name: 'Basic',            latest: '1.5.16', released: '12 Oct 2026' },
     premium:  { name: 'Premium',          latest: '1.5.16', released: '12 Oct 2026' },
     business: { name: 'Business Premium', latest: '1.5.16', released: '12 Oct 2026' }
-  },
-  history: [
-    { v: '1.5.16', date: '12 Oct 2026', items: [
-      'E-way bill file and GSTR-1 file for the government websites (Premium and Business Premium).',
-      'City, PIN code and a State list on the business and on every party; the e-way bill form opens filled in.',
-      'A customer with no state is a local customer: CGST + SGST on new bills.'
-    ] },
-    { v: '1.5.15', date: '11 Oct 2026', items: [
-      'Printed bills: a two-page bill is closed properly on each page, in every invoice style.',
-      'Total Pcs prints once at the end; empty rows such as Discount 0 are left out; a line after the serial number.'
-    ] },
-    { v: '1.5.14', date: '10 Oct 2026', items: [
-      'Serial numbers (1, 2, 3...) beside the items while a bill is being typed.'
-    ] },
-    { v: '1.5.13', date: '8 Oct 2026', items: [
-      'Party balance on bills can be switched off: Business Settings, Printing & Invoice Format, Invoice Content.',
-      'A short A4 or A5 bill now fills the whole page, with the totals and footer at the foot of the page.',
-      'Jurisdiction line: type a city and every bill prints "Subject to ... jurisdiction".'
-    ] },
-    { v: '1.5.12', date: '7 Oct 2026', items: [
-      'Salesman and Agent on every bill, and both print on the invoice. Agent replaces the old Broker Name box.',
-      'Salesmen & Agents page: keep your own list of salesmen and agents.',
-      'New report, Salesman / Agent: sales, returns and net sales for each person, with their bills.',
-      'The list of items while billing can always be seen: the page moves up to make room for it.',
-      'Description box on bill lines can be switched off in Business Settings.',
-      'Business Settings arranged in groups, with buttons to jump to each group.'
-    ] },
-    { v: '1.5.1', date: '25 Sep 2026', items: [
-      'Negative billing switch: choose whether a bill may use more stock than you have.',
-      'Credit limit and credit days for each party, with a warning on the sale screen.',
-      'Payment reminders on the Dashboard, with a Remind on WhatsApp button.',
-      'Google Drive sync: keep your books in your own Google Drive and open them on another computer.',
-      'Stock Performance report by party and by your own price ranges (Premium and Business Premium).',
-      'Item pictures on items and bills, and Share via WhatsApp for invoices (from 1.4.4).'
-    ] },
-    { v: '1.4.3', date: '22 Sep 2026', items: [
-      'License keys are now cryptographically signed for stronger protection (every key issued before this version keeps working with nothing for you to do).',
-      'Office sharing (Business Premium) was rebuilt: one main computer holds the only copy of the books, everyone signs in with their own name and password, and a new Administrator role was added.',
-      'A separate, lighter "Jurisbooks Junior" program is now available for the other computers in an office (Business Premium).'
-    ] },
-    { v: '1.2.1', date: '22 Sep 2026', items: [
-      'Sharing over the office network now checks for a genuine Business Premium licence key.',
-      'A licence that has been edited without a genuine key is no longer accepted when the program starts.'
-    ] },
-    { v: '1.2.0', date: '21 Sep 2026', items: [
-      'Four separate editions: Trial, Basic, Premium and Business Premium, each with its own installer.',
-      'Sharing over the office network is now part of Business Premium only.',
-      'The version number is shown in the program, and there is a Check for Updates tab in the menu.'
-    ] },
-    { v: '1.1.0', date: 'up to 19 Sep 2026', items: [
-      'Staff logins with a permission tick-list for each person.',
-      'Sharing over the office network (one main computer, others connect to it).',
-      'Formal GST invoice, dashboard widgets, and a print-only description on invoice lines.',
-      'Automatic backup fixes: per company, and archived financial years backed up separately.'
-    ] }
-  ]
+  }
 };

@@ -2,7 +2,7 @@
    The program's "Check for Updates" tab opens this page with ?v=<version>&edition=<edition>
    (it sends nothing else). Everything is written with textContent, never as HTML. */
 (function () {
-  var V = window.JURISBOOKS_VERSIONS || { editions: {}, history: [] };
+  var V = window.JURISBOOKS_VERSIONS || { editions: {} };
   function el(id) { return document.getElementById(id); }
   function cmp(a, b) {
     var x = String(a).split('.').map(Number), y = String(b).split('.').map(Number);
@@ -22,14 +22,6 @@
       var how = add(tr, 'td');
       how.textContent = 'We send it to you';   // Offline is provided personally (26 Sep 2026: no public download)
     });
-    // ---- what's new ----
-    var hist = el('verHistory');
-    if (hist) V.history.forEach(function (h) {
-      var box = add(hist, 'div', null, 'ver-entry');
-      add(box, 'h3', 'Version ' + h.v + '  ·  ' + h.date);
-      var ul = add(box, 'ul'); h.items.forEach(function (t) { add(ul, 'li', t); });
-    });
-
     // ---- the visitor's own result ----
     var box = el('verResult'), q;
     try { q = new URLSearchParams(location.search); } catch (e) { return; }
