@@ -10,7 +10,7 @@
    change in a way people should agree to again - everyone will be asked once more.
    ========================================================================== */
 (function () {
-  var TERMS_VERSION = '2026-10-11'; window.JB_TERMS_VERSION = TERMS_VERSION;  // also sent with a download record   // 11 Oct: mobile plans (5.4), GST on top (6.1), receipt then invoice (6.6), licence and usage information (11.4). 4 Oct: clause 4.1 - the cloud edition's free trial is 15 days (Offline 7). 27 Sep: rewritten in full.
+  var TERMS_VERSION = '2026-10-12'; window.JB_TERMS_VERSION = TERMS_VERSION;  // also sent with a download record   // 12 Oct: customers' websites (5.5, 8.2-8.7), mobile plans in the app only (5.4). 11 Oct: mobile plans (5.4), GST on top (6.1), receipt then invoice (6.6), licence and usage information (11.4). 4 Oct: clause 4.1 - the cloud edition's free trial is 15 days (Offline 7). 27 Sep: rewritten in full.
   var KEY = 'jb_agreed';
 
   function agreed() { try { return (localStorage.getItem(KEY) || '').split('|')[0] === TERMS_VERSION; } catch (e) { return false; } }
