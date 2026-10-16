@@ -14,9 +14,9 @@
    ========================================================================== */
 window.JURISBOOKS_VERSIONS = {
   editions: {
-    trial:    { name: 'Trial',            latest: '1.5.21', released: '14 Oct 2026' },
-    basic:    { name: 'Basic',            latest: '1.5.21', released: '14 Oct 2026' },
-    premium:  { name: 'Premium',          latest: '1.5.21', released: '14 Oct 2026' },
-    business: { name: 'Business Premium', latest: '1.5.21', released: '14 Oct 2026' }
+    trial:    { name: 'Trial',            latest: '1.5.22', released: '16 Oct 2026' },
+    basic:    { name: 'Basic',            latest: '1.5.22', released: '16 Oct 2026' },
+    premium:  { name: 'Premium',          latest: '1.5.22', released: '16 Oct 2026' },
+    business: { name: 'Business Premium', latest: '1.5.22', released: '16 Oct 2026' }
   }
 };
