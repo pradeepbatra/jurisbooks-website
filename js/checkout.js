@@ -235,7 +235,7 @@
   $('coPay').addEventListener('click', function () {
     if (state.busy) return;
     state.busy = true; updatePay(); msg('coPayMsg', 'Opening the payment page…', true);
-    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-10-12', ref: LINK ? '' : refCode(), link: LINK || undefined })
+    S.call('buyCreateOrder', { pass: state.pass, plan: state.plan, years: state.years, seats: isSeats() ? state.seats : undefined, name: ss(K_NAME) || $('coName').value.trim(), termsVersion: window.JB_TERMS_VERSION || '2026-10-17', ref: LINK ? '' : refCode(), link: LINK || undefined })
       .then(function (r) { ss(K_ORDER, r.orderId); return openCheckout(r); })
       .catch(function (e) { state.busy = false; updatePay(); msg('coPayMsg', e.message); });
   });
