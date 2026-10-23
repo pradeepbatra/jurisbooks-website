@@ -211,7 +211,7 @@
     $('salesTeam').textContent = [a.me.role === 'distributor' ? 'Distributor' : a.me.team ? (a.me.role === 'leader' ? 'Team leader, ' : 'Team ') + a.me.team : 'Jurisbooks sales', a.me.area].filter(Boolean).join(' · ');
     $('salesCodeText').textContent = a.me.code;
     $('salesLink').textContent = a.me.link;
-    var shareText = 'Try Jurisbooks - GST billing and accounting, free for 15 days: ' + a.me.link;
+    var shareText = 'Try Jurisbooks - GST billing and accounting, free for 7 days: ' + a.me.link;
     $('salesShare').href = 'https://wa.me/?text=' + encodeURIComponent(shareText);
     $('salesCopy').onclick = function () {
       var done = function () { $('salesCopy').textContent = 'Copied'; setTimeout(function () { $('salesCopy').textContent = 'Copy link'; }, 1600); };
