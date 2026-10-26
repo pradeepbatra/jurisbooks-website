@@ -89,6 +89,23 @@
           <div class="acct-actions"><button id="salesRefresh" type="button" class="btn btn-outline">Refresh</button><button id="salesSignOut" type="button" class="btn btn-outline">Sign out</button></div>
         </div>
 
+        <div class="acct-card" id="crmCard" hidden>
+          <h3>Leads to chase</h3>
+          <p class="small-note">The people handed to you to call. Change the stage after each talk, set the next call-back date, and log what was said.</p>
+          <div class="sales-tiles" id="crmTiles"></div>
+          <div class="acct-actions"><button id="crmAddBtn" type="button" class="btn btn-outline">Add a lead I found</button><label class="small-note"><input id="crmOpenOnly" type="checkbox" checked> only open leads</label></div>
+          <div id="crmAdd" hidden class="crm-form">
+            <label class="acct-label" for="crmName">Name</label><input id="crmName" type="text" maxlength="100" autocomplete="off">
+            <label class="acct-label" for="crmBiz">Business</label><input id="crmBiz" type="text" maxlength="120" autocomplete="off">
+            <label class="acct-label" for="crmPhone">Mobile number</label><div class="acct-row"><span class="acct-prefix">+91</span><input id="crmPhone" type="tel" inputmode="numeric" maxlength="14" autocomplete="off"></div>
+            <label class="acct-label" for="crmCity">City</label><input id="crmCity" type="text" maxlength="60" autocomplete="off">
+            <label class="acct-label" for="crmCb">Call back on</label><input id="crmCb" type="date">
+            <button id="crmAddSave" type="button" class="btn btn-primary acct-wide">Add lead</button>
+            <p id="crmAddMsg" class="acct-msg" role="status" aria-live="polite"></p>
+          </div>
+          <div id="crmList"></div>
+        </div>
+
         <div class="acct-card">
           <h3>Your link</h3>
           <p class="sales-link" id="salesLink"></p>
@@ -108,12 +125,12 @@
           <label class="acct-label" for="slAmount">Price you agreed (&#8377;)</label>
           <input id="slAmount" type="number" inputmode="numeric" min="1" step="1">
           <p class="small-note" id="slHint"></p>
-          <button id="slMake" type="button" class="btn btn-primary acct-wide">Make the link</button>
+          <button id="slMake" type="button" class="btn btn-primary acct-wide">Send the price to the customer</button>
           <p id="slMsg" class="acct-msg" role="status" aria-live="polite"></p>
-          <div id="slResult" hidden>
+                    <div id="slResult" hidden>
             <p class="sales-link" id="slLink"></p>
-            <div class="acct-actions"><a id="slWhats" class="btn btn-primary" target="_blank" rel="noopener" href="#">WhatsApp to customer</a><a id="slMail" class="btn btn-outline" href="#">Email</a><button id="slCopy" type="button" class="btn btn-outline">Copy</button></div>
           </div>
+          <p class="co-safe">Jurisbooks sends the price to the customer itself. Never send a payment link, QR code or UPI ID from your own phone. Tell the customer: pay only on jurisbooks.com.</p>
           <div id="slList"></div>
         </div>
 

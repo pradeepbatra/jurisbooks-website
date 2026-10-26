@@ -1,5 +1,6 @@
 /* Sales team page (sales.html): Jurisbooks' own sales people sign in with their mobile number and a one-time
-   code, and see their referral link, the customers they brought and - a team leader - their team.
+   code, and see their referral link, the customers they brought and - a team leader - their team, and the
+   leads handed to them to chase (stage, call-back, notes). Nothing else of the Back Office is shown here.
    Only numbers the owner has added in Back Office (Referrals & sales teams) can sign in.
    Everything shown is written with textContent (never innerHTML). */
 (function () {
@@ -58,7 +59,11 @@
   function load() {
     var p = getPass(); if (!p) return showSignIn();
     msg('Loading…', true);
-    call('salesPortal', { pass: p }).then(render).catch(function (e) {
+    // the Refresh button shows that it is working (the message above is on the sign-in card, hidden once signed in)
+    var btn = $('salesRefresh'); btn.disabled = true; btn.textContent = 'Refreshing…';
+    var done = function (text) { btn.disabled = false; btn.textContent = text; if (text !== 'Refresh') setTimeout(function () { btn.textContent = 'Refresh'; }, 2000); };
+    call('salesPortal', { pass: p }).then(function (a) { render(a); done('Updated ✓'); }).catch(function (e) {
+      done('Refresh');
       if (e.code === 'portal-expired' || /sign in again/i.test(e.message)) { setPass(''); return showSignIn('Please sign in again.'); }
       showSignIn(e.message);      // no internet just now: the sign-in is kept, "Try again" by reloading
     });
@@ -146,17 +151,14 @@
     $('slHint').textContent = t;
   }
   function linkStatus(l) { return l.status === 'paid' ? ['Paid', 'ok'] : l.status === 'expired' ? ['Expired', 'bad'] : ['Waiting - ' + Math.max(1, Math.round((l.expiresAt - Date.now()) / 60000)) + ' min left', 'wait']; }
-  function linkText(l) { return 'Namaste ' + l.name + ', here is your Jurisbooks ' + l.label + ' payment link (' + l.years + ' year' + (l.years > 1 ? 's' : '') + ', ' + money(l.amount) + (LINKS.gstRate ? ' + GST' : '') + '). It works for ' + (LINKS.minutes || 60) + ' minutes: ' + l.link; }
-  function showLink(l) {
-    $('slResult').hidden = false; $('slLink').textContent = l.link;
-    var text = linkText(l);
-    $('slWhats').href = 'https://wa.me/' + String(l.phone).replace(/\D/g, '') + '?text=' + encodeURIComponent(text);
-    $('slMail').href = 'mailto:?subject=' + encodeURIComponent('Your Jurisbooks payment link') + '&body=' + encodeURIComponent(text);
-    $('slCopy').onclick = function () {
-      var done = function () { $('slCopy').textContent = 'Copied'; setTimeout(function () { $('slCopy').textContent = 'Copy'; }, 1600); };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { window.prompt('Copy:', text); }); else window.prompt('Copy:', text);
-    };
+  // What happened to the price: Jurisbooks sent it by SMS, or the customer finds it on jurisbooks.com (the sales person
+  // never gets a link to forward - owner, 26 Oct 2026).
+  function sentText(l) {
+    return l.sent === 'sms'
+      ? 'Jurisbooks has sent the price by SMS to ' + fPhone(l.phone) + '. The customer opens it, verifies the number and pays on jurisbooks.com.'
+      : 'Ask the customer to open jurisbooks.com, press Buy and verify ' + fPhone(l.phone) + ': the agreed price shows there by itself (for ' + (LINKS.minutes || 60) + ' minutes).';
   }
+  function showLink(l) { $('slResult').hidden = false; $('slLink').textContent = sentText(l); }
   function drawLinks() {
     var box = $('slList'); box.textContent = '';
     if (!LINKS.links.length) return;
@@ -168,7 +170,15 @@
       row.appendChild(who);
       var st = el('div', 'sales-status'), s = linkStatus(l);
       st.appendChild(el('span', 'acct-badge ' + s[1], s[0]));
-      if (l.status === 'open') { var acts = el('div', 'sales-acts'); var b = el('button', 'btn btn-outline', 'Send again'); b.type = 'button'; b.addEventListener('click', function () { showLink(l); $('slResult').scrollIntoView({ block: 'center' }); }); acts.appendChild(b); st.appendChild(acts); }
+      if (l.status === 'open') {
+        var acts = el('div', 'sales-acts'); var b = el('button', 'btn btn-outline', 'Send again'); b.type = 'button';
+        b.addEventListener('click', function () {
+          b.disabled = true;
+          call('salesResendLink', { pass: getPass(), id: l.id }).then(function (n) { showLink(n); $('slResult').scrollIntoView({ block: 'center' }); })
+            .catch(function (e) { $('slMsg').className = 'acct-msg'; $('slMsg').textContent = e.message; }).then(function () { b.disabled = false; });
+        });
+        acts.appendChild(b); st.appendChild(acts);
+      }
       row.appendChild(st); box.appendChild(row);
     });
   }
@@ -197,12 +207,114 @@
     if (!/^[6-9]\d{9}$/.test(ph)) { m.textContent = 'Enter the customer\u2019s 10-digit mobile number.'; return; }
     $('slMake').disabled = true; m.textContent = 'Making the link\u2026'; m.className = 'acct-msg ok';
     call('salesMakeLink', { pass: getPass(), name: $('slName').value.trim(), phone: ph, plan: $('slPlan').value, years: Number($('slYears').value), amount: Number($('slAmount').value) }).then(function (l) {
-      m.textContent = 'Link ready - send it now. It works for ' + (LINKS.minutes || 60) + ' minutes.';
+      m.textContent = 'Done. The price works for ' + (LINKS.minutes || 60) + ' minutes.';
       LINKS.links.unshift(l); showLink(l); drawLinks();
     }).catch(function (e) {
       if (e.code === 'portal-expired' || /sign in again/i.test(e.message)) { setPass(''); return showSignIn('Please sign in again.'); }
       m.className = 'acct-msg'; m.textContent = e.message;
     }).then(function () { $('slMake').disabled = false; });
+  }
+  // ---- Leads to chase (cloud lib/leads.js): only the leads handed to this person (a team leader: the team's).
+  var CRM = null;
+  var HEAT = { hot: 'Hot', warm: 'Warm', cold: 'Cold' };
+  function stageName(id) { var s = (CRM.stages || []).filter(function (x) { return x.id === id; })[0]; return s ? s.label : id; }
+  function crmFail(e, box) {
+    if (e.code === 'portal-expired' || /sign in again/i.test(e.message)) { setPass(''); return showSignIn('Please sign in again.'); }
+    box.className = 'acct-msg'; box.textContent = e.message;
+  }
+  function opt(sel, value, text) { var o = el('option', null, text); o.value = value; sel.appendChild(o); }
+  function crmLead(l) {
+    var row = el('div', 'crm-lead');
+    var top = el('div', 'crm-top');
+    var who = el('div'); who.appendChild(el('b', null, l.business || l.name || fPhone(l.phone)));
+    var sub = [l.business && l.name ? l.name : '', l.city, CRM.canHand && l.ownerName ? 'with ' + l.ownerName : ''].filter(Boolean).join(' · ');
+    if (sub) who.appendChild(el('div', 'small-note', sub));
+    top.appendChild(who);
+    var bs = el('div', 'crm-badges');
+    bs.appendChild(el('span', 'acct-badge ' + (l.stage === 'bought' ? 'ok' : l.stage === 'lost' ? 'bad' : 'wait'), stageName(l.stage)));
+    if (l.heat) bs.appendChild(el('span', 'acct-badge ' + (l.heat === 'hot' ? 'hot' : 'info'), HEAT[l.heat]));
+    if (l.callBackAt) bs.appendChild(el('span', 'acct-badge ' + (l.due ? 'bad' : 'info'), (l.due ? 'CALL TODAY · ' : 'Call back ') + fDate(new Date(l.callBackAt + 'T00:00:00').getTime())));
+    top.appendChild(bs);
+    row.appendChild(top);
+    var lost = l.stage === 'lost' ? 'Lost: ' + ((CRM.lostReasons.filter(function (r) { return r.id === l.lostReason; })[0] || {}).label || '') + (l.lostNote ? ' - ' + l.lostNote : '') : '';
+    row.appendChild(el('div', 'small-note', [l.callBackNote, lost, 'Last talked: ' + (l.lastContactAt ? fDate(l.lastContactAt) : 'never')].filter(Boolean).join(' · ')));
+    var acts = el('div', 'sales-acts');
+    if (l.phone) {
+      var tel = el('a', 'btn btn-outline', 'Call'); tel.href = 'tel:' + l.phone;
+      tel.addEventListener('click', function () { call('salesLeadNote', { pass: getPass(), id: l.id, kind: 'call', text: '' }).catch(function () {}); });
+      var wa = el('a', 'btn btn-outline', 'WhatsApp'); wa.target = '_blank'; wa.rel = 'noopener';
+      wa.href = 'https://wa.me/' + l.phone.replace(/\D/g, '') + '?text=' + encodeURIComponent('Namaste ' + (l.name || '') + ', ');
+      wa.addEventListener('click', function () { call('salesLeadNote', { pass: getPass(), id: l.id, kind: 'whatsapp', text: '' }).catch(function () {}); });
+      acts.appendChild(tel); acts.appendChild(wa);
+    }
+    var upd = el('button', 'btn btn-primary', 'Update'); upd.type = 'button';
+    acts.appendChild(upd);
+    row.appendChild(acts);
+    var form = null;
+    upd.addEventListener('click', function () {
+      if (form) { form.remove(); form = null; return; }
+      form = el('div', 'crm-edit');
+      var lab = function (t, input, full) { var w = el('div', full ? 'full' : null); w.appendChild(el('label', null, t)); w.appendChild(input); form.appendChild(w); return input; };
+      var st = lab('Stage', el('select'));
+      (CRM.stages || []).filter(function (s) { return s.manual; }).forEach(function (s) { opt(st, s.id, s.label); });
+      st.value = l.stage === 'bought' ? 'interested' : l.stage;
+      var ht = lab('Hot / warm / cold', el('select')); opt(ht, '', '-'); opt(ht, 'hot', 'Hot'); opt(ht, 'warm', 'Warm'); opt(ht, 'cold', 'Cold'); ht.value = l.heat || '';
+      var cb = lab('Next call-back', el('input')); cb.type = 'date'; cb.value = l.callBackAt || '';
+      var cbn = lab('Call-back note', el('input')); cbn.maxLength = 200; cbn.value = l.callBackNote || '';
+      var lr = lab('Why lost', el('select')); opt(lr, '', 'Choose why...'); (CRM.lostReasons || []).forEach(function (r) { opt(lr, r.id, r.label); }); lr.value = l.lostReason || '';
+      var lrWrap = lr.parentNode;
+      var hand = null;
+      if (CRM.canHand) { hand = lab('Who works on it', el('select')); CRM.targets.forEach(function (t) { opt(hand, t.key, t.label); }); hand.value = l.owner; }
+      var note = lab('What was said (saved as a note)', el('textarea'), true); note.rows = 2; note.maxLength = 1000;
+      var show = function () { lrWrap.hidden = st.value !== 'lost'; }; st.addEventListener('change', show); show();
+      var save = el('button', 'btn btn-primary', 'Save'); save.type = 'button';
+      var m = el('p', 'acct-msg'); var w = el('div', 'full'); w.appendChild(save); w.appendChild(m); form.appendChild(w);
+      save.addEventListener('click', function () {
+        var f = { heat: ht.value, callBackAt: cb.value, callBackNote: cbn.value };
+        if (l.stage !== 'bought' && st.value !== l.stage) f.stage = st.value;
+        if (st.value === 'lost') { f.stage = 'lost'; f.lostReason = lr.value; }
+        if (hand && hand.value !== l.owner) f.owner = hand.value;
+        save.disabled = true; m.className = 'acct-msg ok'; m.textContent = 'Saving...';
+        var p = note.value.trim() ? call('salesLeadNote', { pass: getPass(), id: l.id, kind: 'note', text: note.value.trim() }) : Promise.resolve();
+        p.then(function () { return call('salesLeadSave', { pass: getPass(), id: l.id, fields: f }); }).then(load)
+          .catch(function (e) { crmFail(e, m); save.disabled = false; });
+      });
+      row.appendChild(form);
+    });
+    if (l.log && l.log.length) {
+      var ul = el('ul', 'crm-log');
+      l.log.slice(0, 4).forEach(function (x) { ul.appendChild(el('li', null, fDate(x.at) + ' · ' + x.by + ': ' + x.text)); });
+      row.appendChild(ul);
+    }
+    return row;
+  }
+  function drawCrm(c) {
+    CRM = c || null;
+    $('crmCard').hidden = !CRM;
+    if (!CRM) return;
+    var t = $('crmTiles'); t.textContent = '';
+    var s = CRM.summary || {};
+    var open = (CRM.leads || []).filter(function (l) { return l.stage !== 'bought' && l.stage !== 'lost'; });
+    var tile = function (n, label) { var d = el('div', 'sales-tile'); d.appendChild(el('b', null, String(n))); d.appendChild(el('span', null, label)); t.appendChild(d); };
+    tile((CRM.leads || []).filter(function (l) { return l.due; }).length, 'to call today');
+    tile(open.length, 'open leads');
+    tile(s.interested || 0, 'interested');
+    tile(s.bought || 0, 'bought');
+    tile(s.lost || 0, 'lost');
+    var list = $('crmList'); list.textContent = '';
+    var rows = $('crmOpenOnly').checked ? open : (CRM.leads || []);
+    if (!rows.length) list.appendChild(el('p', 'small-note', 'No leads to chase right now. Your manager hands leads to you here - or add one you found.'));
+    rows.forEach(function (l) { list.appendChild(crmLead(l)); });
+  }
+  function addLead() {
+    var m = $('crmAddMsg'); m.className = 'acct-msg'; m.textContent = '';
+    var ph = $('crmPhone').value.replace(/\D/g, '').slice(-10);
+    if (!$('crmName').value.trim() && !$('crmBiz').value.trim()) { m.textContent = 'Enter the name or the business.'; return; }
+    if (!/^[6-9]\d{9}$/.test(ph)) { m.textContent = 'Enter the 10-digit mobile number.'; return; }
+    $('crmAddSave').disabled = true;
+    call('salesLeadAdd', { pass: getPass(), fields: { name: $('crmName').value.trim(), business: $('crmBiz').value.trim(), phone: ph, city: $('crmCity').value.trim(), callBackAt: $('crmCb').value } })
+      .then(function () { ['crmName', 'crmBiz', 'crmPhone', 'crmCity', 'crmCb'].forEach(function (id) { $(id).value = ''; }); $('crmAdd').hidden = true; load(); })
+      .catch(function (e) { crmFail(e, m); }).then(function () { $('crmAddSave').disabled = false; });
   }
   function render(a) {
     msg('');
@@ -218,6 +330,7 @@
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(a.me.link).then(done, function () { window.prompt('Copy your link:', a.me.link); });
       else window.prompt('Copy your link:', a.me.link);
     };
+    drawCrm(a.crm);
     tiles($('salesTiles'), a.totals, a.shows.amounts);
     leadList($('salesLeads'), a.leads, a.shows, 'Nobody has joined with your link yet. Share it - each person who signs up by it appears here.');
     commission(a.commission);
@@ -251,7 +364,18 @@
     $('salesCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyCode(); });
     $('salesChange').addEventListener('click', function (e) { e.preventDefault(); showSignIn(); });
     $('salesSignOut').addEventListener('click', function () { setPass(''); showSignIn(); });
-    $('salesRefresh').addEventListener('click', load);
+    // Refresh starts clean: the customer details typed for a payment link or a new lead are cleared
+    $('salesRefresh').addEventListener('click', function () {
+      ['slName', 'slPhone', 'crmName', 'crmBiz', 'crmPhone', 'crmCity', 'crmCb'].forEach(function (id) { if ($(id)) $(id).value = ''; });
+      ['slMsg', 'crmAddMsg'].forEach(function (id) { if ($(id)) { $(id).textContent = ''; $(id).className = 'acct-msg'; } });
+      if ($('slResult')) $('slResult').hidden = true;
+      if ($('crmAdd')) $('crmAdd').hidden = true;
+      if (LINKS) linkHint(true);          // the price goes back to the plan's normal price
+      load();
+    });
+    $('crmAddBtn').addEventListener('click', function () { $('crmAdd').hidden = !$('crmAdd').hidden; });
+    $('crmAddSave').addEventListener('click', addLead);
+    $('crmOpenOnly').addEventListener('change', function () { drawCrm(CRM); });
     load();
   });
 })();

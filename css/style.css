@@ -810,6 +810,13 @@ select option{background:var(--paper); color:var(--ink);}
 @media (max-width:560px){ .sales-status{text-align:left; flex-basis:100%;} .sales-acts{justify-content:flex-start;} }
 .acct-card .small-note + .acct-actions{margin-top:14px;}
 /* Sales page: send a payment link */
+.co-safe{margin-top:14px; padding:10px 12px; border:1px solid #E2C27A; background:#FBF1D8; color:#5E4410; border-radius:8px; font-size:.84rem; line-height:1.45;}
+.crm-form{max-width:420px; margin:10px 0 18px;} .crm-lead{border-top:1px solid var(--rule); padding:12px 0;} .crm-lead:first-child{border-top:0;}
+.crm-top{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;} .crm-top b{word-break:break-word;}
+.crm-badges{display:flex; gap:6px; flex-wrap:wrap; align-items:center;} .acct-badge.hot{background:#F6E1DD; color:#9C2F22;} .acct-badge.info{background:var(--paper); color:var(--ink-soft); border:1px solid var(--rule);}
+.crm-edit{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:8px 12px; margin-top:10px; background:var(--paper); border:1px solid var(--rule); border-radius:10px; padding:12px;}
+.crm-edit label{font-size:.8rem; color:var(--ink-soft); display:block;} .crm-edit select, .crm-edit input, .crm-edit textarea{width:100%; box-sizing:border-box;} .crm-edit .full{grid-column:1/-1;}
+.crm-log{font-size:.82rem; color:var(--ink-soft); margin:6px 0 0; padding-left:16px;}
 .sales-linkcard{max-width:none;} .sales-linkcard .acct-row select{flex:1; min-width:0;} .sales-linkcard #slList{margin-top:18px;} .sales-linkcard #slResult{margin-top:6px;}
 /* Buy page: referral code box */
 .co-ref{text-transform:uppercase; letter-spacing:1px; font-family:'IBM Plex Mono',monospace !important; max-width:220px;} .co-optional{font-weight:400; color:var(--ink-soft);} .co-refmsg{margin:6px 0 0; min-height:1.2em;}
