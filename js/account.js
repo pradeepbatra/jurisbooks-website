@@ -69,6 +69,12 @@
 
   // ---- the account ----
   var DATA = null;
+  function saveKyc() {
+    var b = $('kycSave'); b.disabled = true; msg('kycMsg', 'Sending…', true);
+    call('portalMsgKyc', { pass: getPass(), business: $('kycBiz').value.trim(), gstin: $('kycGstin').value.trim(), pan: $('kycPan').value.trim() })
+      .then(function () { msg('kycMsg', 'Sent. We will check it and switch SMS on.', true); load(); })
+      .catch(function (e) { msg('kycMsg', e.message); }).then(function () { b.disabled = false; });
+  }
   function load() {
     var p = getPass(); if (!p) return showSignIn();
     msg('acctMsg', 'Loading your account…', true);
@@ -108,6 +114,18 @@
     if (a.plan.plan !== 'trial' && a.plan.active) { var seats = el('a', 'btn btn-outline', 'Add seats'); seats.href = 'checkout.html?plan=seats&seats=1&years=1'; row.appendChild(seats);
       var mm = el('a', 'btn btn-outline', a.plan.messages ? 'Renew customer messages' : 'Add customer messages'); mm.href = 'checkout.html?plan=messages&years=1'; row.appendChild(mm); }
     row.appendChild(more); pl.appendChild(row);
+    // business IDs for the SMS add-on (cloud lib/msgkyc.js): shown to anyone who has bought the add-on
+    var m = a.plan.messages, card = $('kycCard');
+    if (card) {
+      card.hidden = !m;
+      if (m) {
+        var k = m.kyc, st = $('kycState'); st.textContent = '';
+        var lab = !k ? ['Not given yet - SMS cannot go out', 'bad'] : k.status === 'approved' ? ['Checked and approved - SMS is on', 'ok'] : k.status === 'pending' ? ['Waiting for Jurisbooks to check', 'wait'] : ['Not approved: ' + (k.note || 'please correct and send again'), 'bad'];
+        st.appendChild(el('span', 'acct-badge ' + lab[1], lab[0]));
+        if (k) { $('kycBiz').value = k.business; $('kycGstin').value = k.gstin; $('kycPan').value = k.gstin ? '' : k.pan; }
+        else if (!$('kycBiz').value) $('kycBiz').value = a.account.business || '';
+      }
+    }
     // companies
     var co = $('acctCompanies'); co.textContent = '';
     if (!a.companies.length) co.appendChild(el('p', 'small-note', 'No companies yet. Create one in Jurisbooks.'));
@@ -190,6 +208,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    if ($('kycSave')) $('kycSave').addEventListener('click', saveKyc);
     $('acctSend').addEventListener('click', sendCode);
     $('acctVerify').addEventListener('click', verifyCode);
     $('acctPhone').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendCode(); });

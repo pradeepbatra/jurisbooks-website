@@ -95,6 +95,18 @@
           <div class="acct-card"><h3>Your plan</h3><div id="acctPlan"></div></div>
           <div class="acct-card"><h3>Companies</h3><ul id="acctCompanies" class="acct-list"></ul></div>
         </div>
+        <div class="acct-card" id="kycCard" hidden>
+          <h3>Customer messages (SMS): your business IDs</h3>
+          <p class="small-note">Every SMS to your customers goes out under the Jurisbooks sender name, so we check the business behind it first. Give your GSTIN &mdash; or your PAN if the business has no GST. SMS starts once Jurisbooks has checked them (usually within a working day).</p>
+          <p id="kycState"></p>
+          <div class="crm-form">
+            <label class="acct-label" for="kycBiz">Business name (as registered)</label><input id="kycBiz" type="text" maxlength="120" autocomplete="organization">
+            <label class="acct-label" for="kycGstin">GSTIN</label><input id="kycGstin" type="text" maxlength="15" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. 27AAPFU0939F1ZV">
+            <label class="acct-label" for="kycPan">PAN <span class="co-optional">(only if there is no GSTIN)</span></label><input id="kycPan" type="text" maxlength="10" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. AAPFU0939F">
+            <button id="kycSave" type="button" class="btn btn-primary acct-wide">Send for checking</button>
+            <p id="kycMsg" class="acct-msg" role="status" aria-live="polite"></p>
+          </div>
+        </div>
         <div class="acct-card">
           <h3>Transaction history</h3>
           <div class="compare-wrap"><table class="compare acct-pay">
