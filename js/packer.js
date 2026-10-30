@@ -1,4 +1,4 @@
-/* Packer page (packer.html): staff of a Business Premium business sign in once with their mobile number and a code,
+/* Packer page (packer.html): staff of a Premium or Business Premium business sign in once with their mobile number and a code,
    and see only the orders given to them: items, quantities, bags, transport, address - never a rate or an amount.
    Start packing > Packed (bags) > Handed to transport (LR no.). A new phone signing in ends the old one.
    Everything shown is written with textContent (never innerHTML). */
