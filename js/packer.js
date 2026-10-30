@@ -171,7 +171,8 @@
   function render(jobs, stats) {
     last = { jobs: jobs, stats: stats };
     var box = $('pkJobs'); box.textContent = '';
-    if (!tab) tab = stats && !stats.remaining ? 'done' : 'left';
+    if (!stats) tab = 'all';           // a server without the counts: show every order
+    else if (!tab) tab = stats.remaining ? 'left' : 'done';
     if (stats) {
       var row = el('div', 'pk-stats');
       [['all', 'Assigned', stats.assigned], ['done', 'Packed', stats.done], ['left', 'Remaining', stats.remaining]].forEach(function (s) {
