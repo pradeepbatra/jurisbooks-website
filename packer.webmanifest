@@ -1,0 +1,9 @@
+{
+  "name": "Jurisbooks Packer",
+  "short_name": "Packer",
+  "start_url": "packer.html",
+  "display": "standalone",
+  "background_color": "#f2f4f7",
+  "theme_color": "#12283f",
+  "icons": [{ "src": "images/logo-mark.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}
