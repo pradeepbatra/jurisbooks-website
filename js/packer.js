@@ -188,6 +188,47 @@
     shown.forEach(function (j) { box.appendChild(jobCard(j)); });
   }
 
+  // ---- keep it on the phone: Android asks through Chrome, an iPhone has no prompt, so it gets the steps ----
+  var INSTALL_KEY = 'jb_packer_install', installEvt = null;
+  function installState() { try { return localStorage.getItem(INSTALL_KEY) || ''; } catch (e) { return ''; } }
+  function setInstallState(v) { try { localStorage.setItem(INSTALL_KEY, v); } catch (e) {} }
+  function isInstalled() { return installState() === 'done' || window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches; }
+  function snoozed() { return Number(installState()) > Date.now(); }
+  function hideInstall() { $('pkInstall').hidden = true; }
+  function showInstall() {
+    if (isInstalled() || snoozed()) return hideInstall();
+    var ua = navigator.userAgent, box = $('pkInstall'), row = el('div', 'pk-install-row');
+    var ios = /iPhone|iPad|iPod/.test(ua), android = /Android/.test(ua), inApp = android && /; wv\)/.test(ua);
+    box.textContent = '';
+    box.appendChild(el('b', '', 'Install the Packer app on this phone?'));
+    if (installEvt) {
+      box.appendChild(el('span', '', 'It opens from your home screen like any other app.'));
+      var yes = el('button', 'go', 'Yes, install'); yes.type = 'button';
+      yes.onclick = function () {
+        var e = installEvt; installEvt = null; e.prompt();
+        e.userChoice.then(function (c) { if (c.outcome === 'accepted') setInstallState('done'); hideInstall(); });
+      };
+      row.appendChild(yes);
+    } else if (ios) {
+      box.appendChild(el('span', '', 'Tap the Share button in Safari, then Add to Home Screen.'));
+    } else if (inApp) {
+      box.appendChild(el('span', '', 'Open this page in Chrome to install it.'));
+      var a = el('a', 'go', 'Open in Chrome'); a.href = 'intent://jurisbooks.com/packer.html#Intent;scheme=https;package=com.android.chrome;end';
+      row.appendChild(a);
+    } else if (android) {
+      box.appendChild(el('span', '', 'Tap the three dots in Chrome, then Install app or Add to Home screen.'));
+    } else return hideInstall();
+    var no = el('button', '', 'Not now'); no.type = 'button';
+    no.onclick = function () { setInstallState(String(Date.now() + 7 * 86400000)); hideInstall(); };
+    row.appendChild(no);
+    box.appendChild(row);
+    box.hidden = false;
+  }
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); installEvt = e; showInstall(); });
+  window.addEventListener('appinstalled', function () { setInstallState('done'); hideInstall(); });
+  if (window.matchMedia('(display-mode: standalone)').matches) setInstallState('done');
+  setTimeout(showInstall, 2500);       // no prompt came by now: an iPhone, or another browser - show the steps instead
+
   $('pkSend').onclick = sendCode;
   $('pkVerify').onclick = verifyCode;
   $('pkBack').onclick = function () { showSignIn(''); };
