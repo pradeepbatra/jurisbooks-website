@@ -141,11 +141,12 @@
   // ---- payment links: agree a price with a new customer and send them a link to pay (valid for one hour) ----
   var LINKS = null;
   function linkNormal() { var p = (LINKS.plans || []).filter(function (x) { return x.plan === $('slPlan').value; })[0]; return p ? p.prices[$('slYears').value] || 0 : 0; }
+  function linkFloor(n) { var p = (LINKS.plans || []).filter(function (x) { return x.plan === $('slPlan').value; })[0], f = p && p.floors && p.floors[$('slYears').value]; return f != null ? f : Math.ceil(n * (100 - (LINKS.maxDiscount || 0)) / 100); }
   function linkHint(setPrice) {
-    var n = linkNormal(), max = LINKS.maxDiscount || 0, floor = Math.ceil(n * (100 - max) / 100);
+    var n = linkNormal(), floor = linkFloor(n), max = floor < n ? LINKS.maxDiscount || 0 : 0;
     if (setPrice) $('slAmount').value = n || '';
     var a = Math.round(Number($('slAmount').value) || 0), off = n - a;
-    var t = 'Normal price ' + money(n) + (LINKS.gstRate ? ' + ' + LINKS.gstRate + '% GST' : '') + '. ' + (max > 0 ? 'Lowest you can give: ' + money(floor) + ' (' + max + '% off).' : 'A lower price is not allowed.');
+    var t = 'Normal price ' + money(n) + (LINKS.gstRate ? ' + ' + LINKS.gstRate + '% GST' : '') + '. ' + (max > 0 ? 'Lowest you can give: ' + money(floor) + '.' : 'A lower price is not allowed.');
     if (a > 0 && off > 0 && a >= floor) t += ' You are giving ' + money(off) + ' off - that comes out of your commission on this sale.';
     if (LINKS.gstRate && a > 0) t += ' The customer pays ' + money(a + Math.round(a * LINKS.gstRate / 100)) + ' with GST.';
     $('slHint').textContent = t;

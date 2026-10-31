@@ -37,9 +37,9 @@
     was.hidden = !lp.discount; was.textContent = lp.discount ? S.rs(lp.gross) : '';
     var save = card.querySelector('.plan-save');
     save.hidden = !lp.discount;
-    save.textContent = lp.discount ? 'You save ' + S.rs(lp.discount) + [lp.offer ? lp.offer.title : '', lp.yearDiscount ? 'extra ' + lp.yearPercent + '% on added years' : ''].filter(Boolean).map(function (x) { return ' · ' + x; }).join('') : '';
+    save.textContent = lp.discount ? 'You save ' + S.rs(lp.discount) + [lp.offer ? lp.offer.title : '', lp.yearDiscount ? lp.yearPercent + '% on added years' : ''].filter(Boolean).map(function (x) { return ' · ' + x; }).join('') : '';
     // the "Buy for" list says what each number of years saves
-    [].slice.call(sel.options).forEach(function (o) { var y = Number(o.value), pct = S.yearPercent(pr, y); o.textContent = y + ' year' + (y > 1 ? 's' : '') + (pct ? ' — extra ' + pct + '% off' : ''); });
+    [].slice.call(sel.options).forEach(function (o) { var y = Number(o.value), l = S.listPrice(pr, plan, y), pct = l && l.gross ? Math.round(l.discount * 100 / l.gross) : 0; o.textContent = y + ' year' + (y > 1 ? 's' : '') + (pct ? ' — ' + pct + '% off' : ''); });
     // under the price: what it works out to a year when several years are bought (and a different later-years price, if one is ever set)
     var renew = card.querySelector('.plan-renew');
     renew.textContent = [years > 1 ? 'Works out to ' + S.rs(lp.perYear) + ' a year.' : '', lp.renewal !== lp.price ? 'Then ' + S.rs(lp.renewal) + ' a year.' : ''].filter(Boolean).join(' ');
@@ -55,7 +55,7 @@
     // no offer to announce: say what buying more years saves, if anything
     var maxPct = 0; (pr.years || [1, 2, 3, 4, 5]).forEach(function (y) { maxPct = Math.max(maxPct, S.yearPercent(pr, y)); });
     ribbon.hidden = !top && !maxPct;
-    ribbon.textContent = top ? (top.minYears > 1 && !lp.offer ? S.offerHeadline(top) + ' on ' + top.minYears + '+ years' : (top.badge || S.offerHeadline(top))) : maxPct ? 'Up to ' + maxPct + '% extra off on more years' : '';
+    ribbon.textContent = top ? (top.minYears > 1 && !lp.offer ? S.offerHeadline(top) + ' on ' + top.minYears + '+ years' : (top.badge || S.offerHeadline(top))) : maxPct ? 'Up to ' + maxPct + '% off on more years' : '';
     card.classList.toggle('has-offer', !!lp.offer);
     var buy = card.querySelector('[data-buy]');
     var label = (S.planOf(pr, plan) || {}).label || '';
@@ -68,20 +68,20 @@
     }
   }
 
-  // Extra seats: seats x years x the seat price (the cloud works out the real amount at checkout).
+  // Extra seats: seats x what the plan costs for those years (the cloud works out the real amount at checkout).
   function renderSeats(pr) {
     var cnt = document.getElementById('seatCount'), yrs = document.getElementById('seatYears'), buy = document.getElementById('seatBuy');
     if (!cnt || !yrs || !buy) return;
     var forPlan = document.getElementById('seatPlan'), plan = (forPlan && forPlan.value) || 'basic';
-    var each = S.seatPriceOf(pr, plan), n = Number(cnt.value) || 1, y = Number(yrs.value) || 1;
-    document.getElementById('seatTotal').textContent = S.rs(n * y * each);
-    document.getElementById('seatEach').textContent = S.rs(each) + ' per seat per year';
+    var n = Number(cnt.value) || 1, y = Number(yrs.value) || 1, each = S.seatPriceOf(pr, plan, y);
+    document.getElementById('seatTotal').textContent = S.rs(n * each);
+    document.getElementById('seatEach').textContent = S.rs(each) + ' per seat ' + (y > 1 ? 'for ' + y + ' years' : 'per year');
     // each plan card and each column of the table shows the seat price of ITS plan
     [].slice.call(document.querySelectorAll('.plan-card[data-plan]')).forEach(function (card) { var a = card.querySelector('.plan-addon'); if (a) a.textContent = '(add seats: ' + S.rs(S.seatPriceOf(pr, card.getAttribute('data-plan'))) + '/yr each)'; });
     // the comparison table further down the page: today's prices, not numbers typed into the page
     [].slice.call(document.querySelectorAll('.cmp-seat')).forEach(function (td) { td.textContent = S.rs(S.seatPriceOf(pr, td.getAttribute('data-seat-plan') || 'basic')) + ' / year'; });
     [].slice.call(document.querySelectorAll('[data-cmp-price]')).forEach(function (td) { var p = S.planOf(pr, td.getAttribute('data-cmp-price')); if (p) td.textContent = S.rs(p.price) + ' / year'; });
-    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y + '&for=' + plan; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * y * each); }
+    if (pr.payments && pr.payments.provider !== 'none') { buy.href = 'checkout.html?plan=seats&seats=' + n + '&years=' + y + '&for=' + plan; buy.textContent = 'Buy ' + n + ' seat' + (n > 1 ? 's' : '') + ' · ' + S.rs(n * each); }
     else { buy.href = 'contact.html?interest=seats#enquiry'; buy.textContent = 'Buy extra seats'; }
   }
   // The two mobile plans (Mobile Basic, Mobile Premium): the price of a year, with the best running offer.

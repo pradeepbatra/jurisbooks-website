@@ -25,7 +25,7 @@
   // before signing in the plan is not known: the price shown is for the plan named in the link (?for=), else Basic's;
   // after step 2 the cloud works it out for the customer's own plan.
   var seatFor = (function () { try { var f = new URLSearchParams(location.search).get('for'); return /^(basic|premium|business)$/.test(f || '') ? f : 'basic'; } catch (e) { return 'basic'; } })();
-  var seatPrice = function () { return S.seatPriceOf(state.pricing, seatFor); };
+  var seatPrice = function () { return S.seatPriceOf(state.pricing, seatFor, state.years); };
   function whatLabel() { return isMsg() ? 'Customer messages' : isSeats() ? state.seats + ' extra seat' + (state.seats > 1 ? 's' : '') : ((S.planOf(state.pricing, state.plan) || {}).label || ''); }
 
   // ---------- step 1: plan + years ----------
@@ -50,7 +50,7 @@
     var sb = el('button', 'co-plan' + (isSeats() ? ' is-on' : ''));
     sb.type = 'button'; sb.setAttribute('role', 'radio'); sb.setAttribute('aria-checked', isSeats() ? 'true' : 'false');
     sb.appendChild(el('span', 'co-plan-name', 'Extra seats'));
-    sb.appendChild(el('span', 'co-plan-price', S.rs(seatPrice()) + ' per seat'));
+    sb.appendChild(el('span', 'co-plan-price', S.rs(S.seatPriceOf(state.pricing, seatFor, 1)) + ' per seat a year'));
     sb.appendChild(el('span', 'co-plan-renew', 'per year · for a paid plan'));
     sb.addEventListener('click', function () { state.plan = 'seats'; renderPlans(); refresh(); });
     box.appendChild(sb);
@@ -103,8 +103,8 @@
       total = state.years * msgPrice();
       note = q && !q.ok ? q.reason : 'Customer messages are for a paid plan you already have. Your account is checked after step 2.';
     } else if (isSeats()) {
-      rows = [[state.seats + ' seat' + (state.seats > 1 ? 's' : '') + ' × ' + state.years + ' year' + (state.years > 1 ? 's' : '') + ' × ' + S.rs(seatPrice()), state.seats * state.years * seatPrice()]];
-      total = state.seats * state.years * seatPrice();
+      rows = [[state.seats + ' seat' + (state.seats > 1 ? 's' : '') + ' × ' + S.rs(seatPrice()) + ' (for ' + state.years + ' year' + (state.years > 1 ? 's' : '') + ')', state.seats * seatPrice()]];
+      total = state.seats * seatPrice();
       note = q && !q.ok ? q.reason : 'Extra seats are for a paid plan you already have. Your account is checked after step 2.';
     } else {
       var lp = S.listPrice(state.pricing, state.plan, state.years);
@@ -115,7 +115,7 @@
         if (state.years > 1) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ' × ' + S.rs(p.renewal), (state.years - 1) * p.renewal]);
       }
       if (lp.offer) rows.push(['Offer: ' + lp.offer.title, -lp.offerDiscount]);
-      if (lp.yearDiscount) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ': extra ' + lp.yearPercent + '% off', -lp.yearDiscount]);
+      if (lp.yearDiscount) rows.push([(state.years - 1) + ' more year' + (state.years > 2 ? 's' : '') + ': ' + lp.yearPercent + '% off', -lp.yearDiscount]);
       total = lp.total;
       note = q && !q.ok ? q.reason : 'Price for a new plan. Renewals and upgrades are worked out for your account after step 2.';
     }
@@ -189,7 +189,7 @@
     var q = state.quote, r = q && q.referral, code = refCode();
     var text = '', ok = false;
     if (isSeats() || isMsg()) text = code ? 'A referral code is for buying a plan.' : '';
-    else if (r && r.ok) { ok = true; text = r.discount ? 'Code ' + r.code + ' applied: ' + r.percent + '% off (' + S.rs(r.discount) + ').' : 'Code ' + r.code + ' added.'; }
+    else if (r && r.ok) { ok = true; text = r.discount ? 'Code ' + r.code + ' applied: ' + r.percent + '% off (' + S.rs(r.discount) + ').' : 'Code ' + r.code + ' added.' + (r.offerBetter ? ' Your offer is the better price, so that one is used: offers do not combine.' : ''); }
     else if (r && !r.ok) text = r.reason;
     else if (code && !state.pass) text = 'The code is checked after you verify your mobile number.';
     m.textContent = text; m.classList.toggle('ok', ok);

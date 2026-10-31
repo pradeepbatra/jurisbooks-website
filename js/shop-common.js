@@ -56,23 +56,21 @@
     var p = planOf(pr, plan);
     if (!p) return null;
     var gross = p.price + (years - 1) * p.renewal;
-    // the best running offer on the whole amount; buying several years adds an extra % on the years after the first
-    // (set in Back Office): first year = the offer alone, each further year = the offer and the extra %
+    // the best running offer on the whole amount, or the multi-year % on the years after the first (set in Back
+    // Office), whichever takes off more: offers never combine (same rule as the cloud, lib/pricing.js)
     var b = bestOffer(pr, plan, 'new', years, gross);
-    var yp = yearPercent(pr, years), yd = Math.min(gross - b.discount, Math.round((gross - p.price) * yp / 100));
-    var off = yd + b.discount;
-    return { gross: gross, discount: off, yearDiscount: yd, yearPercent: yp, offerDiscount: b.discount, offer: b.offer, total: gross - off, perYear: Math.round((gross - off) / years), renewal: p.renewal, price: p.price };
+    var yoff = Math.round((gross - p.price) * yearPercent(pr, years) / 100), useOffer = b.discount >= yoff;
+    var yd = useOffer ? 0 : yoff, yp = useOffer ? 0 : yearPercent(pr, years), off = useOffer ? b.discount : yoff;
+    return { gross: gross, discount: off, yearDiscount: yd, yearPercent: yp, offerDiscount: useOffer ? b.discount : 0, offer: useOffer ? b.offer : null, total: gross - off, perYear: Math.round((gross - off) / years), renewal: p.renewal, price: p.price };
   }
   function rs(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
   function fDate(t) { return new Date(t).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }); }
   function offerHeadline(o) { return o.kind === 'percent' ? o.value + '% OFF' : rs(o.value) + ' OFF'; }
 
-  // An extra seat on a plan, a year: that plan's own yearly price less the seat discount (10% unless the cloud says otherwise).
-  function seatPriceOf(pr, plan) {
-    var p = planOf(pr, plan) || planOf(pr, 'basic');
-    if (!p) return 0;
-    if (p.seatPrice != null) return p.seatPrice;
-    return Math.round(p.price * (100 - (pr.seatDiscount == null ? 10 : pr.seatDiscount)) / 100);
+  // One extra seat for N years: what the plan itself costs for N years, offers included (same rule as the cloud).
+  function seatPriceOf(pr, plan, years) {
+    var lp = listPrice(pr, planOf(pr, plan) ? plan : 'basic', years || 1);
+    return lp ? lp.total : 0;
   }
   window.JBShop = { call: call, getPricing: getPricing, planOf: planOf, seatPriceOf: seatPriceOf, yearPercent: yearPercent, bestOffer: bestOffer, listPrice: listPrice, rs: rs, fDate: fDate, offerHeadline: offerHeadline, DEFAULT: DEFAULT, LOCAL: LOCAL };
 })();
