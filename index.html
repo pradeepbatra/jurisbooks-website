@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/home-live.css">
 </head>
 <body>
 
@@ -73,9 +74,62 @@
           <div class="item"><span class="num">CGST · SGST · IGST</span><span class="label">Worked out on every invoice</span></div>
         </div>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="rules"></div>
-        <svg viewBox="0 0 200 200" style="width:52%;position:relative;z-index:1"><path fill="#CDA24B" opacity=".95" d="M18 58 L94 40 L94 158 L18 148 Z"/><path fill="#CDA24B" opacity=".95" d="M182 58 L106 40 L106 158 L182 148 Z"/><rect fill="#CDA24B" x="98" y="36" width="4" height="126"/><text x="55" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">J</text><text x="145" y="98" font-family="Georgia,serif" font-weight="700" font-size="46" text-anchor="middle" fill="#10162A">B</text><rect fill="#10162A" x="38" y="118" width="34" height="4"/><rect fill="#10162A" x="38" y="132" width="26" height="4"/><rect fill="#10162A" x="128" y="118" width="34" height="4"/><rect fill="#10162A" x="128" y="132" width="26" height="4"/></svg>
+      <div class="live-hero" aria-hidden="true">
+        <div class="live-screen"><div class="bar"><i></i><i></i><i></i></div><div class="live-fade" id="heroFade"><img class="on" src="images/themes/classic.webp" width="1100" height="626" alt="" decoding="async"></div></div>
+        <img class="live-phone" src="images/screens/16-packer-phone.webp" width="480" height="816" alt="" decoding="async">
+        <span class="live-chip c1">GST worked out</span>
+        <span class="live-chip c2">Packed &middot; 4 bags</span>
+        <span class="live-chip c3">Books balanced</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="live-ticker" aria-hidden="true"><ul><li>POS / Counter</li><li>Packing &amp; Dispatch</li><li>Seven screen colours</li><li>Four icon styles</li><li>UPI QR on every bill</li><li>Bill by SMS</li><li>GSTR-1 file</li><li>E-way bill file</li><li>Batch &amp; expiry stock</li><li>Price lists</li><li>Bill-wise profit</li><li>Delivery challans</li><li>Recycle bin</li><li>Import from Tally or Vyapar</li><li>POS / Counter</li><li>Packing &amp; Dispatch</li><li>Seven screen colours</li><li>Four icon styles</li><li>UPI QR on every bill</li><li>Bill by SMS</li><li>GSTR-1 file</li><li>E-way bill file</li><li>Batch &amp; expiry stock</li><li>Price lists</li><li>Bill-wise profit</li><li>Delivery challans</li><li>Recycle bin</li><li>Import from Tally or Vyapar</li></ul></div>
+
+  <section class="section live-new" id="whats-new" aria-labelledby="new-h">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow">New in Jurisbooks</div>
+        <h2 id="new-h">Always growing with the way you work.</h2>
+        <p>The latest additions, from the look of your screen to the moment the goods leave your shop.</p>
+      </div>
+      <div class="live-grid">
+        <article class="live-card wide reveal">
+          <div>
+            <span class="live-new-tag">Colours &amp; icons</span>
+            <h3>Make it look the way you like.</h3>
+            <p>Seven screen colours and four icon styles: Classic, Line, Colour tiles and Comic. Press a colour to see it.</p>
+            <ul class="live-swatches" id="themeSwatches">
+            <li><button type="button" data-theme="classic" aria-label="Classic Navy" aria-pressed="true" title="Classic Navy" style="--a:#12283f;--b:#0e7c66;"></button></li>
+            <li><button type="button" data-theme="gold" aria-label="Black &amp; Gold" aria-pressed="false" title="Black &amp; Gold" style="--a:#1c1b19;--b:#8a6a1c;"></button></li>
+            <li><button type="button" data-theme="ocean" aria-label="Ocean Blue" aria-pressed="false" title="Ocean Blue" style="--a:#0c3553;--b:#1b6aab;"></button></li>
+            <li><button type="button" data-theme="plum" aria-label="Royal Plum" aria-pressed="false" title="Royal Plum" style="--a:#3a1f4d;--b:#74409a;"></button></li>
+            <li><button type="button" data-theme="sunset" aria-label="Sunset Orange" aria-pressed="false" title="Sunset Orange" style="--a:#8a2a12;--b:#d24a12;"></button></li>
+            <li><button type="button" data-theme="tropical" aria-label="Tropical Pink" aria-pressed="false" title="Tropical Pink" style="--a:#0a4a57;--b:#d6246e;"></button></li>
+            <li><button type="button" data-theme="violet" aria-label="Electric Violet" aria-pressed="false" title="Electric Violet" style="--a:#2a1263;--b:#6c2bd9;"></button></li>
+            </ul>
+            <div class="live-theme-name" id="themeName" aria-live="polite">Classic Navy</div>
+          </div>
+          <div class="live-theme-shot"><img id="themeShot" src="images/themes/classic.webp" width="1100" height="626" style="display:block;width:100%;height:auto;" alt="Jurisbooks dashboard in Classic Navy" loading="lazy" decoding="async"></div>
+        </article>
+        <article class="live-card reveal">
+          <span class="live-new-tag">POS / Counter</span>
+          <h3>A billing counter that keeps up.</h3>
+          <p>Scan or tap items, take cash, UPI or card, and print. The sale goes into your books by itself.</p>
+          <p class="live-small">Restaurants can mark each order Dine in, with a table number, or On the go (Jurisbooks cloud).</p>
+          <img class="pic" src="images/screens/10-pos-800.webp" width="800" height="500" alt="Jurisbooks POS counter screen" loading="lazy" decoding="async">
+        </article>
+        <article class="live-card reveal">
+          <span class="live-new-tag">Packing &amp; Dispatch</span>
+          <h3>From bill to bags to the lorry.</h3>
+          <p>After a sale or a purchase return, choose Self or Via us. Your packing staff get a proper slip on their phone, without rates or amounts, and you see every order move.</p>
+          <ul class="live-steps" id="dispatchSteps"><li class="on">With packer</li><li>Packing</li><li>Packed</li><li>With transport</li></ul>
+          <p class="live-small">With Premium and Business Premium in Jurisbooks cloud. Packing staff use it free.</p>
+          <div class="live-dispatch-pics">
+            <img class="pic" src="images/screens/15-dispatch-800.webp" width="800" height="500" alt="Jurisbooks Dispatch page showing each order, its packer and its status" loading="lazy" decoding="async">
+            <img class="ph" src="images/screens/16-packer-phone.webp" width="480" height="816" alt="The Packer page on a phone, with a packing slip" loading="lazy" decoding="async">
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -88,7 +142,7 @@
         <p>Both editions share the same billing, inventory and accounting engine. Choose where your books live.</p>
       </div>
 
-      <article id="online" class="edition edition-online" aria-labelledby="ed-online-h">
+      <article id="online" class="reveal edition edition-online" aria-labelledby="ed-online-h">
         <div class="edition-text">
           <div class="edition-tag">Jurisbooks <span>· recommended</span></div>
           <h3 id="ed-online-h">Your books, current on every computer you use.</h3>
@@ -108,7 +162,7 @@
         <figure class="edition-shot"><img src="images/screens/01-dashboard-800.webp" width="800" height="500" alt="Jurisbooks dashboard with sales, cash, bank and low-stock alerts" loading="lazy" decoding="async"></figure>
       </article>
 
-      <article id="offline" class="edition edition-offline" aria-labelledby="ed-offline-h">
+      <article id="offline" class="reveal edition edition-offline" aria-labelledby="ed-offline-h">
         <div class="edition-text">
           <div class="edition-tag">Jurisbooks Offline</div>
           <h3 id="ed-offline-h">Complete books on your own computer.</h3>
@@ -136,11 +190,11 @@
         <h2 id="why-h">Precision you can rely on. Simplicity you will enjoy.</h2>
       </div>
       <div class="pillars">
-        <div class="pillar-row"><div class="idx">01</div><div><h3>Correct by design</h3><p>Built on genuine double-entry accounting. A sale, a purchase, a receipt or a return updates stock, the party&rsquo;s balance, cash or bank and your GST in a single step &mdash; so the Trial Balance, Profit &amp; Loss and Balance Sheet always agree.</p></div></div>
-        <div class="pillar-row"><div class="idx">02</div><div><h3>Effortless every day</h3><p>Raise a GST invoice in seconds. Tax, round-off and the customer&rsquo;s outstanding balance are worked out for you, and the bill can go to your customer on WhatsApp in one click.</p></div></div>
-        <div class="pillar-row"><div class="idx">03</div><div><h3>GST, handled properly</h3><p>CGST and SGST or IGST applied automatically, HSN-wise and rate-wise summaries, B2B and B2C views, a clear net-payable figure when it is time to file, and ready-made files for GSTR-1 and e-way bills.</p></div></div>
-        <div class="pillar-row"><div class="idx">04</div><div><h3>Nothing is lost</h3><p>Work is saved as you go, backed up automatically and, with Online, kept in the cloud as well. A financial year can be closed and archived without disturbing the next.</p></div></div>
-        <div class="pillar-row"><div class="idx">05</div><div><h3>People who answer</h3><p>Talk to us on WhatsApp or by phone, in English or Hindi. We help you set up, bring your old data across, and stay with you as your business grows.</p></div></div>
+        <div class="pillar-row reveal"><div class="idx">01</div><div><h3>Correct by design</h3><p>Built on genuine double-entry accounting. A sale, a purchase, a receipt or a return updates stock, the party&rsquo;s balance, cash or bank and your GST in a single step &mdash; so the Trial Balance, Profit &amp; Loss and Balance Sheet always agree.</p></div></div>
+        <div class="pillar-row reveal"><div class="idx">02</div><div><h3>Effortless every day</h3><p>Raise a GST invoice in seconds. Tax, round-off and the customer&rsquo;s outstanding balance are worked out for you, and the bill can go to your customer on WhatsApp in one click.</p></div></div>
+        <div class="pillar-row reveal"><div class="idx">03</div><div><h3>GST, handled properly</h3><p>CGST and SGST or IGST applied automatically, HSN-wise and rate-wise summaries, B2B and B2C views, a clear net-payable figure when it is time to file, and ready-made files for GSTR-1 and e-way bills.</p></div></div>
+        <div class="pillar-row reveal"><div class="idx">04</div><div><h3>Nothing is lost</h3><p>Work is saved as you go, backed up automatically and, with Online, kept in the cloud as well. A financial year can be closed and archived without disturbing the next.</p></div></div>
+        <div class="pillar-row reveal"><div class="idx">05</div><div><h3>People who answer</h3><p>Talk to us on WhatsApp or by phone, in English or Hindi. We help you set up, bring your old data across, and stay with you as your business grows.</p></div></div>
       </div>
     </div>
   </section>
@@ -170,6 +224,7 @@
         <figure class="slide" aria-hidden="true"><img src="images/screens/12-screen-colours-1600.webp" srcset="images/screens/12-screen-colours-800.webp 800w, images/screens/12-screen-colours-1600.webp 1600w" sizes="(min-width:1080px) 1040px, 100vw" width="1600" height="1000" alt="Jurisbooks Dashboard in the Black and Gold colours" loading="lazy" decoding="async"></figure>
         <figure class="slide" aria-hidden="true"><img src="images/screens/13-bill-profit-1600.webp" srcset="images/screens/13-bill-profit-800.webp 800w, images/screens/13-bill-profit-1600.webp 1600w" sizes="(min-width:1080px) 1040px, 100vw" width="1600" height="1000" alt="Jurisbooks Bill-wise profit report" loading="lazy" decoding="async"></figure>
         <figure class="slide" aria-hidden="true"><img src="images/screens/14-business-type-1600.webp" srcset="images/screens/14-business-type-800.webp 800w, images/screens/14-business-type-1600.webp 1600w" sizes="(min-width:1080px) 1040px, 100vw" width="1600" height="1000" alt="Jurisbooks Choosing the kind of business" loading="lazy" decoding="async"></figure>
+        <figure class="slide" aria-hidden="true"><img src="images/screens/15-dispatch-1600.webp" srcset="images/screens/15-dispatch-800.webp 800w, images/screens/15-dispatch-1600.webp 1600w" sizes="(min-width:1080px) 1040px, 100vw" width="1600" height="1000" alt="Jurisbooks Dispatch page with packers, transport and status" loading="lazy" decoding="async"></figure>
           </div>
           <button type="button" class="slider-btn prev" aria-label="Previous screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
           <button type="button" class="slider-btn next" aria-label="Next screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -189,11 +244,49 @@
         <div class="cap"><h3>Seven screen colours, four icon styles<span class="cap-tag">New</span></h3><p>Classic Navy, Black &amp; Gold, Ocean Blue and more - with Classic, Line, Colour tile or Comic icons.</p></div>
         <div class="cap"><h3>Profit on every bill<span class="cap-tag">New</span></h3><p>Sale value, cost, profit and margin for each invoice, and the total for any period.</p></div>
         <div class="cap"><h3>Set up for your trade<span class="cap-tag">New</span></h3><p>Kirana, garments, pharmacy, mobiles, hardware and more - the right boxes on every bill line.</p></div>
+        <div class="cap"><h3>Packing &amp; Dispatch<span class="cap-tag">New</span></h3><p>Who is packing, what is packed and what has left, with the LR number coming back to the bill.</p></div>
         </div>
         <div class="slider-dots" role="tablist" aria-label="Choose a screen"></div>
       </div>
       <p class="showcase-note">Screens show sample data from a fictional business. Items marked Premium are part of the Premium licence.</p>
     </div>
+  </section>
+
+  <section class="section live-social" id="social" aria-labelledby="social-h">
+    <div class="container">
+      <div class="head reveal">
+        <div class="section-head">
+          <div class="eyebrow">Gallery</div>
+          <h2 id="social-h">What we share on social media.</h2>
+          <p>New features, tips and short videos. Press any picture to see it in full.</p>
+        </div>
+        <div class="live-arrows">
+          <button type="button" id="socialPrev" aria-label="Previous pictures">&larr;</button>
+          <button type="button" id="socialNext" aria-label="Next pictures">&rarr;</button>
+        </div>
+      </div>
+      <ul class="live-rail" id="socialRail" tabindex="0" aria-label="Jurisbooks social media gallery">
+        <li><button type="button" data-video="videos/reel-whats-new.mp4"><img src="images/social/reel-poster.webp" width="540" height="675" alt="Play the short video: what is new in Jurisbooks" loading="lazy" decoding="async"><span class="play"><span><svg viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg></span></span></button></li>
+        <li><button type="button" data-full="images/social/p23-full.webp"><img src="images/social/p23.webp" width="600" height="750" alt="Dispatch: from bill to bags to the lorry" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p24-full.webp"><img src="images/social/p24.webp" width="600" height="750" alt="Packer app: your packing staff, on their phone" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p14-full.webp"><img src="images/social/p14.webp" width="600" height="750" alt="POS: a billing counter that keeps up" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p17-full.webp"><img src="images/social/p17.webp" width="600" height="750" alt="Seven screen colours" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p16-full.webp"><img src="images/social/p16.webp" width="600" height="750" alt="Four icon styles" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p15-full.webp"><img src="images/social/p15.webp" width="600" height="750" alt="A simpler menu" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p18-full.webp"><img src="images/social/p18.webp" width="600" height="750" alt="Set up for your kind of business" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p19-full.webp"><img src="images/social/p19.webp" width="600" height="750" alt="Your profit on every bill" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p20-full.webp"><img src="images/social/p20.webp" width="600" height="750" alt="Your customer gets the bill by SMS" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p21-full.webp"><img src="images/social/p21.webp" width="600" height="750" alt="A UPI QR on every bill" loading="lazy" decoding="async"></button></li>
+        <li><button type="button" data-full="images/social/p22-full.webp"><img src="images/social/p22.webp" width="600" height="750" alt="More done, in fewer clicks" loading="lazy" decoding="async"></button></li>
+      </ul>
+      <a class="btn btn-outline" href="https://www.instagram.com/jurisbooks_18/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>Follow us on Instagram</a>
+    </div>
+    <dialog class="live-box" id="socialBox" aria-label="Gallery picture">
+      <div id="socialStage"></div>
+      <button type="button" class="close" aria-label="Close">&times;</button>
+      <button type="button" class="nav prev" aria-label="Previous">&larr;</button>
+      <button type="button" class="nav next" aria-label="Next">&rarr;</button>
+    </dialog>
   </section>
 
   <section class="section tour" id="tour" aria-labelledby="tour-h">
@@ -275,5 +368,6 @@
 <script src="js/agree.js"></script>
 <script src="js/whatsapp-float.js"></script>
 <script src="js/slider.js"></script>
+<script src="js/home-live.js"></script>
 </body>
 </html>
