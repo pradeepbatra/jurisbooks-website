@@ -347,7 +347,7 @@ sup.tm{font-size:.45em;vertical-align:super;margin-left:1px;font-weight:600;lett
   padding:48px 0 32px;
 }
 .footer-grid{
-  display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:32px;
+  display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px;
   margin-bottom:36px;
 }
 @media (max-width:700px){ .footer-grid{grid-template-columns:1fr; gap:28px;} }
@@ -820,3 +820,12 @@ select option{background:var(--paper); color:var(--ink);}
 .sales-linkcard{max-width:none;} .sales-linkcard .acct-row select{flex:1; min-width:0;} .sales-linkcard #slList{margin-top:18px;} .sales-linkcard #slResult{margin-top:6px;}
 /* Buy page: referral code box */
 .co-ref{text-transform:uppercase; letter-spacing:1px; font-family:'IBM Plex Mono',monospace !important; max-width:220px;} .co-optional{font-weight:400; color:var(--ink-soft);} .co-refmsg{margin:6px 0 0; min-height:1.2em;}
+
+/* Training videos page */
+.guide-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px;}
+.guide-card{background:var(--paper); border:1px solid var(--rule); border-radius:6px; padding:24px; display:flex; flex-direction:column;}
+.guide-card h2{font-size:1.15rem; margin-bottom:8px;}
+.guide-card p{font-size:.92rem; color:var(--ink-soft); flex:1;}
+.guide-links{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+.guide-soon{font-size:.85rem; color:var(--ink-soft);}
+.guide-more{margin-top:32px;}
