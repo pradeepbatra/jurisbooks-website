@@ -125,6 +125,7 @@ window.JURISBOOKS_FORM = {
         try { localStorage.setItem('jb_enquiry_at', String(Date.now())); } catch (x) {}
         form.hidden = true;
         var ok = document.getElementById('enquiryThanks'); ok.hidden = false; ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.dispatchEvent(new Event('jb-enquiry-sent'));   // ads-tag.js counts it, only if the visitor allowed it
       }
 
       if (!cfg.accessKey) { return; }   // form is switched off until a key is set
