@@ -521,6 +521,51 @@
   function loadTeam() {
     return retry('salesCrmTeam').then(function (t) { TEAM = t; drawTeam(); }).catch(function (e) { sessionGone(e); });
   }
+  // ---- results: one week (Monday-Sunday) or one month, India time (cloud lib/crm.js results) -----------------
+  // Staff see themselves; a manager their team; a distributor their teams; a CRM admin everyone.
+  var RES = { kind: 'week', offset: 0 };
+  function resRow(box, name, sub, r) {
+    var row = el('div', 'sales-lead'), who = el('div', 'sales-who');
+    who.appendChild(el('b', null, name));
+    if (sub) who.appendChild(el('div', 'small-note', sub));
+    who.appendChild(el('div', 'small-note', r.sent + ' sent · ' + r.approved + ' approved · ' + r.refused + ' refused · ' + r.waiting + ' waiting' + (r.bridges ? ' · ' + r.bridges + ' given 7 days' : '')));
+    row.appendChild(who);
+    var st = el('div', 'sales-status'); st.appendChild(el('b', null, money(r.amount))); row.appendChild(st);
+    box.appendChild(row);
+  }
+  function loadResults() {
+    var btns = ['resWeek', 'resMonth', 'resPrev', 'resNext'];
+    btns.forEach(function (id) { $(id).disabled = true; });
+    return retry2('salesCrmResults', { kind: RES.kind, offset: RES.offset }).then(function (d) {
+      $('resCard').hidden = false;
+      $('resWeek').className = 'btn ' + (RES.kind === 'week' ? 'btn-primary' : 'btn-outline');
+      $('resMonth').className = 'btn ' + (RES.kind === 'month' ? 'btn-primary' : 'btn-outline');
+      $('resLabel').textContent = d.period.label;
+      var t = $('resTiles'); t.textContent = '';
+      [[d.total.sent, 'sent'], [d.total.approved, 'approved'], [money(d.total.amount), 'approved money'], [d.total.refused, 'refused']]
+        .forEach(function (x) { var e = el('div', 'sales-tile'); e.appendChild(el('b', null, String(x[0]))); e.appendChild(el('span', null, x[1])); t.appendChild(e); });
+      var box = $('resList'); box.textContent = '';
+      if (d.people.length > 1) {
+        box.appendChild(el('p', 'acct-label', 'People'));
+        d.people.forEach(function (p) { resRow(box, p.name + (p.you ? ' (you)' : ''), [p.roleLabel, p.teamName].filter(Boolean).join(' · '), p); });
+      }
+      if (d.teams.length > 1 || (d.teams.length === 1 && d.people.length > 1)) {
+        box.appendChild(el('p', 'acct-label', 'Teams'));
+        d.teams.forEach(function (x) { resRow(box, x.name, x.distributor ? 'distributor ' + x.distributor : '', x); });
+      }
+      if (d.distributors.length > 1) {
+        box.appendChild(el('p', 'acct-label', 'Distributors'));
+        d.distributors.forEach(function (x) { resRow(box, x.name, '', x); });
+      }
+    }).catch(function (e) { sessionGone(e); }).then(function () {
+      btns.forEach(function (id) { $(id).disabled = false; });
+      $('resNext').disabled = RES.offset === 0;
+    });
+  }
+  function retry2(name, extra) {
+    var d = function () { var o = { pass: getPass() }; for (var k in extra) o[k] = extra[k]; return o; };
+    return call(name, d()).catch(function (e) { if (sessionGone(e)) throw e; return new Promise(function (r) { setTimeout(r, 3000); }).then(function () { return call(name, d()); }); });
+  }
   function render(a) {
     msg('');
     $('salesSignIn').hidden = true; $('salesView').hidden = false;
@@ -540,7 +585,7 @@
     leadList($('salesLeads'), a.leads, a.shows, 'Nobody has joined with your link yet. Share it - each person who signs up by it appears here.');
     commission(a.commission);
     loadLinks();
-    loadRequests(); loadTeam();
+    loadRequests(); loadTeam(); loadResults();
     var t = a.team;
     $('salesTeamCard').hidden = !t; $('salesTeamLeadsCard').hidden = !t;
     if (t) {
@@ -582,6 +627,10 @@
     $('crmAddBtn').addEventListener('click', function () { $('crmAdd').hidden = !$('crmAdd').hidden; });
     $('crmAddSave').addEventListener('click', addLead);
     $('crmOpenOnly').addEventListener('change', function () { drawCrm(CRM); });
+    $('resWeek').addEventListener('click', function () { RES = { kind: 'week', offset: 0 }; loadResults(); });
+    $('resMonth').addEventListener('click', function () { RES = { kind: 'month', offset: 0 }; loadResults(); });
+    $('resPrev').addEventListener('click', function () { RES.offset++; loadResults(); });
+    $('resNext').addEventListener('click', function () { if (RES.offset > 0) { RES.offset--; loadResults(); } });
     $('crmAddPersonBtn').addEventListener('click', function () { var b = $('crmPersonForm'); if (b.firstChild) b.textContent = ''; else if (TEAM) personForm(b, null); });
     $('crmAddTeamBtn').addEventListener('click', function () { var b = $('crmPersonForm'); if (b.firstChild) b.textContent = ''; else if (TEAM) teamForm(b, null); });
     load();
