@@ -591,12 +591,7 @@ sup.tm{font-size:.45em;vertical-align:super;margin-left:1px;font-weight:600;lett
 .agree-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
 .agree-actions .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
 body.agree-open{overflow:hidden;}
-.wa-float{position:fixed;right:18px;bottom:calc(18px + var(--agree-h,0px) + env(safe-area-inset-bottom));z-index:900;width:56px;height:56px;border-radius:50%;
-  background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.3);transition:transform .15s ease, box-shadow .15s ease;}
-.wa-float:hover{transform:scale(1.06);box-shadow:0 10px 26px rgba(0,0,0,.38);}
-.wa-float svg{width:30px;height:30px;}
-@media (max-width:700px){ .site-footer{padding-bottom:84px;} }
-@media print{ .agree-bar,.wa-float,.agree-overlay{display:none !important;} }
+@media print{ .agree-bar,.agree-overlay{display:none !important;} }
 .legal{max-width:74ch;}
 .legal h2{font-size:1.2rem;margin:1.7em 0 .5em;}
 .legal p,.legal li{color:var(--ink);}
