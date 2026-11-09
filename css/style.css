@@ -849,3 +849,19 @@ select option{background:var(--paper); color:var(--ink);}
 .hl-item{border-top:1px solid var(--rule);padding:8px 0;} .hl-item summary{cursor:pointer;display:flex;gap:10px;justify-content:space-between;align-items:baseline;font-weight:600;}
 .hl-item p,.hl-item ol{margin:6px 0;} .hl-plan{font-weight:400;font-size:.78rem;color:var(--ink-soft);text-align:right;}
 @media (max-width:600px){ .hc-msg{max-width:96%;} .hl-item summary{flex-direction:column;gap:2px;} .hl-plan{text-align:left;} }
+
+/* Demo page (demo.html, 9 Nov 2026): feature pictures + tour + Ask Jurisbooks chat + list */
+.demo-btns{margin-top:18px;flex-wrap:wrap;}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:18px;}
+.demo-shot{margin:0;background:#fff;border:1px solid var(--rule);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 20px rgba(16,22,42,.06);transition:transform .2s, box-shadow .2s;}
+.demo-shot:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(16,22,42,.12);}
+.demo-zoom{display:block;border:0;padding:0;background:var(--paper);cursor:zoom-in;}
+.demo-zoom img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top left;}
+.demo-shot figcaption{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1;}
+.demo-shot figcaption span{color:var(--ink-soft);font-size:.93rem;line-height:1.45;}
+.demo-shot .demo-ask{align-self:flex-start;margin-top:auto;}
+.demo-big{position:fixed;inset:0;z-index:1000;background:rgba(10,14,28,.88);display:flex;align-items:center;justify-content:center;padding:16px;}
+.demo-big[hidden]{display:none;}
+.demo-big img{max-width:100%;max-height:92vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+.demo-big-x{position:absolute;top:10px;right:14px;background:none;border:0;color:#fff;font-size:2.2rem;line-height:1;cursor:pointer;}
+@media (max-width:700px){ .demo-grid{grid-template-columns:1fr;} }

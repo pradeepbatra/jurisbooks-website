@@ -1,5 +1,5 @@
 /* Jurisbooks - every feature, in one place (9 Nov 2026).
-   Used by help.html: the full feature list AND the "Ask Jurisbooks" chat (js/help-chat.js), which answers from
+   Used by demo.html: the full feature list AND the "Ask Jurisbooks" chat (js/help-chat.js), which answers from
    these entries only (no AI service, nothing sent anywhere). To add or change a feature, edit this file only.
    Each entry: id, group, title, plan (who has it), where (menu path in the app), text (the answer),
    steps (optional how-to), keys (extra words people may type, English + Hindi in Latin letters). */

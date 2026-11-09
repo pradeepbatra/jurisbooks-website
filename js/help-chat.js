@@ -1,4 +1,4 @@
-/* "Ask Jurisbooks" - the help chat on help.html (9 Nov 2026). It answers ONLY from js/help-data.js by matching
+/* "Ask Jurisbooks" - the help chat on demo.html (9 Nov 2026; first made as help.html). It answers ONLY from js/help-data.js by matching
    the words typed (English or Hindi in Latin letters) - no AI service, nothing typed leaves the page.
    It also draws the full feature list below the chat. Everything is written with textContent (never innerHTML). */
 (function () {
@@ -114,6 +114,24 @@
   document.addEventListener('DOMContentLoaded', function () {
     if ($('hcLog')) startChat();
     if ($('hlList')) { drawList(''); $('hlSearch').addEventListener('input', function () { drawList(this.value); }); }
+    // demo page: "Ask about this" under a picture asks the chat; a picture opens bigger
+    [].forEach.call(document.querySelectorAll('.demo-ask'), function (btn) {
+      btn.addEventListener('click', function () {
+        var t = H.topics.filter(function (x) { return x.id === btn.getAttribute('data-topic'); })[0];
+        if (!t || !$('hcLog')) return;
+        ask(t.title, t);
+        $('ask').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+    var big = $('demoBig');
+    if (big) {
+      var close = function () { big.hidden = true; big.querySelector('img').removeAttribute('src'); };
+      [].forEach.call(document.querySelectorAll('.demo-zoom'), function (z) {
+        z.addEventListener('click', function () { var i = big.querySelector('img'); i.src = z.getAttribute('data-big'); i.alt = z.getAttribute('aria-label'); big.hidden = false; });
+      });
+      big.addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !big.hidden) close(); });
+    }
     var q = new URLSearchParams(location.search).get('q');
     if (q && $('hcLog')) ask(q.slice(0, 200));
   });
