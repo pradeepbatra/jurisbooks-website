@@ -827,3 +827,25 @@ select option{background:var(--paper); color:var(--ink);}
 .guide-links{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
 .guide-soon{font-size:.85rem; color:var(--ink-soft);}
 .guide-more{margin-top:32px;}
+
+/* Help page: "Ask Jurisbooks" chat + feature list (help.html, 9 Nov 2026) */
+.hc-card{padding:0;overflow:hidden;}
+.hc-log{height:min(60vh,520px);overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--paper);}
+.hc-msg{max-width:88%;padding:10px 14px;border-radius:14px;line-height:1.5;}
+.hc-msg p{margin:0 0 6px;} .hc-msg p:last-child{margin-bottom:0;}
+.hc-me{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:4px;}
+.hc-bot{align-self:flex-start;background:#fff;border:1px solid var(--rule);border-bottom-left-radius:4px;}
+.hc-title{display:block;margin-bottom:4px;}
+.hc-steps{margin:4px 0 6px;padding-left:20px;} .hc-meta{font-size:.82rem;color:var(--ink-soft);}
+.hc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center;}
+.hc-chiplabel{font-size:.8rem;color:var(--ink-soft);margin-right:2px;}
+.hc-chip{border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:5px 11px;font:inherit;font-size:.85rem;cursor:pointer;color:var(--ink);}
+.hc-chip:hover{border-color:var(--brass);}
+.hc-form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--rule);background:#fff;}
+.hc-form input{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;font:inherit;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.hl-searchrow{gap:12px;align-items:center;margin-bottom:8px;} .hl-searchrow input{flex:1;min-width:0;padding:9px 12px;border:1px solid var(--rule);border-radius:10px;font:inherit;}
+.hl-group h3{margin:18px 0 6px;font-size:1.05rem;}
+.hl-item{border-top:1px solid var(--rule);padding:8px 0;} .hl-item summary{cursor:pointer;display:flex;gap:10px;justify-content:space-between;align-items:baseline;font-weight:600;}
+.hl-item p,.hl-item ol{margin:6px 0;} .hl-plan{font-weight:400;font-size:.78rem;color:var(--ink-soft);text-align:right;}
+@media (max-width:600px){ .hc-msg{max-width:96%;} .hl-item summary{flex-direction:column;gap:2px;} .hl-plan{text-align:left;} }
