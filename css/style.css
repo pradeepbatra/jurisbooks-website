@@ -865,3 +865,10 @@ select option{background:var(--paper); color:var(--ink);}
 .demo-big img{max-width:100%;max-height:92vh;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
 .demo-big-x{position:absolute;top:10px;right:14px;background:none;border:0;color:#fff;font-size:2.2rem;line-height:1;cursor:pointer;}
 @media (max-width:700px){ .demo-grid{grid-template-columns:1fr;} }
+
+/* sales page: "put it on your home screen" box (28 Nov 2026) */
+.sl-install{background:var(--card,#fff);color:var(--ink,#16213a);border-bottom:1px solid var(--line,#ddd);padding:12px 16px;font-size:15px;}
+.sl-install b{display:block;margin-bottom:2px;}
+.sl-install-row{display:flex;gap:8px;margin-top:10px;max-width:520px;}
+.sl-install-row a,.sl-install-row button{flex:1;text-align:center;text-decoration:none;padding:11px;border-radius:10px;font:inherit;font-weight:600;border:1px solid #c9d1dc;background:transparent;color:inherit;cursor:pointer;}
+.sl-install-row .go{background:#0e7c66;border-color:#0e7c66;color:#fff;}
